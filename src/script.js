@@ -1,7 +1,7 @@
 // import Project from './project';
 
 // const main = new Project();
-
+import "./styles.css";
 import { createDialog } from './dialog.js';
 
 document.addEventListener('DOMContentLoaded', function() {
