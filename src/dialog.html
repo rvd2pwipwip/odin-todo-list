@@ -1,0 +1,33 @@
+<dialog>
+  <form action='' method='dialog' id="form">
+    <fieldset>
+      <legend>Create Todo<button id='close-btn'>&times;</button></legend>
+      <div class='form-item'>
+        <label for='title'>Title</label>
+        <input id='title' name='title' type='text' required/>
+      </div>
+      <div class='form-item'>
+        <label for='description'>Description</label>
+        <input id='description' name='description' type='text'/>
+      </div>
+      <div class='form-item'>
+        <label for='due-date'>Due Date</label>
+        <input id='due-date' name='due-date' type='number' min='1' required/>
+      </div>
+      <div class="custom-select">
+        <!-- <label for='read-status'>Read Status: -->
+          <select id='priority-status' name='priority-status' required>
+            <option value=''>Priority…</option>
+            <option value='Low'>Low</option>
+            <option value='Medium'>Medium</option>
+            <option value='High'>High</option>
+          </select>
+          <span class="custom-arrow"></span>
+        <!-- </label> -->
+      </div>
+      <div>
+        <button class="add-submit"><i class="material-icons">add</i>Add</button>
+      </div>
+    </fieldset>   
+  </form>
+</dialog>
