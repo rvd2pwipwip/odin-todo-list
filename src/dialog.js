@@ -22,14 +22,16 @@ export function createDialog() {
   fieldset.appendChild(legend);
 
   const formItems = [
-    { label: 'Title', id: 'title', type: 'text', required: true },
-    { label: 'Description', id: 'description', type: 'text' },
+    { label: 'Title', id: 'title', type: 'text' },
+    { label: 'Description', id: 'description', type: 'text', 
+      // required: true 
+    },
     {
       label: 'Due Date',
       id: 'due-date',
       type: 'number',
       min: '1',
-      required: true,
+      // required: true,
     },
   ];
 
@@ -57,9 +59,9 @@ export function createDialog() {
   selectDiv.className = 'custom-select';
 
   const select = document.createElement('select');
-  select.id = 'priority-status';
-  select.name = 'priority-status';
-  select.required = true;
+  select.id = 'priority';
+  select.name = 'priority';
+  // select.required = true;
 
   const options = [
     { value: '', text: 'Priority…' },
@@ -82,8 +84,8 @@ export function createDialog() {
 
   const buttonDiv = document.createElement('div');
   const addButton = document.createElement('button');
-  addButton.className = 'add-submit';
-  addButton.innerHTML = '<i class="material-icons">add</i>Add';
+  addButton.id = 'add-submit';
+  addButton.innerHTML = 'Add';
   buttonDiv.appendChild(addButton);
   fieldset.appendChild(buttonDiv);
 

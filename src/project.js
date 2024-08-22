@@ -1,9 +1,5 @@
-import Todo from './todo.js';
-
-let todos = [];
-
 class Project {
-  constructor(projectName, todos) {
+  constructor(projectName, todos=[]) {
     this.projectName = projectName;
     this.todos = todos;
   }
