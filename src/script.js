@@ -13,6 +13,8 @@ document.addEventListener('DOMContentLoaded', function () {
   // Add event listener for the create button to show the dialog
   const createButton = document.getElementById('create-cta');
   createButton.addEventListener('click', () => {
+    const form = document.querySelector('#form');
+    form.reset();
     dialog.showModal();
   });
 
@@ -29,7 +31,8 @@ document.addEventListener('DOMContentLoaded', function () {
     let priority = document.getElementById('priority').value;
 
     if (true) {
-      const newTodo = new Todo(title, description, dueDate, (priority = 'Low'));
+      priority = (!priority) ? 'Low' : priority;
+      const newTodo = new Todo(title, description, dueDate, priority);
       main.todos.push(newTodo);
       console.log(main);
       // drawCardGrid();
