@@ -24,6 +24,20 @@ document.addEventListener('DOMContentLoaded', function () {
     dialog.close();
   });
 
+  // Add event listener to close the dialog when users click outside
+  dialog.addEventListener('click', (event) => {
+    const rect = dialog.getBoundingClientRect();
+    const isInDialog =
+      event.clientX >= rect.left &&
+      event.clientX <= rect.right &&
+      event.clientY >= rect.top &&
+      event.clientY <= rect.bottom;
+
+    if (!isInDialog) {
+      dialog.close();
+    }
+  });
+
   function addTodo() {
     let title = document.getElementById('title').value;
     let description = document.getElementById('description').value;
@@ -31,7 +45,7 @@ document.addEventListener('DOMContentLoaded', function () {
     let priority = document.getElementById('priority').value;
 
     if (true) {
-      priority = (!priority) ? 'Low' : priority;
+      priority = !priority ? 'Low' : priority;
       const newTodo = new Todo(title, description, dueDate, priority);
       main.todos.push(newTodo);
       console.log(main);
