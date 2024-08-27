@@ -54,7 +54,7 @@ document.addEventListener('DOMContentLoaded', function () {
   }
 
   // Add event listener for the add button to push the new todo
-  const addButton = document.getElementById('add-submit');
+  const addButton = document.getElementById('add-submit-cta');
   addButton.addEventListener('click', () => {
     addTodo();
   });

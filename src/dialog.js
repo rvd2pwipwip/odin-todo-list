@@ -1,8 +1,6 @@
 export function createDialog() {
   const dialog = document.createElement('dialog');
-  // dialog.innerHTML = `
-  //   <form action='' method='dialog' id="form"><fieldset><legend>Create Todo<button id='close-btn'>&times;</button></legend><div class='form-item'><label for='title'>Title</label><input id='title' name='title' type='text' required/></div><div class='form-item'><label for='description'>Description</label><input id='description' name='description' type='text'/></div><div class='form-item'><label for='due-date'>Due Date</label><input id='due-date' name='due-date' type='number' min='1' required/></div><div class="custom-select"><select id='priority-status' name='priority-status' required><option value=''>Priority…</option><option value='Low'>Low</option><option value='Medium'>Medium</option><option value='High'>High</option></select><span class="custom-arrow"></span></div><div><button class="add-submit"><i class="material-icons">add</i>Add</button></div></fieldset></form>
-  // `;
+
 
   const form = document.createElement('form');
   form.setAttribute('action', '');
@@ -12,7 +10,7 @@ export function createDialog() {
   const fieldset = document.createElement('fieldset');
 
   const legend = document.createElement('legend');
-  legend.textContent = 'Create Todo';
+  legend.textContent = 'New Todo';
 
   const closeButton = document.createElement('button');
   closeButton.id = 'close-btn';
@@ -21,16 +19,27 @@ export function createDialog() {
 
   fieldset.appendChild(legend);
 
+  // Get today's date
+  const today = new Date();
+  const year = today.getFullYear();
+  const month = String(today.getMonth() + 1).padStart(2, '0'); // Months are zero-based
+  const day = String(today.getDate()).padStart(2, '0');
+
+  // Format the date as YYYY-MM-DD
+  const formattedDate = `${year}-${month}-${day}`;
+
   const formItems = [
     { label: 'Title', id: 'title', type: 'text' },
-    { label: 'Description', id: 'description', type: 'text', 
-      // required: true 
+    {
+      label: 'Description',
+      id: 'description',
+      type: 'textarea',
+      // required: true
     },
     {
       label: 'Due Date',
       id: 'due-date',
-      type: 'number',
-      min: '1',
+      type: 'date',
       // required: true,
     },
   ];
@@ -43,10 +52,18 @@ export function createDialog() {
     label.setAttribute('for', item.id);
     label.textContent = item.label;
 
-    const input = document.createElement('input');
+    let input;
+    if (item.type === 'textarea') {
+      input = document.createElement('textarea');
+      input.rows = 4;
+    } else {
+      input = document.createElement('input');
+      input.type = item.type;
+    }
+
     input.id = item.id;
     input.name = item.id;
-    input.type = item.type;
+
     if (item.required) input.required = true;
     if (item.min) input.min = item.min;
 
@@ -84,8 +101,18 @@ export function createDialog() {
 
   const buttonDiv = document.createElement('div');
   const addButton = document.createElement('button');
-  addButton.id = 'add-submit';
-  addButton.innerHTML = 'Add';
+  addButton.style.width = '100%';
+  addButton.id = 'add-submit-cta';
+
+  // Create the icon element
+  const icon = document.createElement('span');
+  icon.className = 'material-icons-rounded';
+  icon.innerHTML = 'add';
+  // Append the icon to the button first
+  addButton.appendChild(icon);
+  // Add the button text after the icon
+  addButton.innerHTML += 'Add Todo';
+
   buttonDiv.appendChild(addButton);
   fieldset.appendChild(buttonDiv);
 

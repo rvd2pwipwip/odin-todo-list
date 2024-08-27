@@ -52,12 +52,17 @@ table {
   box-sizing: border-box;
 }
 
-body {
-  display: flex;
+html, body {
+  height: 100%;
   flex-direction: column;
-  align-items: center;
-  background: #fafafa;
-  gap: 20px;
+  background: var(--almost-white);
+}
+
+:root {
+  --accent-color: #41c3ff;
+  --almost-white: #fafafa;
+  --side-nav-width: 24vw;
+  --form-padding: 4vw;
 }
 
 /*********************************************************/
@@ -106,14 +111,24 @@ header h1 {
 }
 
 /*********************************************************/
+/* Content */
+/*********************************************************/
+
+.content-wrap {
+  display: flex;
+  width: 100%;
+  height: 100%;
+}
+
+/*********************************************************/
 /* CTA Button */
 /*********************************************************/
 
-#create-cta {
+button[id*="cta"] {
   display: flex;
   justify-content: center;
   align-items: center;
-  background: #41c3ff;
+  background: var(--accent-color);
   color: white;
   padding: 1rem 2rem 1rem 1.5rem;
   border: none;
@@ -121,4 +136,181 @@ header h1 {
   font-size: 1.25rem;
   font-weight: 500;
   gap: 0.625rem;
+}
+
+/*********************************************************/
+/* nav */
+/*********************************************************/
+
+nav {
+  display: flex;
+  background: yellowgreen;
+  flex-direction: column;
+  position: relative;
+  align-items: center;
+  width: var(--side-nav-width);
+  height: 100%;
+}
+
+/*********************************************************/
+/* main */
+/*********************************************************/
+
+main {
+
+}
+
+/*********************************************************/
+/* Dialog Form */
+/*********************************************************/
+
+dialog {
+  margin: auto;
+  box-shadow: 0px 10px 10px rgba(0, 0, 0, 0.2);
+  border-radius: 1rem;
+  width: 30ch;
+  overflow: hidden;
+  animation: show 0.3s ease normal;
+  transition: close 0.3s ease normal;
+}
+
+@keyframes show{
+  from {transform: scale(0);}
+  to {transform: scale(100%);}
+}
+
+@keyframes close {
+  from {transform: scale(100%);}
+  to {transform: scale(0);}
+}
+
+dialog::backdrop {
+  background: rgba(0, 0, 0, 0.1);
+  animation: show-backdrop 300ms ease-in-out;
+}
+
+form {
+  box-sizing: border-box;
+  background: white;
+  padding: 1.5rem;
+}
+
+fieldset {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+legend {
+  position: relative;
+  width: 100%;
+  text-align: center;
+  font-size: larger;
+  font-weight: 600;
+  padding-bottom: 2rem;
+  margin: 0 auto;
+  color: rgba(0, 0, 0, 0.7);
+}
+
+legend button {
+  position: absolute;
+  top: -10px;
+  right: -10px;
+  cursor: pointer;
+  border: none;
+  outline: none;
+  background: none;
+  font-size: 1.25rem;
+  font-weight: 600;
+}
+
+.form-item {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+label {
+  padding-bottom: 4px;
+  text-transform: uppercase;
+  color: rgba(0, 0, 0, 0.7);
+  font-size: 0.6rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+}
+
+input, textarea {
+  box-sizing: border-box;
+  border: 1px solid #E5E7EB;
+  border-radius: 3px;
+  padding: 7px;
+  font-size: 14px;
+}
+
+#description {
+  height: 4rem;
+}
+
+input:focus, textarea:focus {
+  box-shadow: 0px 3px 4px rgba(0, 0, 0, 0.1);
+  outline: 1px solid lightgray;
+}
+
+.custom-select {
+  position: relative;
+}
+
+select {
+  font-size: 0.875rem;
+  padding: 0.5rem 2.5rem 0.5rem 0.5rem;
+  border: 2px solid #C2C2C2;
+  border-radius: 8px;
+  /* appearance: none; */
+  width: 100%;
+}
+
+.custom-arrow {
+  position: absolute;
+  top: 0;
+  right: 0;
+  display: block;
+  background: white;
+  border-top: 2px solid #C2C2C2;
+  border-right: 2px solid #C2C2C2;
+  border-bottom: 2px solid #C2C2C2;
+  border-top-right-radius: 8px;
+  border-bottom-right-radius: 8px;
+  height: 100%;
+  width: 2rem;
+  pointer-events: none;
+}
+
+.custom-arrow::before,
+.custom-arrow::after {
+  --size: 0.33rem;
+  content: '';
+  position: absolute;
+  width: 0;
+  height: 0;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.custom-arrow::before {
+  border-left: var(--size) solid transparent;
+  border-right: var(--size) solid transparent;
+  border-top: var(--size) solid #C2C2C2;
+  top: 65%;
+}
+
+.custom-arrow::after {
+  border-left: var(--size) solid transparent;
+  border-right: var(--size) solid transparent;
+  border-bottom: var(--size) solid #C2C2C2;
+  top: 35%;
+}
+
+select:focus {
+  outline: none;
 }
