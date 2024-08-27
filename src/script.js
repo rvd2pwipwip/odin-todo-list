@@ -1,5 +1,4 @@
-import Task from './task.js';
-import Project from './project';
+import { Task, Project, projectLibrary } from './todoVoodoo.js';
 import './styles.css';
 import { createTaskDialog } from './taskDialog.js';
 
@@ -44,8 +43,18 @@ document.addEventListener('DOMContentLoaded', function () {
     let dueDate = document.getElementById('due-date').value;
     let priority = document.getElementById('priority').value;
 
+    // Get today's date
+    const today = new Date();
+    const year = today.getFullYear();
+    const month = String(today.getMonth() + 1).padStart(2, '0'); // Months are zero-based
+    const day = String(today.getDate()).padStart(2, '0');
+
+    // Format the date as YYYY-MM-DD
+    const formattedDate = `${year}-${month}-${day}`;
+
     if (true) {
       priority = !priority ? 'Low' : priority;
+      dueDate = !dueDate ? formattedDate : dueDate;
       const newTask = new Task(title, description, dueDate, priority);
       main.tasks.push(newTask);
       console.log(main);
