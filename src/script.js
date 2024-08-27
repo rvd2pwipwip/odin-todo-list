@@ -1,14 +1,14 @@
-import Todo from './todo.js';
+import Task from './task.js';
 import Project from './project';
 import './styles.css';
-import { createDialog } from './dialog.js';
+import { createTaskDialog } from './taskDialog.js';
 
 const main = new Project('Today');
 
 document.addEventListener('DOMContentLoaded', function () {
   // Create and insert the dialog content
-  const dialog = createDialog();
-  document.getElementById('dialog-placeholder').appendChild(dialog);
+  const dialog = createTaskDialog();
+  document.getElementById('task-dialog-placeholder').appendChild(dialog);
 
   // Add event listener for the create button to show the dialog
   const createButton = document.getElementById('create-cta');
@@ -46,8 +46,8 @@ document.addEventListener('DOMContentLoaded', function () {
 
     if (true) {
       priority = !priority ? 'Low' : priority;
-      const newTodo = new Todo(title, description, dueDate, priority);
-      main.todos.push(newTodo);
+      const newTask = new Task(title, description, dueDate, priority);
+      main.tasks.push(newTask);
       console.log(main);
       // drawCardGrid();
     }

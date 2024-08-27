@@ -1,7 +1,7 @@
 class Project {
-  constructor(projectName, todos=[]) {
+  constructor(projectName, tasks=[]) {
     this.projectName = projectName;
-    this.todos = todos;
+    this.tasks = tasks;
   }
 }
 

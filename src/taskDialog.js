@@ -1,6 +1,5 @@
-export function createDialog() {
+export function createTaskDialog() {
   const dialog = document.createElement('dialog');
-
 
   const form = document.createElement('form');
   form.setAttribute('action', '');
@@ -10,7 +9,7 @@ export function createDialog() {
   const fieldset = document.createElement('fieldset');
 
   const legend = document.createElement('legend');
-  legend.textContent = 'New Todo';
+  legend.textContent = 'New Task';
 
   const closeButton = document.createElement('button');
   closeButton.id = 'close-btn';
@@ -18,15 +17,6 @@ export function createDialog() {
   legend.appendChild(closeButton);
 
   fieldset.appendChild(legend);
-
-  // Get today's date
-  const today = new Date();
-  const year = today.getFullYear();
-  const month = String(today.getMonth() + 1).padStart(2, '0'); // Months are zero-based
-  const day = String(today.getDate()).padStart(2, '0');
-
-  // Format the date as YYYY-MM-DD
-  const formattedDate = `${year}-${month}-${day}`;
 
   const formItems = [
     { label: 'Title', id: 'title', type: 'text' },
@@ -111,7 +101,7 @@ export function createDialog() {
   // Append the icon to the button first
   addButton.appendChild(icon);
   // Add the button text after the icon
-  addButton.innerHTML += 'Add Todo';
+  addButton.innerHTML += 'Add Task';
 
   buttonDiv.appendChild(addButton);
   fieldset.appendChild(buttonDiv);
