@@ -2,7 +2,7 @@ import { Task, Project, projectLibrary } from './todoVoodoo.js';
 import './styles.css';
 import { createTaskDialog } from './taskDialog.js';
 
-const main = new Project('Today');
+const allTasks = new Project('All Tasks');
 
 document.addEventListener('DOMContentLoaded', function () {
   // Create and insert the dialog content
@@ -37,7 +37,7 @@ document.addEventListener('DOMContentLoaded', function () {
     }
   });
 
-  function addTodo() {
+  function addTask() {
     let title = document.getElementById('title').value;
     let description = document.getElementById('description').value;
     let dueDate = document.getElementById('due-date').value;
@@ -56,8 +56,8 @@ document.addEventListener('DOMContentLoaded', function () {
       priority = !priority ? 'Low' : priority;
       dueDate = !dueDate ? formattedDate : dueDate;
       const newTask = new Task(title, description, dueDate, priority);
-      main.tasks.push(newTask);
-      console.log(main);
+      allTasks.tasks.push(newTask);
+      console.log(allTasks);
       // drawCardGrid();
     }
   }
@@ -65,6 +65,6 @@ document.addEventListener('DOMContentLoaded', function () {
   // Add event listener for the add button to push the new todo
   const addButton = document.getElementById('add-submit-cta');
   addButton.addEventListener('click', () => {
-    addTodo();
+    addTask();
   });
 });
