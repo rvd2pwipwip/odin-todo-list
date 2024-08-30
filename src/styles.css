@@ -55,12 +55,15 @@ table {
 html, body {
   height: 100%;
   flex-direction: column;
-  background: var(--almost-white);
+  background: var(--bckg);
+  color: var(--onBckg);
 }
 
 :root {
-  --accent-color: #41c3ff;
-  --almost-white: #fafafa;
+  --accent-color: #0070E0;
+  --bckg: #fafafa;
+  --bckg2: #e8e8e8;
+  --onBckg: #191919;
   --side-nav-width: 24vw;
   --form-padding: 4vw;
 }
@@ -111,6 +114,37 @@ header h1 {
 }
 
 /*********************************************************/
+/* Projects Nav*/
+/*********************************************************/
+
+nav {
+  display: flex;
+  background: var(--bckg2);
+  flex-direction: column;
+  position: relative;
+  width: var(--side-nav-width);
+  height: 100%;
+  padding: 1rem;
+}
+
+nav button {
+  display: flex;
+  align-items: center;
+  background: none;
+  padding: 1rem 2rem 1rem 2rem;
+  border: none;
+  font-size: 1.25rem;
+  font-weight: 500;
+  gap: 0.625rem;
+  border-radius: 0.5rem;
+}
+
+nav button[aria-selected="true"] {
+	color: var(--accent-color);
+  background: rgba(0, 0, 0, 0.05);
+}
+
+/*********************************************************/
 /* Content */
 /*********************************************************/
 
@@ -136,20 +170,6 @@ button[id*="cta"] {
   font-size: 1.25rem;
   font-weight: 500;
   gap: 0.625rem;
-}
-
-/*********************************************************/
-/* nav */
-/*********************************************************/
-
-nav {
-  display: flex;
-  background: yellowgreen;
-  flex-direction: column;
-  position: relative;
-  align-items: center;
-  width: var(--side-nav-width);
-  height: 100%;
 }
 
 /*********************************************************/

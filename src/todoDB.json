@@ -1,0 +1,30 @@
+{
+  "projects": [
+    {
+      "projectName": "All tasks",
+      "tasks": [
+        {
+          "title": "Task 1",
+          "description": "Description for Task 1",
+          "dueDate": "2024-08-30",
+          "priority": "Low",
+          "done": false
+        },
+        {
+          "title": "Task 2",
+          "description": "Description for Task 2",
+          "dueDate": "2024-08-30",
+          "priority": "Low",
+          "done": false
+        },
+        {
+          "title": "Task 3",
+          "description": "Description for Task 3",
+          "dueDate": "2024-08-30",
+          "priority": "Low",
+          "done": false
+        }
+      ]
+    }
+  ]
+}

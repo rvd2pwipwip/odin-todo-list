@@ -7,12 +7,16 @@
   <body>
     <header>Todo Voodoo</header>
     <div class="content-wrap">
-      <nav>
+      <nav role="tablist" aria-label="Main Menu">
+        <button id="all-btn" role="tab" aria-selected="true"><i class="material-icons-rounded">inbox</i>All tasks</button>
+        <button id="today-btn" role="tab" aria-selected="false"><i class="material-icons-rounded">today</i>Today</button>
+        <button id="week-btn" role="tab" aria-selected="false"><i class="material-icons-rounded">date_range</i>7 Days</button>
         <h1>Projects</h1>
       </nav>
       <main>
         <h1>Project Name</h1>
         <button id="create-cta"><i class="material-icons-rounded">add</i>Add Task</button>
+        <section id="tasklist"></section>
       </main>
     </div>
     <div id="task-dialog-placeholder"></div>

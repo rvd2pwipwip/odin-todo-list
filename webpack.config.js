@@ -11,6 +11,10 @@ module.exports = {
   },
   devtool: "eval-source-map",
   devServer: {
+    // serve static json file
+    static: {
+      directory: path.join(__dirname, 'src'),
+    },
     watchFiles: ["./src/index.html"],
   },
   plugins: [

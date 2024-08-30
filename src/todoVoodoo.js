@@ -20,6 +20,9 @@ class Project {
     this.projectName = projectName;
     this.tasks = tasks;
   }
+  addTask(task) {
+    this.tasks.push(task);
+  }
 }
 
 // Create a projectLibrary to store all projects

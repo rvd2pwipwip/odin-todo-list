@@ -1,8 +1,80 @@
-import { Task, Project, projectLibrary } from './todoVoodoo.js';
 import './styles.css';
+import { Task, Project, projectLibrary } from './todoVoodoo.js';
 import { createTaskDialog } from './taskDialog.js';
+import drawTasklist from './tasklist.js';
 
 const allTasks = new Project('All Tasks');
+const today = new Project('Today');
+const week = new Project('7 days');
+
+projectLibrary.push(...[allTasks, today, week]);
+
+// Fetch and populate tasks from JSON
+async function fetchAndPopulateTasks() {
+  try {
+    const response = await fetch('todoDB.json');
+    if (!response.ok) {
+      throw new Error('Network response was not ok ' + response.statusText);
+    }
+    const data = await response.json();
+    console.log('Fetched data:', data);
+
+    // Populate 'All Tasks' default project
+    const allTasksProject = data.projects.find(project => project.projectName === 'All tasks');
+    if (allTasksProject) {
+      allTasksProject.tasks.forEach(taskData => {
+        const task = new Task(
+          taskData.title,
+          taskData.description,
+          new Date(taskData.dueDate),
+          taskData.priority,
+          taskData.done
+        );
+        allTasks.addTask(task);
+      });
+    }
+
+    // Log the tasks to confirm
+    console.log('All Tasks Project:', allTasks);
+  } catch (error) {
+    console.error('Failed to fetch and populate tasks:', error);
+  }
+}
+
+// Call the function to fetch and populate tasks
+fetchAndPopulateTasks();
+
+
+const tabs = Array.from(document.querySelectorAll('nav [role="tab"]'));
+
+tabs.forEach((t) => {
+  t.addEventListener('click', (e) => {
+    if (e.target.getAttribute('aria-selected') == 'false') {
+      tabs.forEach((t) => {
+        t.setAttribute('aria-selected', false);
+      });
+      e.target.setAttribute('aria-selected', 'true');
+      switch (e.target.getAttribute('id')) {
+        case 'all-btn':
+          // home();
+          console.log('clicked all tasks');
+          break;
+        case 'today-btn':
+          // menu();
+          console.log('clicked today');
+          break;
+        case 'week-btn':
+          // about();
+          console.log('clicked 7 days');
+          break;
+        default:
+          break;
+      }
+    }
+  });
+});
+
+// Dialog
 
 document.addEventListener('DOMContentLoaded', function () {
   // Create and insert the dialog content
@@ -57,7 +129,7 @@ document.addEventListener('DOMContentLoaded', function () {
       dueDate = !dueDate ? formattedDate : dueDate;
       const newTask = new Task(title, description, dueDate, priority);
       allTasks.tasks.push(newTask);
-      console.log(allTasks);
+      console.log(projectLibrary);
       // drawCardGrid();
     }
   }
