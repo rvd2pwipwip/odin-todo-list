@@ -1,6 +1,9 @@
 import './styles.css';
 
 const drawTasklist = (project) => {
+  const header = document.getElementById('main-header');
+  header.innerText = project.projectName;
+
   const tasklist = document.getElementById('tasklist');
   tasklist.innerHTML = '';
 
@@ -12,7 +15,8 @@ const drawTasklist = (project) => {
     title.className = 'title';
     title.textContent = task.title;
 
-    const done = document.createElement('p');
+    const done = document.createElement('input');
+    done.setAttribute('type', 'checkbox');
     done.className = 'done';
     done.textContent = task.done;
 

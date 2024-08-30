@@ -6,6 +6,7 @@ import drawTasklist from './tasklist.js';
 const allTasks = new Project('All Tasks');
 const today = new Project('Today');
 const week = new Project('7 days');
+const currentProject = allTasks;
 
 projectLibrary.push(...[allTasks, today, week]);
 
@@ -28,7 +29,7 @@ async function fetchAndPopulateTasks() {
         const task = new Task(
           taskData.title,
           taskData.description,
-          new Date(taskData.dueDate),
+          taskData.dueDate,
           taskData.priority,
           taskData.done
         );
@@ -134,8 +135,7 @@ document.addEventListener('DOMContentLoaded', function () {
       const newTask = new Task(title, description, dueDate, priority);
       allTasks.tasks.push(newTask);
       console.log(projectLibrary);
-      // TODO: redraw tasklist with new task item
-      // drawCardGrid();
+      drawTasklist(currentProject);
     }
   }
 
