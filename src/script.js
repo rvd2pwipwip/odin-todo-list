@@ -20,9 +20,11 @@ async function fetchAndPopulateTasks() {
     console.log('Fetched data:', data);
 
     // Populate 'All Tasks' default project
-    const allTasksProject = data.projects.find(project => project.projectName === 'All tasks');
+    const allTasksProject = data.projects.find(
+      (project) => project.projectName === 'All tasks'
+    );
     if (allTasksProject) {
-      allTasksProject.tasks.forEach(taskData => {
+      allTasksProject.tasks.forEach((taskData) => {
         const task = new Task(
           taskData.title,
           taskData.description,
@@ -36,6 +38,8 @@ async function fetchAndPopulateTasks() {
 
     // Log the tasks to confirm
     console.log('All Tasks Project:', allTasks);
+    // display tasklist
+    drawTasklist(allTasks);
   } catch (error) {
     console.error('Failed to fetch and populate tasks:', error);
   }
@@ -43,7 +47,6 @@ async function fetchAndPopulateTasks() {
 
 // Call the function to fetch and populate tasks
 fetchAndPopulateTasks();
-
 
 const tabs = Array.from(document.querySelectorAll('nav [role="tab"]'));
 
@@ -124,12 +127,14 @@ document.addEventListener('DOMContentLoaded', function () {
     // Format the date as YYYY-MM-DD
     const formattedDate = `${year}-${month}-${day}`;
 
+    // TODO: check for mandatory task parameters (name)
     if (true) {
       priority = !priority ? 'Low' : priority;
       dueDate = !dueDate ? formattedDate : dueDate;
       const newTask = new Task(title, description, dueDate, priority);
       allTasks.tasks.push(newTask);
       console.log(projectLibrary);
+      // TODO: redraw tasklist with new task item
       // drawCardGrid();
     }
   }
