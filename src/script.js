@@ -39,12 +39,13 @@ async function fetchAndPopulateTasks() {
     });
 
     // Display the 'All tasks' project by default
-    currentProject = projectLibrary.find(
-      (project) => project.projectName === 'All tasks'
-    );
-    if (currentProject) {
-      drawTasklist(currentProject);
-    }
+    // currentProject = projectLibrary.find(
+    //   (project) => project.projectName === 'All tasks'
+    // );
+    // if (currentProject) {
+    //   drawTasklist(currentProject);
+    // }
+    drawTasklist(projectLibrary);
   } catch (error) {
     console.error('Failed to fetch and populate tasks:', error);
   }
@@ -82,47 +83,14 @@ tabs.forEach((t) => {
       );
       if (selectedProject) {
         console.log('Selected Project:', selectedProject);
-        drawTasklist(selectedProject);
+        drawTasklist(projectLibrary, selectedProject);
       } else {
+        drawTasklist(projectLibrary);
         console.log('Project not found:', currentProject);
       }
     }
   });
 });
-
-// tabs.forEach((t) => {
-//   t.addEventListener('click', (e) => {
-//     // Check if the clicked element is the button or its child
-//     const targetButton = e.target.closest('button[role="tab"]');
-//     if (targetButton && targetButton.getAttribute('aria-selected') == 'false') {
-//       tabs.forEach((t) => {
-//         t.setAttribute('aria-selected', false);
-//       });
-
-//       targetButton.setAttribute('aria-selected', 'true');
-//       currentProject = targetButton.textContent.trim(); // Use textContent to get the button's text
-//       console.log(currentProject);
-
-//       // Find the project by name and draw the task list
-//       const selectedProject = projectLibrary.find(
-//         (project) => project.projectName === currentProject
-//       );
-//       if (selectedProject) {
-//         drawTasklist(selectedProject);
-//       }
-//     }
-//   });
-// });
-
-// 
-// 
-// 
-// 
-// 
-// 
-// 
-// 
-// 
 
 // Dialog
 
