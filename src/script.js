@@ -5,50 +5,67 @@ import drawTasklist from './tasklist.js';
 
 let currentProject;
 
-// Function to fetch and populate tasks from JSON
+// Function to save projects to LocalStorage
+function saveProjectsToLocalStorage() {
+  const projectsData = projectLibrary.map(project => ({
+    projectName: project.projectName,
+    tasks: project.tasks.map(task => ({
+      title: task.title,
+      description: task.description,
+      dueDate: task.dueDate,
+      priority: task.priority,
+      done: task.done
+    }))
+  }));
+  localStorage.setItem('projects', JSON.stringify(projectsData));
+}
+
+// Function to load projects from LocalStorage
+function loadProjectsFromLocalStorage() {
+  const projectsData = localStorage.getItem('projects');
+  if (projectsData) {
+    return JSON.parse(projectsData);
+  }
+  return null;
+}
+
+// Function to fetch and populate tasks from JSON or LocalStorage
 async function fetchAndPopulateTasks() {
   try {
-    const response = await fetch('todoDB.json');
-    if (!response.ok) {
-      throw new Error('Network response was not ok ' + response.statusText);
+    const storedProjects = loadProjectsFromLocalStorage();
+    if (storedProjects) {
+      populateProjectLibrary(storedProjects);
+    } else {
+      const response = await fetch('todoDB.json');
+      if (!response.ok) {
+        throw new Error('Network response was not ok ' + response.statusText);
+      }
+      const data = await response.json();
+      populateProjectLibrary(data.projects);
+      saveProjectsToLocalStorage(); // Save fetched data to LocalStorage
     }
-    const data = await response.json();
-    console.log('Fetched data:', data);
-
-    // Iterate over each project in the JSON data
-    data.projects.forEach((projectData) => {
-      const project = new Project(projectData.projectName);
-
-      // Populate the project with tasks
-      projectData.tasks.forEach((taskData) => {
-        const task = new Task(
-          taskData.title,
-          taskData.description,
-          taskData.dueDate,
-          taskData.priority,
-          taskData.done
-        );
-        project.addTask(task);
-      });
-
-      // Push the created project into the projectLibrary
-      projectLibrary.push(project);
-
-      // Log the project to confirm
-      console.log(`Project: ${project.projectName}`, project);
-    });
-
-    // Display the 'All tasks' project by default
-    // currentProject = projectLibrary.find(
-    //   (project) => project.projectName === 'All tasks'
-    // );
-    // if (currentProject) {
-    //   drawTasklist(currentProject);
-    // }
     drawTasklist(projectLibrary);
   } catch (error) {
     console.error('Failed to fetch and populate tasks:', error);
   }
+}
+
+// Function to populate the project library
+function populateProjectLibrary(projectsData) {
+  projectsData.forEach((projectData) => {
+    const project = new Project(projectData.projectName);
+    projectData.tasks.forEach((taskData) => {
+      const task = new Task(
+        taskData.title,
+        taskData.description,
+        taskData.dueDate,
+        taskData.priority,
+        taskData.done
+      );
+      project.addTask(task);
+    });
+    projectLibrary.push(project);
+  });
 }
 
 fetchAndPopulateTasks();
