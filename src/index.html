@@ -5,13 +5,18 @@
     <title>Todo List</title>
   </head>
   <body>
-    <header>Todo Voodoo</header>
+    <header id="app-header">Todo Voodoo</header>
     <div class="content">
       <nav role="tablist" aria-label="Main Menu">
-        <button id="all-btn" role="tab" aria-selected="true"><i class="material-icons-rounded">inbox</i>All tasks</button>
-        <button id="today-btn" role="tab" aria-selected="false"><i class="material-icons-rounded">today</i>Today</button>
-        <button id="week-btn" role="tab" aria-selected="false"><i class="material-icons-rounded">date_range</i>7 days</button>
-        <h1>Projects</h1>
+        <section>
+          <button id="all-btn" role="tab" aria-selected="true"><i class="material-icons-rounded">inbox</i>All tasks</button>
+          <button id="today-btn" role="tab" aria-selected="false"><i class="material-icons-rounded">today</i>Today</button>
+          <button id="week-btn" role="tab" aria-selected="false"><i class="material-icons-rounded">date_range</i>7 days</button>
+        </section>
+        
+        <section>
+          <header id="menu-header"><h1>Projects</h1><button id="add-project"><span class="material-icons-rounded">add</span></button></header>
+        </section>
       </nav>
       <main>
         <h1 id="main-header">Project Name</h1>

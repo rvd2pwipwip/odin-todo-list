@@ -74,16 +74,16 @@ html, body {
 
 @font-face {
   font-family: 'Material Icons Rounded';
-  font-weight: bold;
+  /* font-weight: bold; */
   font-style: normal;
   src:  url('./MaterialIconsRound-Regular.otf') format('opentype');
 }
 
 .material-icons-rounded {
   font-family: 'Material Icons Rounded';
-  font-weight: normal;
+  /* font-weight: normal; */
   font-style: normal;
-  font-size: 24px;  /* Preferred icon size */
+  font-size: 2rem;  /* Preferred icon size */
   display: inline-block;
   line-height: 1;
   text-transform: none;
@@ -97,19 +97,17 @@ html, body {
 /* Header */
 /*********************************************************/
 
-header {
+#app-header {
   display: flex;
   justify-content: center;
   align-items: center;
   width: 100%;
   height: fit-content;
   padding: 30px 0;
-  background: white;
-}
-
-header h1 {
+  background: black;
+  color: white;
   font-family: Georgia;
-  font-size: 4rem;
+  font-size: 2rem;
   font-weight: 700;
 }
 
@@ -139,6 +137,7 @@ nav {
 nav button {
   display: flex;
   align-items: center;
+  width: 100%;
   background: none;
   padding: 1rem 2rem 1rem 2rem;
   border: none;
@@ -151,6 +150,25 @@ nav button {
 nav button[aria-selected="true"] {
 	color: var(--accent-color);
   background: rgba(0, 0, 0, 0.05);
+}
+
+#menu-header {
+  display:flex;
+  align-items: center;
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin-top: 1rem; 
+}
+
+#menu-header h1 {
+  flex: 1;
+}
+
+#add-project {
+  width: auto;
+  padding: 0;
+  font-weight: 900;
+  color: rgba(0, 0, 0, 0.3)
 }
 
 /*********************************************************/
