@@ -26,5 +26,12 @@ class Project {
 }
 
 // Create a projectLibrary to store all projects
-const projectLibrary = [];
-export { Task, Project, projectLibrary };
+class ProjectLibrary {
+  constructor(projects = []) {
+    this.projects = projects;
+  }
+  addProject(project) {
+    this.projects.push(project);
+  }
+}
+export { Task, Project, ProjectLibrary };

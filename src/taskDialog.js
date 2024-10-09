@@ -1,4 +1,14 @@
-export function createTaskDialog() {
+import { Task, Project, ProjectLibrary } from './todoVoodoo.js';
+import { currentProject, currentLibrary } from './script.js';
+import drawTasklist from './tasklist.js';
+
+
+export function addTaskDialog() {
+  console.log(`will add task to ${currentProject}`);
+  const selectedProject = currentLibrary.projects.find(
+    (project) => project.projectName === currentProject
+  );
+  console.log(selectedProject);
   const dialog = document.createElement('dialog');
 
   const form = document.createElement('form');
@@ -108,6 +118,72 @@ export function createTaskDialog() {
 
   form.appendChild(fieldset);
   dialog.appendChild(form);
+
+  // Add event listener for the close button to close the dialog
+  closeButton.addEventListener('click', () => {
+    dialog.close();
+  });
+
+  // Add event listener to close the dialog when users click outside
+  dialog.addEventListener('click', (event) => {
+    const rect = dialog.getBoundingClientRect();
+    const isInDialog =
+      event.clientX >= rect.left &&
+      event.clientX <= rect.right &&
+      event.clientY >= rect.top &&
+      event.clientY <= rect.bottom;
+
+    if (!isInDialog) {
+      // TODO remove dialog from html on close
+      dialog.close();
+    }
+  });
+
+  function addTask() {
+    let title = document.getElementById('title').value;
+    let description = document.getElementById('description').value;
+    let dueDate = document.getElementById('due-date').value;
+    let priority = document.getElementById('priority').value;
+
+    // Get today's date
+    const today = new Date();
+    const year = today.getFullYear();
+    const month = String(today.getMonth() + 1).padStart(2, '0'); // Months are zero-based
+    const day = String(today.getDate()).padStart(2, '0');
+
+    // Format the date as YYYY-MM-DD
+    const formattedDate = `${year}-${month}-${day}`;
+
+    // TODO: check for mandatory task parameters (name)
+    if (true) {
+      priority = !priority ? 'Low' : priority;
+      dueDate = !dueDate ? formattedDate : dueDate;
+      const newTask = new Task(title, description, dueDate, priority);
+
+      if (!selectedProject || !selectedProject.tasks) {
+        console.error(
+          'No current project selected or tasks array is undefined'
+        );
+        return;
+      }
+
+      // Add the new task to the current project
+      selectedProject.tasks.push(newTask);
+
+      // Update localStorage
+      const updatedData = { projects: currentLibrary };
+      localStorage.setItem('projects', JSON.stringify(updatedData));
+
+      // allTasks.tasks.push(newTask);
+      console.log(currentLibrary);
+      drawTasklist(currentLibrary, currentProject);
+    }
+  }
+
+  // Add event listener for the add button to push the new todo
+  addButton.addEventListener('click', () => {
+    addTask();
+  });
 
   return dialog;
 }

@@ -6,13 +6,14 @@ const drawTasklist = (projectLibrary, project = null) => {
   tasklist.innerHTML = '';
 
   if (project) {
+    console.log(project);
     header.innerText = project.projectName;
     project.tasks.forEach((task) => {
       createTaskCard(task, tasklist);
     });
   } else {
     header.innerText = 'All tasks';
-    projectLibrary.forEach((project) => {
+    projectLibrary.projects.forEach((project) => {
       project.tasks.forEach((task) => {
         createTaskCard(task, tasklist);
       });
