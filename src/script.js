@@ -132,6 +132,7 @@ const addTaskButton = document.getElementById('create-cta');
 
 addTaskButton.addEventListener('click', () => {
   const taskDialog = addTaskDialog(currentProject);
+  console.log(`Button clicked while current project is: ${currentProject.projectName}`);
   document.getElementById('dialog-placeholder').appendChild(taskDialog);
   const form = document.querySelector('#form');
   form.reset();

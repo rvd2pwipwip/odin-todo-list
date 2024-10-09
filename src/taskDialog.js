@@ -2,13 +2,21 @@ import { Task } from './todoVoodoo.js';
 import { currentLibrary } from './script.js';
 import drawTasklist from './tasklist.js';
 
-
 export function addTaskDialog(currentProject) {
-  console.log(`will add task to ${currentProject}`);
+  console.log(`will add task to ${currentProject.projectName}`);
+
+  // Remove existing dialog if it exists
+  const existingDialog = document.querySelector('dialog');
+  if (existingDialog) {
+    existingDialog.remove();
+  }
+
   const dialog = document.createElement('dialog');
 
   const form = document.createElement('form');
-  form.setAttribute('action', '');
+  form.addEventListener('submit', (event) => {
+    event.preventDefault(); // Prevent default form submission
+  });
   form.setAttribute('method', 'dialog');
   form.id = 'form';
 
@@ -97,6 +105,7 @@ export function addTaskDialog(currentProject) {
 
   const buttonDiv = document.createElement('div');
   const addButton = document.createElement('button');
+  addButton.type = 'button'; // Ensure addButton is of type button
   addButton.style.width = '100%';
   addButton.id = 'add-submit-cta';
 
@@ -118,6 +127,7 @@ export function addTaskDialog(currentProject) {
   // Add event listener for the close button to close the dialog
   closeButton.addEventListener('click', () => {
     dialog.close();
+    dialog.remove();
   });
 
   // Add event listener to close the dialog when users click outside
@@ -130,8 +140,8 @@ export function addTaskDialog(currentProject) {
       event.clientY <= rect.bottom;
 
     if (!isInDialog) {
-      // TODO remove dialog from html on close
       dialog.close();
+      dialog.remove();
     }
   });
 
@@ -150,29 +160,38 @@ export function addTaskDialog(currentProject) {
     // Format the date as YYYY-MM-DD
     const formattedDate = `${year}-${month}-${day}`;
 
-    // TODO: check for mandatory task parameters (name)
-    if (true) {
+    // check for mandatory task parameters (title)
+    if (title) {
       priority = !priority ? 'Low' : priority;
+      console.log('Creating task with title:', title);
       dueDate = !dueDate ? formattedDate : dueDate;
       const newTask = new Task(title, description, dueDate, priority);
 
       // Add the new task to the current project
       currentProject.tasks.push(newTask);
 
+      // Reset input fields
+      document.getElementById('title').value = '';
+      document.getElementById('description').value = '';
+      document.getElementById('due-date').value = '';
+      document.getElementById('priority').value = '';
+
       // Update localStorage
       const updatedData = { projects: currentLibrary };
       localStorage.setItem('projects', JSON.stringify(updatedData));
 
-      // allTasks.tasks.push(newTask);
-      console.log(currentLibrary);
       drawTasklist(currentLibrary, currentProject);
+      dialog.close();
+    } else {
+      console.error('Task title is required');
     }
   }
 
   // Add event listener for the add button to push the new todo
-  addButton.addEventListener('click', () => {
-    addTask();
-  });
+  addButton.addEventListener('click', addTask);
+  // addButton.addEventListener('click', () => {
+  //   addTask();
+  // });
 
   return dialog;
 }
