@@ -1,14 +1,10 @@
-import { Task, Project, ProjectLibrary } from './todoVoodoo.js';
-import { currentProject, currentLibrary } from './script.js';
+import { Task } from './todoVoodoo.js';
+import { currentLibrary } from './script.js';
 import drawTasklist from './tasklist.js';
 
 
-export function addTaskDialog() {
+export function addTaskDialog(currentProject) {
   console.log(`will add task to ${currentProject}`);
-  const selectedProject = currentLibrary.projects.find(
-    (project) => project.projectName === currentProject
-  );
-  console.log(selectedProject);
   const dialog = document.createElement('dialog');
 
   const form = document.createElement('form');
@@ -160,15 +156,8 @@ export function addTaskDialog() {
       dueDate = !dueDate ? formattedDate : dueDate;
       const newTask = new Task(title, description, dueDate, priority);
 
-      if (!selectedProject || !selectedProject.tasks) {
-        console.error(
-          'No current project selected or tasks array is undefined'
-        );
-        return;
-      }
-
       // Add the new task to the current project
-      selectedProject.tasks.push(newTask);
+      currentProject.tasks.push(newTask);
 
       // Update localStorage
       const updatedData = { projects: currentLibrary };

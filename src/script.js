@@ -93,19 +93,19 @@ tabs.forEach((t) => {
       }
 
       // Get the inner text of the cloned button
-      currentProject = buttonClone.textContent.trim();
-      console.log('Current Project:', currentProject);
+      let filteredProject = buttonClone.textContent.trim();
+      console.log('Filtered Project:', filteredProject);
 
       // Find the project by name and draw the task list
-      const selectedProject = currentLibrary.projects.find(
-        (project) => project.projectName === currentProject
+      currentProject = currentLibrary.projects.find(
+        (project) => project.projectName === filteredProject
       );
       if (currentProject) {
-        console.log('Selected Project:', selectedProject);
-        drawTasklist(currentLibrary, selectedProject);
+        console.log('Current Project:', currentProject);
+        drawTasklist(currentLibrary, currentProject);
       } else {
         drawTasklist(currentLibrary);
-        console.log('Project not found:', currentProject);
+        console.log('Project not found:', filteredProject);
       }
     }
   });
@@ -131,7 +131,7 @@ addProject.addEventListener('click', () => {
 const addTaskButton = document.getElementById('create-cta');
 
 addTaskButton.addEventListener('click', () => {
-  const taskDialog = addTaskDialog();
+  const taskDialog = addTaskDialog(currentProject);
   document.getElementById('dialog-placeholder').appendChild(taskDialog);
   const form = document.querySelector('#form');
   form.reset();
