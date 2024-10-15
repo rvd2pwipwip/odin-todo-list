@@ -3,7 +3,7 @@ import { currentLibrary } from './script.js';
 import drawTasklist from './tasklist.js';
 
 export function addTaskDialog(currentProject) {
-  console.log(`will add task to ${currentProject.projectName}`);
+  // console.log(`will add task to ${currentProject.projectName}`);
 
   // Remove existing dialog if it exists
   const existingDialog = document.querySelector('dialog');
@@ -168,7 +168,15 @@ export function addTaskDialog(currentProject) {
       const newTask = new Task(title, description, dueDate, priority);
 
       // Add the new task to the current project
-      currentProject.tasks.push(newTask);
+      if (currentProject) {
+        currentProject.tasks.push(newTask);
+      } else {
+        // Find the "Unassigned" project
+        let unassignedProject = currentLibrary.projects.find(
+          (project) => project.projectName === 'Unassigned'
+        );
+        unassignedProject.tasks.push(newTask);
+      }
 
       // Reset input fields
       document.getElementById('title').value = '';

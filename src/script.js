@@ -9,15 +9,15 @@ export let currentLibrary = new ProjectLibrary();
 
 // Function to save projects to LocalStorage
 function saveProjectsToLocalStorage() {
-  const projectsData = currentLibrary.projects.map(project => ({
+  const projectsData = currentLibrary.projects.map((project) => ({
     projectName: project.projectName,
-    tasks: project.tasks.map(task => ({
+    tasks: project.tasks.map((task) => ({
       title: task.title,
       description: task.description,
       dueDate: task.dueDate,
       priority: task.priority,
-      done: task.done
-    }))
+      done: task.done,
+    })),
   }));
   localStorage.setItem('projects', JSON.stringify(projectsData));
 }
@@ -113,7 +113,6 @@ tabs.forEach((t) => {
 
 console.log(currentLibrary);
 
-
 // Add Project Dialog
 const addProject = document.getElementById('add-project');
 
@@ -128,12 +127,43 @@ addProject.addEventListener('click', () => {
 
 // Add Task Dialog
 // Add event listener for the create button to show the dialog
-const addTaskButton = document.getElementById('create-cta');
+// const addTaskButton = document.getElementById('create-cta');
 
+// addTaskButton.addEventListener('click', () => {
+//   const taskDialog = addTaskDialog(currentProject);
+//   console.log(
+//     `Button clicked while current project is: ${currentProject.projectName}`
+//   );
+//   document.getElementById('dialog-placeholder').appendChild(taskDialog);
+//   const form = document.querySelector('#form');
+//   form.reset();
+//   taskDialog.showModal();
+// });
+
+// Add Task Dialog
+// Add event listener for the create button to show the dialog
+const addTaskButton = document.getElementById('create-cta');
+let taskDialog;
 addTaskButton.addEventListener('click', () => {
-  const taskDialog = addTaskDialog(currentProject);
-  console.log(`Button clicked while current project is: ${currentProject.projectName}`);
-  document.getElementById('dialog-placeholder').appendChild(taskDialog);
+  // Check if a project is currently selected
+  if (currentProject) {
+    taskDialog = addTaskDialog(currentProject);
+    console.log(
+      `Button clicked while current project is: ${currentProject.projectName}`
+    );
+    document.getElementById('dialog-placeholder').appendChild(taskDialog);
+  } else {
+    // Handle the case where no project is selected
+    taskDialog = addTaskDialog(undefined); // Pass null or undefined
+    console.log('Button clicked with no current project selected');
+    document.getElementById('dialog-placeholder').appendChild(taskDialog);
+
+    // Add task to a general list or "unassigned" project
+    const unassignedProject = currentLibrary.projects.find(
+      (project) => project.projectName === 'Unassigned'
+    );
+  }
+
   const form = document.querySelector('#form');
   form.reset();
   taskDialog.showModal();
