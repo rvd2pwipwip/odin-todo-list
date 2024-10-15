@@ -117,28 +117,13 @@ console.log(currentLibrary);
 const addProject = document.getElementById('add-project');
 
 addProject.addEventListener('click', () => {
-  const projectDialog = addProjectDialog(currentLibrary);
+  const projectDialog = addProjectDialog();
   document.getElementById('dialog-placeholder').appendChild(projectDialog);
   const form = document.querySelector('#form');
   form.reset();
   projectDialog.showModal();
   console.log('project added');
 });
-
-// Add Task Dialog
-// Add event listener for the create button to show the dialog
-// const addTaskButton = document.getElementById('create-cta');
-
-// addTaskButton.addEventListener('click', () => {
-//   const taskDialog = addTaskDialog(currentProject);
-//   console.log(
-//     `Button clicked while current project is: ${currentProject.projectName}`
-//   );
-//   document.getElementById('dialog-placeholder').appendChild(taskDialog);
-//   const form = document.querySelector('#form');
-//   form.reset();
-//   taskDialog.showModal();
-// });
 
 // Add Task Dialog
 // Add event listener for the create button to show the dialog

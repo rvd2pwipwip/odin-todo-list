@@ -1,5 +1,8 @@
-export function addProjectDialog(library) {
-  console.log(`will add project to ${library}`);
+import { currentLibrary } from './script';
+import { Project } from './todoVoodoo.js';
+
+export function addProjectDialog() {
+  console.log(`will add project to library`);
   const dialog = document.createElement('dialog');
 
   const form = document.createElement('form');
@@ -36,9 +39,10 @@ export function addProjectDialog(library) {
 
     input.id = item.id;
     input.name = item.id;
+    input.required = true;
 
-    if (item.required) input.required = true;
-    if (item.min) input.min = item.min;
+    // if (item.required) input.required = true;
+    // if (item.min) input.min = item.min;
 
     div.appendChild(label);
     div.appendChild(input);
@@ -65,5 +69,43 @@ export function addProjectDialog(library) {
   form.appendChild(fieldset);
   dialog.appendChild(form);
 
+  // Add event listener to the add button
+  addButton.addEventListener('click', (event) => {
+    event.preventDefault(); // Prevent the default form submission
+
+    const projectNameInput = form.querySelector('#name');
+    const projectName = projectNameInput.value.trim();
+
+    if (projectName) {
+      const newProject = new Project(projectName);
+      currentLibrary.projects.push(newProject);
+
+      // Save the updated projects to localStorage
+      saveProjectsToLocalStorage();
+
+      console.log(`Project "${projectName}" added to library.`);
+      dialog.close(); // Close the dialog after adding the project
+      dialog.remove();
+    } else {
+      console.log('Project name is required.');
+    }
+  });
+
   return dialog;
+}
+
+// Function to save projects to LocalStorage
+function saveProjectsToLocalStorage() {
+  const projectsData = currentLibrary.projects.map((project) => ({
+    projectName: project.projectName,
+    tasks: project.tasks.map((task) => ({
+      title: task.title,
+      description: task.description,
+      dueDate: task.dueDate,
+      priority: task.priority,
+      done: task.done,
+    })),
+  }));
+
+  localStorage.setItem('projects', JSON.stringify(projectsData));
 }
