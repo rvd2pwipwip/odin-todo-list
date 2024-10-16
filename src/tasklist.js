@@ -1,5 +1,3 @@
-import './styles.css';
-
 const drawTasklist = (projectLibrary, project = null) => {
   const header = document.getElementById('main-header');
   const tasklist = document.getElementById('tasklist');
@@ -7,6 +5,9 @@ const drawTasklist = (projectLibrary, project = null) => {
 
   if (project) {
     console.log(project);
+    if (project.tasks.length === 0) {
+      drawEmptyProject(project.projectName);
+    }
     header.innerText = project.projectName;
     project.tasks.forEach((task) => {
       createTaskCard(task, tasklist);
@@ -40,6 +41,21 @@ const createTaskCard = (task, tasklist) => {
 
   card.append(done, title, dueDate);
   tasklist.append(card);
+};
+
+const drawEmptyProject = (projectName) => {
+  const title = document.createElement('h1');
+  title.innerText = `${projectName} has no assigned tasks yet.`;
+  tasklist.append(title);
+
+  const emptyImage = document.createElement('img');
+  emptyImage.setAttribute('src', './img/empty.png');
+  emptyImage.setAttribute('alt', 'empty list');
+  tasklist.append(emptyImage);
+
+  const subtitle = document.createElement('h1');
+  subtitle.innerText = 'Tasks added to this project will appear here.';
+  tasklist.append(subtitle);
 };
 
 export default drawTasklist;

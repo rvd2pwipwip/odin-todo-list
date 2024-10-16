@@ -1,4 +1,3 @@
-import './styles.css';
 import { currentLibrary } from './script';
 
 const drawProjectlist = () => {
@@ -21,7 +20,7 @@ const createProjectTab = (projectName) => {
 
   const icon = document.createElement('i');
   icon.className = 'material-icons-rounded';
-  icon.innerText = 'ballot';
+  icon.innerText = 'domain_verification';
 
   // Append the icon first
   tabButton.appendChild(icon);

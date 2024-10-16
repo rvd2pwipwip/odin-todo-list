@@ -1,4 +1,3 @@
-// todoVoodoo.js
 class Task {
   constructor(title, description, dueDate, priority = 'Low', done = false) {
     this.title = title;
@@ -25,7 +24,6 @@ class Project {
   }
 }
 
-// Create a projectLibrary to store all projects
 class ProjectLibrary {
   constructor(projects = []) {
     this.projects = projects;

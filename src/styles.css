@@ -150,6 +150,7 @@ nav button {
 nav button[aria-selected="true"] {
 	color: var(--accent-color);
   background: rgba(0, 0, 0, 0.05);
+  border-left: 5px solid var(--accent-color);
 }
 
 #menu-header {
@@ -158,6 +159,7 @@ nav button[aria-selected="true"] {
   font-size: 1.5rem;
   font-weight: 700;
   margin-top: 1rem; 
+  margin-bottom: 1rem;
 }
 
 #menu-header h1 {
