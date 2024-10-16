@@ -3,6 +3,7 @@ import { Task, Project, ProjectLibrary } from './todoVoodoo.js';
 import { addTaskDialog } from './taskDialog.js';
 import { addProjectDialog } from './projectDialog.js';
 import drawTasklist from './tasklist.js';
+import drawProjectlist from './projectList.js';
 
 export let currentProject;
 export let currentLibrary = new ProjectLibrary();
@@ -71,6 +72,8 @@ function populateProjectLibrary(projectsData) {
 }
 
 fetchAndPopulateTasks();
+
+drawProjectlist();
 
 const tabs = Array.from(document.querySelectorAll('nav [role="tab"]'));
 
