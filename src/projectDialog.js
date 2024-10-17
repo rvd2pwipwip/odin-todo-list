@@ -1,6 +1,6 @@
 import { Project } from './todoVoodoo.js';
 import { currentLibrary } from './script';
-// import { drawProjectList, createProjectTab } from './projectList.js';
+import { drawProjectList, createProjectTab } from './projectList.js';
 
 export function addProjectDialog() {
   console.log(`will add project to library`);
@@ -85,11 +85,11 @@ export function addProjectDialog() {
       saveProjectsToLocalStorage();
 
       // Call fetchAndPopulateTasks and then drawProjectlist
-      // (async () => {
-      //   const userProjects = document.getElementById('user-projects');
-      //   const newTab = createProjectTab(projectName);
-      //   userProjects.append(newTab);
-      // })();
+      (async () => {
+        // const newTab = createProjectTab(projectName);
+        drawProjectList();
+      })();
+
 
       console.log(`Project "${projectName}" added to library.`);
       dialog.close(); // Close the dialog after adding the project
