@@ -1,5 +1,6 @@
 import { Task } from './todoVoodoo.js';
 import { currentLibrary } from './script.js';
+import { getTodayDateFormatted } from './dateUtils.js';
 import drawTasklist from './tasklist.js';
 
 export function addTaskDialog(currentProject) {

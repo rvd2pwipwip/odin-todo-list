@@ -2,8 +2,9 @@ import './styles.css';
 import { Task, Project, ProjectLibrary } from './todoVoodoo.js';
 import { addTaskDialog } from './taskDialog.js';
 import { addProjectDialog } from './projectDialog.js';
+import { getTodayDateFormatted } from './dateUtils.js';
 import drawTasklist from './tasklist.js';
-import drawProjectlist from './projectList.js';
+import { drawProjectList, createProjectTab } from './projectList.js';
 
 export let currentProject;
 export let currentLibrary = new ProjectLibrary();
@@ -71,48 +72,70 @@ function populateProjectLibrary(projectsData) {
   });
 }
 
-fetchAndPopulateTasks();
+// Call fetchAndPopulateTasks and then drawProjectlist
+(async () => {
+  await fetchAndPopulateTasks();
+  drawProjectList();
 
-drawProjectlist();
+  // Initialize tabs after the project list is drawn
+  const tabs = Array.from(document.querySelectorAll('nav [role="tab"]'));
 
-const tabs = Array.from(document.querySelectorAll('nav [role="tab"]'));
+  tabs.forEach((t) => {
+    t.addEventListener('click', (e) => {
+      // Check if the clicked element is the button or its child
+      const targetButton = e.target.closest('button[role="tab"]');
+      if (
+        targetButton &&
+        targetButton.getAttribute('aria-selected') == 'false'
+      ) {
+        tabs.forEach((t) => {
+          t.setAttribute('aria-selected', false);
+        });
 
-tabs.forEach((t) => {
-  t.addEventListener('click', (e) => {
-    // Check if the clicked element is the button or its child
-    const targetButton = e.target.closest('button[role="tab"]');
-    if (targetButton && targetButton.getAttribute('aria-selected') == 'false') {
-      tabs.forEach((t) => {
-        t.setAttribute('aria-selected', false);
-      });
+        targetButton.setAttribute('aria-selected', 'true');
 
-      targetButton.setAttribute('aria-selected', 'true');
+        // Create a clone of the button and remove the <i> element
+        const buttonClone = targetButton.cloneNode(true);
+        const iconElement = buttonClone.querySelector('i');
+        if (iconElement) {
+          buttonClone.removeChild(iconElement);
+        }
 
-      // Create a clone of the button and remove the <i> element
-      const buttonClone = targetButton.cloneNode(true);
-      const iconElement = buttonClone.querySelector('i');
-      if (iconElement) {
-        buttonClone.removeChild(iconElement);
+        // Get the inner text of the cloned button
+        let filteredProject = buttonClone.textContent.trim();
+        console.log('Filtered Project:', filteredProject);
+
+        // Check if the clicked button is the "Today" button
+        if (targetButton.id === 'today-btn') {
+          const today = getTodayDateFormatted();
+          const todayTasks = [];
+          currentLibrary.projects.forEach((project) => {
+            project.tasks.forEach((task) => {
+              if (task.dueDate === today) {
+                todayTasks.push(task);
+              }
+            });
+          });
+          drawTasklist({
+            projects: [{ projectName: 'Today', tasks: todayTasks }],
+          });
+        } else {
+          currentProject = currentLibrary.projects.find(
+            (project) => project.projectName === filteredProject
+          );
+
+          if (currentProject) {
+            console.log('Current Project:', currentProject);
+            drawTasklist(currentLibrary, currentProject);
+          } else {
+            drawTasklist(currentLibrary);
+            console.log('Project not found:', filteredProject);
+          }
+        }
       }
-
-      // Get the inner text of the cloned button
-      let filteredProject = buttonClone.textContent.trim();
-      console.log('Filtered Project:', filteredProject);
-
-      // Find the project by name and draw the task list
-      currentProject = currentLibrary.projects.find(
-        (project) => project.projectName === filteredProject
-      );
-      if (currentProject) {
-        console.log('Current Project:', currentProject);
-        drawTasklist(currentLibrary, currentProject);
-      } else {
-        drawTasklist(currentLibrary);
-        console.log('Project not found:', filteredProject);
-      }
-    }
+    });
   });
-});
+})();
 
 console.log(currentLibrary);
 

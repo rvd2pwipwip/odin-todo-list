@@ -1,6 +1,6 @@
 import { currentLibrary } from './script';
 
-const drawProjectlist = () => {
+export const drawProjectList = () => {
   currentLibrary.projects
     .filter((p) => p.projectName !== 'Unassigned')
     .forEach((p) => {
@@ -8,10 +8,7 @@ const drawProjectlist = () => {
     });
 };
 
-// <section id="user-projects">
-// <button id="today-btn" role="tab" aria-selected="false"><i class="material-icons-rounded">today</i>Today</button>
-
-const createProjectTab = (projectName) => {
+export const createProjectTab = (projectName) => {
   const userProjects = document.getElementById('user-projects');
   const tabButton = document.createElement('button');
 
@@ -30,5 +27,3 @@ const createProjectTab = (projectName) => {
 
   userProjects.append(tabButton);
 };
-
-export default drawProjectlist;
