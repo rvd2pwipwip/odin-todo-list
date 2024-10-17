@@ -77,64 +77,79 @@ function populateProjectLibrary(projectsData) {
   await fetchAndPopulateTasks();
   drawProjectList();
 
-  // Initialize tabs after the project list is drawn
-  const tabs = Array.from(document.querySelectorAll('nav [role="tab"]'));
+  // Get the parent nav element
+  const navElement = document.querySelector('nav[role="tablist"]');
 
-  tabs.forEach((t) => {
-    t.addEventListener('click', (e) => {
-      // Check if the clicked element is the button or its child
-      const targetButton = e.target.closest('button[role="tab"]');
-      if (
-        targetButton &&
-        targetButton.getAttribute('aria-selected') == 'false'
-      ) {
-        tabs.forEach((t) => {
-          t.setAttribute('aria-selected', false);
-        });
+  // Add event listener to the nav element
+  navElement.addEventListener('click', (event) => {
+    const targetTab = event.target.closest('button[role="tab"]');
+    if (targetTab) {
+      // Remove 'aria-selected' from all tabs
+      navElement.querySelectorAll('button[role="tab"]').forEach((tab) => {
+        tab.setAttribute('aria-selected', 'false');
+      });
 
-        targetButton.setAttribute('aria-selected', 'true');
+      // Set the clicked tab as selected
+      targetTab.setAttribute('aria-selected', 'true');
 
-        // Create a clone of the button and remove the <i> element
-        const buttonClone = targetButton.cloneNode(true);
-        const iconElement = buttonClone.querySelector('i');
-        if (iconElement) {
-          buttonClone.removeChild(iconElement);
-        }
+      // Extract the project name, ignoring the icon text
+      const iconElement = targetTab.querySelector('i');
+      const tabText = iconElement
+        ? targetTab.textContent.replace(iconElement.textContent, '').trim()
+        : targetTab.textContent.trim();
 
-        // Get the inner text of the cloned button
-        let filteredProject = buttonClone.textContent.trim();
-        console.log('Filtered Project:', filteredProject);
-
-        // Check if the clicked button is the "Today" button
-        if (targetButton.id === 'today-btn') {
-          const today = getTodayDateFormatted();
-          const todayTasks = [];
-          currentLibrary.projects.forEach((project) => {
-            project.tasks.forEach((task) => {
-              if (task.dueDate === today) {
-                todayTasks.push(task);
-              }
-            });
-          });
+      // Handle different tab types
+      switch (targetTab.id) {
+        case 'all-btn':
+          drawTasklist(currentLibrary);
+          break;
+        case 'today-btn':
+          // Filter and display today's tasks
+          const todayTasks = filterTodayTasks(currentLibrary);
           drawTasklist({
             projects: [{ projectName: 'Today', tasks: todayTasks }],
           });
-        } else {
+          break;
+        case 'week-btn':
+          // Filter and display tasks for the next 7 days
+          const weekTasks = filterWeekTasks(currentLibrary);
+          drawTasklist({
+            projects: [{ projectName: 'Next 7 Days', tasks: weekTasks }],
+          });
+          break;
+        default:
+          // Handle user-created project tabs
           currentProject = currentLibrary.projects.find(
-            (project) => project.projectName === filteredProject
+            (project) => project.projectName === tabText
           );
-
           if (currentProject) {
-            console.log('Current Project:', currentProject);
             drawTasklist(currentLibrary, currentProject);
           } else {
-            drawTasklist(currentLibrary);
-            console.log('Project not found:', filteredProject);
+            console.log('Project not found:', tabText);
           }
-        }
       }
-    });
+    }
   });
+
+  // Helper function to filter today's tasks
+  function filterTodayTasks(library) {
+    const today = getTodayDateFormatted();
+    return library.projects.flatMap((project) =>
+      project.tasks.filter((task) => task.dueDate === today)
+    );
+  }
+
+  // Helper function to filter tasks for the next 7 days
+  function filterWeekTasks(library) {
+    const today = new Date();
+    const sevenDaysLater = new Date(today.getTime() + 7 * 24 * 60 * 60 * 1000);
+    return library.projects.flatMap((project) =>
+      project.tasks.filter((task) => {
+        const taskDate = new Date(task.dueDate);
+        return taskDate >= today && taskDate <= sevenDaysLater;
+      })
+    );
+  }
 })();
 
 console.log(currentLibrary);

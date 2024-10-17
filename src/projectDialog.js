@@ -84,10 +84,8 @@ export function addProjectDialog() {
       // Save the updated projects to localStorage
       saveProjectsToLocalStorage();
 
-      // Call fetchAndPopulateTasks and then drawProjectlist
       (async () => {
-        // const newTab = createProjectTab(projectName);
-        drawProjectList();
+        const newTab = createProjectTab(projectName);
       })();
 
 
