@@ -186,8 +186,7 @@ export function addTaskDialog(currentProject) {
       document.getElementById('priority').value = '';
 
       // Update localStorage
-      const updatedData = { projects: currentLibrary };
-      localStorage.setItem('projects', JSON.stringify(updatedData));
+      localStorage.setItem('projects', JSON.stringify(currentLibrary.projects));
 
       drawTasklist(currentLibrary, currentProject);
       dialog.close();
