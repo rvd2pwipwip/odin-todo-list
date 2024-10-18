@@ -19,7 +19,7 @@ export function addProjectDialog() {
   const closeButton = document.createElement('button');
   closeButton.id = 'close-btn';
   closeButton.textContent = '×';
-  legend.appendChild(closeButton);
+  dialog.appendChild(closeButton);
 
   fieldset.appendChild(legend);
 
@@ -41,9 +41,6 @@ export function addProjectDialog() {
     input.id = item.id;
     input.name = item.id;
     input.required = true;
-
-    // if (item.required) input.required = true;
-    // if (item.min) input.min = item.min;
 
     div.appendChild(label);
     div.appendChild(input);
@@ -103,6 +100,27 @@ export function addProjectDialog() {
     } else {
       console.log('Project name is required.');
     }
+  });
+
+  // Add event listener to close the dialog when users click outside
+  dialog.addEventListener('click', (event) => {
+    const rect = dialog.getBoundingClientRect();
+    const isInDialog =
+      event.clientX >= rect.left &&
+      event.clientX <= rect.right &&
+      event.clientY >= rect.top &&
+      event.clientY <= rect.bottom;
+
+    if (!isInDialog) {
+      dialog.close();
+      dialog.remove();
+    }
+  });
+
+  // Add event listener for the close button to close the dialog
+  closeButton.addEventListener('click', () => {
+    dialog.close();
+    dialog.remove();
   });
 
   return dialog;
