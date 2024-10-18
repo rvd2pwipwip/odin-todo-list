@@ -1,19 +1,21 @@
-const drawTasklist = (projectLibrary, project = null) => {
+const drawTasklist = (projectLibrary, project = null, headerText = 'All Tasks') => {
   const header = document.getElementById('main-header');
   const tasklist = document.getElementById('tasklist');
   tasklist.innerHTML = '';
+  header.innerText = headerText; // Set the header text consistently for all tabs
+
 
   if (project) {
     console.log(project);
     if (project.tasks.length === 0) {
       drawEmptyProject(project.projectName);
     }
-    header.innerText = project.projectName;
+    // header.innerText = project.projectName;
     project.tasks.forEach((task) => {
       createTaskCard(task, tasklist);
     });
   } else {
-    header.innerText = 'All tasks';
+    // header.innerText = 'All tasks';
     projectLibrary.projects.forEach((project) => {
       project.tasks.forEach((task) => {
         createTaskCard(task, tasklist);

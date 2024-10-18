@@ -4,8 +4,6 @@ import { getTodayDateFormatted } from './dateUtils.js';
 import drawTasklist from './tasklist.js';
 
 export function addTaskDialog(currentProject) {
-  // console.log(`will add task to ${currentProject.projectName}`);
-
   // Remove existing dialog if it exists
   const existingDialog = document.querySelector('dialog');
   if (existingDialog) {
@@ -152,20 +150,13 @@ export function addTaskDialog(currentProject) {
     let dueDate = document.getElementById('due-date').value;
     let priority = document.getElementById('priority').value;
 
-    // Get today's date
-    const today = new Date();
-    const year = today.getFullYear();
-    const month = String(today.getMonth() + 1).padStart(2, '0'); // Months are zero-based
-    const day = String(today.getDate()).padStart(2, '0');
-
-    // Format the date as YYYY-MM-DD
-    const formattedDate = `${year}-${month}-${day}`;
+    const today = getTodayDateFormatted();
 
     // check for mandatory task parameters (title)
     if (title) {
       priority = !priority ? 'Low' : priority;
       console.log('Creating task with title:', title);
-      dueDate = !dueDate ? formattedDate : dueDate;
+      dueDate = !dueDate ? today : dueDate;
       const newTask = new Task(title, description, dueDate, priority);
 
       // Add the new task to the current project
@@ -188,7 +179,8 @@ export function addTaskDialog(currentProject) {
       // Update localStorage
       localStorage.setItem('projects', JSON.stringify(currentLibrary.projects));
 
-      drawTasklist(currentLibrary, currentProject);
+      const headerText = document.getElementById('main-header').innerText;
+      drawTasklist(currentLibrary, currentProject, headerText);
       dialog.close();
     } else {
       console.error('Task title is required');
@@ -197,9 +189,6 @@ export function addTaskDialog(currentProject) {
 
   // Add event listener for the add button to push the new todo
   addButton.addEventListener('click', addTask);
-  // addButton.addEventListener('click', () => {
-  //   addTask();
-  // });
 
   return dialog;
 }

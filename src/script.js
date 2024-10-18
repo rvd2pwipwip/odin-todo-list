@@ -4,7 +4,7 @@ import { addTaskDialog } from './taskDialog.js';
 import { addProjectDialog } from './projectDialog.js';
 import { getTodayDateFormatted } from './dateUtils.js';
 import drawTasklist from './tasklist.js';
-import { drawProjectList, createProjectTab } from './projectList.js';
+import { drawProjectList } from './projectList.js';
 
 export let currentProject;
 export let currentLibrary = new ProjectLibrary();
@@ -99,23 +99,25 @@ function populateProjectLibrary(projectsData) {
         : targetTab.textContent.trim();
 
       // Handle different tab types
-      switch (targetTab.id) {
-        case 'all-btn':
-          drawTasklist(currentLibrary);
+      switch (tabText) {
+        case 'All tasks':
+          drawTasklist(currentLibrary, null, tabText);
           break;
-        case 'today-btn':
-          // Filter and display today's tasks
+        case 'Today':
           const todayTasks = filterTodayTasks(currentLibrary);
-          drawTasklist({
-            projects: [{ projectName: 'Today', tasks: todayTasks }],
-          });
+          drawTasklist(
+            { projects: [{ projectName: tabText, tasks: todayTasks }] },
+            null,
+            tabText
+          );
           break;
-        case 'week-btn':
-          // Filter and display tasks for the next 7 days
+        case '7 days':
           const weekTasks = filterWeekTasks(currentLibrary);
-          drawTasklist({
-            projects: [{ projectName: 'Next 7 Days', tasks: weekTasks }],
-          });
+          drawTasklist(
+            { projects: [{ projectName: tabText, tasks: weekTasks }] },
+            null,
+            tabText
+          );
           break;
         default:
           // Handle user-created project tabs
@@ -123,7 +125,7 @@ function populateProjectLibrary(projectsData) {
             (project) => project.projectName === tabText
           );
           if (currentProject) {
-            drawTasklist(currentLibrary, currentProject);
+            drawTasklist(currentLibrary, currentProject, tabText);
           } else {
             console.log('Project not found:', tabText);
           }
