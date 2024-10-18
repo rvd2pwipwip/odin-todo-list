@@ -48,11 +48,23 @@ function setupNavigation() {
       // Set the clicked tab as selected
       targetTab.setAttribute('aria-selected', 'true');
 
-      // Extract the project name, ignoring the icon text
-      const iconElement = targetTab.querySelector('i');
-      const tabText = iconElement
-        ? targetTab.textContent.replace(iconElement.textContent, '').trim()
-        : targetTab.textContent.trim();
+      function getTabText(targetTab) {
+        // Create a clone of the button to avoid modifying the original
+        const clone = targetTab.cloneNode(true);
+
+        // Remove all child elements (icons and action div)
+        while (clone.firstChild) {
+          if (clone.firstChild.nodeType === Node.TEXT_NODE) {
+            return clone.firstChild.textContent.trim();
+          }
+          clone.removeChild(clone.firstChild);
+        }
+
+        // If no text node is found, return an empty string
+        return '';
+      }
+
+      const tabText = getTabText(targetTab);
 
       // Handle different tab types
       switch (tabText) {
@@ -139,7 +151,6 @@ async function initializeApp() {
 }
 
 document.addEventListener('DOMContentLoaded', initializeApp);
-
 
 /////////////////////////////////////////////////////////
 // Helper functions
