@@ -72,6 +72,10 @@ function populateProjectLibrary(projectsData) {
   });
 }
 
+export const updateHeader = (headerText) => {
+  document.getElementById('main-header').innerText = headerText;
+};
+
 // Call fetchAndPopulateTasks and then drawProjectlist
 (async () => {
   await fetchAndPopulateTasks();
@@ -101,10 +105,12 @@ function populateProjectLibrary(projectsData) {
       // Handle different tab types
       switch (tabText) {
         case 'All tasks':
+          updateHeader(tabText);
           drawTasklist(currentLibrary, null, tabText);
           break;
         case 'Today':
           const todayTasks = filterTodayTasks(currentLibrary);
+          updateHeader(tabText);
           drawTasklist(
             { projects: [{ projectName: tabText, tasks: todayTasks }] },
             null,
@@ -113,6 +119,7 @@ function populateProjectLibrary(projectsData) {
           break;
         case '7 days':
           const weekTasks = filterWeekTasks(currentLibrary);
+          updateHeader(tabText);
           drawTasklist(
             { projects: [{ projectName: tabText, tasks: weekTasks }] },
             null,
@@ -125,6 +132,7 @@ function populateProjectLibrary(projectsData) {
             (project) => project.projectName === tabText
           );
           if (currentProject) {
+            updateHeader(tabText);
             drawTasklist(currentLibrary, currentProject, tabText);
           } else {
             console.log('Project not found:', tabText);
@@ -154,8 +162,6 @@ function populateProjectLibrary(projectsData) {
   }
 })();
 
-console.log(currentLibrary);
-
 // Add Project Dialog
 const addProject = document.getElementById('add-project');
 
@@ -165,7 +171,6 @@ addProject.addEventListener('click', () => {
   const form = document.querySelector('#form');
   form.reset();
   projectDialog.showModal();
-  console.log('project added');
 });
 
 // Add Task Dialog
@@ -176,14 +181,10 @@ addTaskButton.addEventListener('click', () => {
   // Check if a project is currently selected
   if (currentProject) {
     taskDialog = addTaskDialog(currentProject);
-    console.log(
-      `Button clicked while current project is: ${currentProject.projectName}`
-    );
     document.getElementById('dialog-placeholder').appendChild(taskDialog);
   } else {
     // Handle the case where no project is selected
     taskDialog = addTaskDialog(undefined); // Pass null or undefined
-    console.log('Button clicked with no current project selected');
     document.getElementById('dialog-placeholder').appendChild(taskDialog);
 
     // Add task to a general list or "unassigned" project

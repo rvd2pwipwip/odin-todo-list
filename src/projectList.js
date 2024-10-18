@@ -26,4 +26,6 @@ export const createProjectTab = (projectName) => {
   tabButton.appendChild(document.createTextNode(projectName));
 
   userProjects.append(tabButton);
+
+  return tabButton;
 };

@@ -179,8 +179,7 @@ export function addTaskDialog(currentProject) {
       // Update localStorage
       localStorage.setItem('projects', JSON.stringify(currentLibrary.projects));
 
-      const headerText = document.getElementById('main-header').innerText;
-      drawTasklist(currentLibrary, currentProject, headerText);
+      drawTasklist(currentLibrary, currentProject);
       dialog.close();
     } else {
       console.error('Task title is required');

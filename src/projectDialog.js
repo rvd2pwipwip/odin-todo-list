@@ -1,9 +1,9 @@
 import { Project } from './todoVoodoo.js';
-import { currentLibrary } from './script';
-import { drawProjectList, createProjectTab } from './projectList.js';
+import { currentLibrary, updateHeader } from './script';
+import { createProjectTab } from './projectList.js';
+import drawTasklist from './tasklist.js';
 
 export function addProjectDialog() {
-  console.log(`will add project to library`);
   const dialog = document.createElement('dialog');
 
   const form = document.createElement('form');
@@ -84,12 +84,20 @@ export function addProjectDialog() {
       // Save the updated projects to localStorage
       saveProjectsToLocalStorage();
 
-      (async () => {
-        const newTab = createProjectTab(projectName);
-      })();
+      // Remove 'aria-selected' from all tabs
+      const allTabs = document.querySelectorAll('button[role="tab"]');
+      allTabs.forEach((tab) => {
+        tab.setAttribute('aria-selected', 'false');
+      });
 
+      // Create and select the new tab
+      const newTab = createProjectTab(projectName);
+      newTab.setAttribute('aria-selected', 'true');
 
-      console.log(`Project "${projectName}" added to library.`);
+      // Update the header and draw the task list for the new project
+      updateHeader(projectName);
+      drawTasklist(currentLibrary, newProject);
+
       dialog.close(); // Close the dialog after adding the project
       dialog.remove();
     } else {

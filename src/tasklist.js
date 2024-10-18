@@ -1,9 +1,7 @@
-const drawTasklist = (projectLibrary, project = null, headerText = 'All Tasks') => {
+const drawTasklist = (projectLibrary, project = null) => {
   const header = document.getElementById('main-header');
   const tasklist = document.getElementById('tasklist');
   tasklist.innerHTML = '';
-  header.innerText = headerText; // Set the header text consistently for all tabs
-
 
   if (project) {
     console.log(project);
