@@ -9,32 +9,11 @@ import { drawProjectList } from './projectList.js';
 export let currentProject;
 export let currentLibrary = new ProjectLibrary();
 
-// Function to save projects to LocalStorage
-function saveProjectsToLocalStorage() {
-  const projectsData = currentLibrary.projects.map((project) => ({
-    projectName: project.projectName,
-    tasks: project.tasks.map((task) => ({
-      title: task.title,
-      description: task.description,
-      dueDate: task.dueDate,
-      priority: task.priority,
-      done: task.done,
-    })),
-  }));
-  localStorage.setItem('projects', JSON.stringify(projectsData));
-}
+/////////////////////////////////////////////////////////
+// App init
+/////////////////////////////////////////////////////////
 
-// Function to load projects from LocalStorage
-function loadProjectsFromLocalStorage() {
-  const projectsData = localStorage.getItem('projects');
-  if (projectsData) {
-    return JSON.parse(projectsData);
-  }
-  return null;
-}
-
-// Function to fetch and populate tasks from JSON or LocalStorage
-async function fetchAndPopulateTasks() {
+async function loadData() {
   try {
     const storedProjects = loadProjectsFromLocalStorage();
     if (storedProjects) {
@@ -48,40 +27,13 @@ async function fetchAndPopulateTasks() {
       populateProjectLibrary(data.projects);
       saveProjectsToLocalStorage(); // Save fetched data to LocalStorage
     }
-    drawTasklist(currentLibrary);
   } catch (error) {
-    console.error('Failed to fetch and populate tasks:', error);
+    console.error('Failed to load data:', error);
   }
 }
 
-// Function to populate the project library
-function populateProjectLibrary(projectsData) {
-  projectsData.forEach((projectData) => {
-    const project = new Project(projectData.projectName);
-    projectData.tasks.forEach((taskData) => {
-      const task = new Task(
-        taskData.title,
-        taskData.description,
-        taskData.dueDate,
-        taskData.priority,
-        taskData.done
-      );
-      project.addTask(task);
-    });
-    currentLibrary.projects.push(project);
-  });
-}
-
-export const updateHeader = (headerText) => {
-  document.getElementById('main-header').innerText = headerText;
-};
-
-// Call fetchAndPopulateTasks and then drawProjectlist
-(async () => {
-  await fetchAndPopulateTasks();
-  drawProjectList();
-
-  // Get the parent nav element
+function setupNavigation() {
+  // Get the parent nav element for event delegation
   const navElement = document.querySelector('nav[role="tablist"]');
 
   // Add event listener to the nav element
@@ -140,60 +92,122 @@ export const updateHeader = (headerText) => {
       }
     }
   });
+}
 
-  // Helper function to filter today's tasks
-  function filterTodayTasks(library) {
-    const today = getTodayDateFormatted();
-    return library.projects.flatMap((project) =>
-      project.tasks.filter((task) => task.dueDate === today)
-    );
+function setupButtons() {
+  // Add Project Button
+  const addProject = document.getElementById('add-project');
+  addProject.addEventListener('click', () => {
+    const projectDialog = addProjectDialog();
+    document.getElementById('dialog-placeholder').appendChild(projectDialog);
+    const form = document.querySelector('#form');
+    form.reset();
+    projectDialog.showModal();
+  });
+
+  // Add Task Button
+  const addTaskButton = document.getElementById('create-cta');
+  let taskDialog;
+  addTaskButton.addEventListener('click', () => {
+    // Check if a project is currently selected
+    if (currentProject) {
+      taskDialog = addTaskDialog(currentProject);
+      document.getElementById('dialog-placeholder').appendChild(taskDialog);
+    } else {
+      // Handle the case where no project is selected
+      taskDialog = addTaskDialog(undefined); // Pass null or undefined
+      document.getElementById('dialog-placeholder').appendChild(taskDialog);
+
+      // Add task to a general list or "unassigned" project
+      const unassignedProject = currentLibrary.projects.find(
+        (project) => project.projectName === 'Unassigned'
+      );
+    }
+
+    const form = document.querySelector('#form');
+    form.reset();
+    taskDialog.showModal();
+  });
+}
+
+async function initializeApp() {
+  await loadData();
+  drawProjectList();
+  drawTasklist(currentLibrary);
+  setupNavigation();
+  setupButtons();
+}
+
+document.addEventListener('DOMContentLoaded', initializeApp);
+
+
+/////////////////////////////////////////////////////////
+// Helper functions
+/////////////////////////////////////////////////////////
+
+// Save projects to LocalStorage
+function saveProjectsToLocalStorage() {
+  const projectsData = currentLibrary.projects.map((project) => ({
+    projectName: project.projectName,
+    tasks: project.tasks.map((task) => ({
+      title: task.title,
+      description: task.description,
+      dueDate: task.dueDate,
+      priority: task.priority,
+      done: task.done,
+    })),
+  }));
+  localStorage.setItem('projects', JSON.stringify(projectsData));
+}
+
+// Load projects from LocalStorage
+function loadProjectsFromLocalStorage() {
+  const projectsData = localStorage.getItem('projects');
+  if (projectsData) {
+    return JSON.parse(projectsData);
   }
+  return null;
+}
 
-  // Helper function to filter tasks for the next 7 days
-  function filterWeekTasks(library) {
-    const today = new Date();
-    const sevenDaysLater = new Date(today.getTime() + 7 * 24 * 60 * 60 * 1000);
-    return library.projects.flatMap((project) =>
-      project.tasks.filter((task) => {
-        const taskDate = new Date(task.dueDate);
-        return taskDate >= today && taskDate <= sevenDaysLater;
-      })
-    );
-  }
-})();
+// Populate the project library
+function populateProjectLibrary(projectsData) {
+  projectsData.forEach((projectData) => {
+    const project = new Project(projectData.projectName);
+    projectData.tasks.forEach((taskData) => {
+      const task = new Task(
+        taskData.title,
+        taskData.description,
+        taskData.dueDate,
+        taskData.priority,
+        taskData.done
+      );
+      project.addTask(task);
+    });
+    currentLibrary.projects.push(project);
+  });
+}
 
-// Add Project Dialog
-const addProject = document.getElementById('add-project');
+// Update the main header
+export const updateHeader = (headerText) => {
+  document.getElementById('main-header').innerText = headerText;
+};
 
-addProject.addEventListener('click', () => {
-  const projectDialog = addProjectDialog();
-  document.getElementById('dialog-placeholder').appendChild(projectDialog);
-  const form = document.querySelector('#form');
-  form.reset();
-  projectDialog.showModal();
-});
+// Filter today's tasks
+function filterTodayTasks(library) {
+  const today = getTodayDateFormatted();
+  return library.projects.flatMap((project) =>
+    project.tasks.filter((task) => task.dueDate === today)
+  );
+}
 
-// Add Task Dialog
-// Add event listener for the create button to show the dialog
-const addTaskButton = document.getElementById('create-cta');
-let taskDialog;
-addTaskButton.addEventListener('click', () => {
-  // Check if a project is currently selected
-  if (currentProject) {
-    taskDialog = addTaskDialog(currentProject);
-    document.getElementById('dialog-placeholder').appendChild(taskDialog);
-  } else {
-    // Handle the case where no project is selected
-    taskDialog = addTaskDialog(undefined); // Pass null or undefined
-    document.getElementById('dialog-placeholder').appendChild(taskDialog);
-
-    // Add task to a general list or "unassigned" project
-    const unassignedProject = currentLibrary.projects.find(
-      (project) => project.projectName === 'Unassigned'
-    );
-  }
-
-  const form = document.querySelector('#form');
-  form.reset();
-  taskDialog.showModal();
-});
+// Filter tasks for the next 7 days
+function filterWeekTasks(library) {
+  const today = new Date();
+  const sevenDaysLater = new Date(today.getTime() + 7 * 24 * 60 * 60 * 1000);
+  return library.projects.flatMap((project) =>
+    project.tasks.filter((task) => {
+      const taskDate = new Date(task.dueDate);
+      return taskDate >= today && taskDate <= sevenDaysLater;
+    })
+  );
+}
