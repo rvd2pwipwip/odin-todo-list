@@ -65,11 +65,13 @@ function setupNavigation() {
       // Handle different tab types
       switch (tabText) {
         case 'All tasks':
+          setAddTaskButtonState(true);
           setCurrentProject(null);
           updateHeader(tabText);
           drawTasklist(currentLibrary, currentProject);
           break;
         case 'Today':
+          setAddTaskButtonState(false);
           const todayTasks = filterTodayTasks(currentLibrary);
 
           const todayProjects = currentLibrary.projects
@@ -84,6 +86,7 @@ function setupNavigation() {
           break;
 
         case '7 days':
+          setAddTaskButtonState(false);
           const weekTasks = filterWeekTasks(currentLibrary);
           const weekProjects = currentLibrary.projects
             .map((project) => ({
@@ -98,6 +101,7 @@ function setupNavigation() {
           drawTasklist({ projects: weekProjects }, null, tabText);
           break;
         default:
+          setAddTaskButtonState(true);
           // Handle user-created project tabs
           currentProject = currentLibrary.projects.find(
             (project) => project.projectName === tabText
@@ -209,3 +213,10 @@ function populateProjectLibrary(projectsData) {
 export const updateHeader = (headerText) => {
   document.getElementById('main-header').innerText = headerText;
 };
+
+// Manage add task button state
+function setAddTaskButtonState(enabled) {
+  const addTaskButton = document.getElementById('create-cta');
+  addTaskButton.disabled = !enabled;
+  addTaskButton.classList.toggle('disabled', !enabled);
+}
