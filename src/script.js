@@ -6,7 +6,7 @@ import { filterTodayTasks, filterWeekTasks } from './dateUtils.js';
 import drawTasklist from './tasklist.js';
 import { drawProjectList } from './projectList.js';
 
-let currentProject;
+let currentProject = null;
 export function setCurrentProject(project) {
   currentProject = project;
 }
@@ -53,19 +53,11 @@ function setupNavigation() {
       targetTab.setAttribute('aria-selected', 'true');
 
       function getTabText(targetTab) {
-        // Create a clone of the button to avoid modifying the original
-        const clone = targetTab.cloneNode(true);
+        // Find the span with the class 'tab-text' within the button
+        const textSpan = targetTab.querySelector('.tab-text');
 
-        // Remove all child elements (icons and action div)
-        while (clone.firstChild) {
-          if (clone.firstChild.nodeType === Node.TEXT_NODE) {
-            return clone.firstChild.textContent.trim();
-          }
-          clone.removeChild(clone.firstChild);
-        }
-
-        // If no text node is found, return an empty string
-        return '';
+        // Return the text content of the span, or an empty string if not found
+        return textSpan ? textSpan.textContent.trim() : '';
       }
 
       const tabText = getTabText(targetTab);
@@ -73,26 +65,37 @@ function setupNavigation() {
       // Handle different tab types
       switch (tabText) {
         case 'All tasks':
+          setCurrentProject(null);
           updateHeader(tabText);
-          drawTasklist(currentLibrary, null, tabText);
+          drawTasklist(currentLibrary, currentProject);
           break;
         case 'Today':
           const todayTasks = filterTodayTasks(currentLibrary);
+
+          const todayProjects = currentLibrary.projects
+            .map((project) => ({
+              projectName: project.projectName,
+              tasks: project.tasks.filter((task) => todayTasks.includes(task)),
+            }))
+            .filter((project) => project.tasks.length > 0);
+
           updateHeader(tabText);
-          drawTasklist(
-            { projects: [{ projectName: tabText, tasks: todayTasks }] },
-            null,
-            tabText
-          );
+          drawTasklist({ projects: todayProjects }, null);
           break;
+
         case '7 days':
           const weekTasks = filterWeekTasks(currentLibrary);
+          const weekProjects = currentLibrary.projects
+            .map((project) => ({
+              projectName: project.projectName,
+              tasks: project.tasks.filter((task) => weekTasks.includes(task)),
+            }))
+            .filter((project) => project.tasks.length > 0);
+
+          console.log(weekProjects); // Debugging: Check the content of weekProjects
+
           updateHeader(tabText);
-          drawTasklist(
-            { projects: [{ projectName: tabText, tasks: weekTasks }] },
-            null,
-            tabText
-          );
+          drawTasklist({ projects: weekProjects }, null, tabText);
           break;
         default:
           // Handle user-created project tabs

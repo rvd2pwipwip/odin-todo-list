@@ -23,7 +23,11 @@ export const createProjectTab = (projectName) => {
   tabButton.appendChild(icon);
 
   // Set the button text after the icon
-  tabButton.appendChild(document.createTextNode(projectName));
+  const textSpan = document.createElement('span');
+  textSpan.className = 'tab-text';
+  textSpan.setAttribute('contenteditable', 'false');
+  textSpan.innerText = projectName;
+  tabButton.appendChild(textSpan);
 
   const actionContainer = document.createElement('div');
   actionContainer.className = 'actions';

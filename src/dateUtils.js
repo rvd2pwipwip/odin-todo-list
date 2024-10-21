@@ -1,46 +1,47 @@
+// Function to get today's date as a YYYY-MM-DD string
 export function getTodayDateFormatted() {
-  // Get today's date
-  const today = new Date();
-  const year = today.getFullYear();
-  const month = String(today.getMonth() + 1).padStart(2, '0'); // Months are zero-based
-  const day = String(today.getDate()).padStart(2, '0');
+  return formatDate(new Date());
+}
 
-  // Format the date as YYYY-MM-DD
-  const formattedDate = `${year}-${month}-${day}`;
+// Function to format a date as YYYY-MM-DD
+export function formatDate(date) {
+  const d = new Date(date);
+  return d.toISOString().split('T')[0];
+}
 
-  return formattedDate;
+// Function to parse a YYYY-MM-DD string to a Date object
+export function parseDate(dateString) {
+  const [year, month, day] = dateString.split('-');
+  return new Date(year, month - 1, day);
 }
 
 // Filter today's tasks
 export function filterTodayTasks(library) {
   const today = getTodayDateFormatted();
-  return library.projects.flatMap((project) =>
-    project.tasks.filter((task) => task.dueDate === today)
-  );
-}
-
-function getWeekDateRange() {
-  const today = new Date();
-  today.setHours(0, 0, 0, 0); // Set to the beginning of the day
-
-  const sevenDaysLater = new Date(today.getTime() + 7 * 24 * 60 * 60 * 1000);
-  sevenDaysLater.setHours(23, 59, 59, 999); // Set to the end of the 7th day
-
-  return { start: today, end: sevenDaysLater };
-}
-
-export function filterWeekTasks(library) {
-  const { start, end } = getWeekDateRange();
-  const today = getTodayDateFormatted();
 
   return library.projects.flatMap((project) =>
     project.tasks.filter((task) => {
-      if (task.dueDate === today) {
-        return true; // Include tasks due today
-      }
-      const taskDate = new Date(task.dueDate);
-      taskDate.setHours(0, 0, 0, 0); // Set to the beginning of the day for consistent comparison
-      return taskDate > start && taskDate <= end;
+      return task.dueDate === today;
+    })
+  );
+}
+
+// Get date range for the week
+function getWeekDateRange() {
+  const today = new Date();
+  const sevenDaysLater = new Date(today.getTime() + 7 * 24 * 60 * 60 * 1000);
+  return {
+    start: formatDate(today),
+    end: formatDate(sevenDaysLater)
+  };
+}
+
+// Filter tasks for the next 7 days
+export function filterWeekTasks(library) {
+  const { start, end } = getWeekDateRange();
+  return library.projects.flatMap((project) =>
+    project.tasks.filter((task) => {
+      return task.dueDate >= start && task.dueDate <= end;
     })
   );
 }
