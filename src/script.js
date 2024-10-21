@@ -2,7 +2,7 @@ import './styles.css';
 import { Task, Project, ProjectLibrary } from './todoVoodoo.js';
 import { addTaskDialog } from './taskDialog.js';
 import { addProjectDialog } from './projectDialog.js';
-import { getTodayDateFormatted } from './dateUtils.js';
+import { filterTodayTasks, filterWeekTasks } from './dateUtils.js';
 import drawTasklist from './tasklist.js';
 import { drawProjectList } from './projectList.js';
 
@@ -206,23 +206,3 @@ function populateProjectLibrary(projectsData) {
 export const updateHeader = (headerText) => {
   document.getElementById('main-header').innerText = headerText;
 };
-
-// Filter today's tasks
-function filterTodayTasks(library) {
-  const today = getTodayDateFormatted();
-  return library.projects.flatMap((project) =>
-    project.tasks.filter((task) => task.dueDate === today)
-  );
-}
-
-// Filter tasks for the next 7 days
-function filterWeekTasks(library) {
-  const today = new Date();
-  const sevenDaysLater = new Date(today.getTime() + 7 * 24 * 60 * 60 * 1000);
-  return library.projects.flatMap((project) =>
-    project.tasks.filter((task) => {
-      const taskDate = new Date(task.dueDate);
-      return taskDate >= today && taskDate <= sevenDaysLater;
-    })
-  );
-}
