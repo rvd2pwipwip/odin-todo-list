@@ -1,5 +1,5 @@
 import { Project } from './todoVoodoo.js';
-import { currentLibrary, updateHeader } from './script';
+import { currentLibrary, updateHeader, setCurrentProject } from './script';
 import { createProjectTab } from './projectList.js';
 import drawTasklist from './tasklist.js';
 
@@ -93,6 +93,7 @@ export function addProjectDialog() {
 
       // Update the header and draw the task list for the new project
       updateHeader(projectName);
+      setCurrentProject(newProject);
       drawTasklist(currentLibrary, newProject);
 
       dialog.close(); // Close the dialog after adding the project

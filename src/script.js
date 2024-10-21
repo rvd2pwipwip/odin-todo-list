@@ -6,7 +6,11 @@ import { getTodayDateFormatted } from './dateUtils.js';
 import drawTasklist from './tasklist.js';
 import { drawProjectList } from './projectList.js';
 
-export let currentProject;
+let currentProject;
+export function setCurrentProject(project) {
+  currentProject = project;
+}
+
 export let currentLibrary = new ProjectLibrary();
 
 /////////////////////////////////////////////////////////
@@ -97,7 +101,7 @@ function setupNavigation() {
           );
           if (currentProject) {
             updateHeader(tabText);
-            drawTasklist(currentLibrary, currentProject, tabText);
+            drawTasklist(currentLibrary, currentProject);
           } else {
             console.log('Project not found:', tabText);
           }
