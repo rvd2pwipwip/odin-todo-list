@@ -1,7 +1,7 @@
 import './styles.css';
 import { Task, Project, ProjectLibrary } from './todoVoodoo.js';
 import { addTaskDialog } from './taskDialog.js';
-import { addProjectDialog } from './projectDialog.js';
+import { addProjectDialog, saveProjectsToLocalStorage } from './projectDialog.js';
 import { filterTodayTasks, filterWeekTasks } from './dateUtils.js';
 import drawTasklist from './tasklist.js';
 import { drawProjectList } from './projectList.js';
@@ -166,21 +166,6 @@ document.addEventListener('DOMContentLoaded', initializeApp);
 /////////////////////////////////////////////////////////
 // Helper functions
 /////////////////////////////////////////////////////////
-
-// Save projects to LocalStorage
-export function saveProjectsToLocalStorage() {
-  const projectsData = currentLibrary.projects.map((project) => ({
-    projectName: project.projectName,
-    tasks: project.tasks.map((task) => ({
-      title: task.title,
-      description: task.description,
-      dueDate: task.dueDate,
-      priority: task.priority,
-      done: task.done,
-    })),
-  }));
-  localStorage.setItem('projects', JSON.stringify(projectsData));
-}
 
 // Load projects from LocalStorage
 function loadProjectsFromLocalStorage() {

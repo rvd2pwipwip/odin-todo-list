@@ -1,4 +1,8 @@
-import { currentLibrary, saveProjectsToLocalStorage } from './script';
+import { currentLibrary } from './script';
+import {
+  saveProjectsToLocalStorage,
+  deleteProjectDialog,
+} from './projectDialog';
 
 export const drawProjectList = () => {
   currentLibrary.projects
@@ -54,6 +58,10 @@ export const createProjectTab = (projectName) => {
     event.stopPropagation(); // Prevent the tab click event
     // Logic to delete the project
     console.log(`Delete project: ${projectName}`);
+
+    const deleteDialog = deleteProjectDialog(projectName);
+    document.getElementById('dialog-placeholder').appendChild(deleteDialog);
+    deleteDialog.showModal();
   });
   actionContainer.appendChild(deleteIcon);
 
@@ -64,7 +72,11 @@ export const createProjectTab = (projectName) => {
   return tabButton;
 };
 
-//Edit button
+/////////////////////////////////////////////////////////
+// Helper functions
+/////////////////////////////////////////////////////////
+
+// Edit button
 function makeEditable(element) {
   console.log(`Editable: ${element.textContent}`);
   element.contentEditable = true;

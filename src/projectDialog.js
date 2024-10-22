@@ -127,8 +127,58 @@ export function addProjectDialog() {
   return dialog;
 }
 
+export function deleteProjectDialog(projectName) {
+  const dialog = document.createElement('dialog');
+  const dialogContent = document.createElement('div');
+  dialogContent.style.padding = '1.5rem';
+  dialog.appendChild(dialogContent);
+  const title = document.createElement('h1');
+  title.innerText = 'Delete Project';
+  dialogContent.appendChild(title);
+
+  const closeButton = document.createElement('button');
+  closeButton.id = 'close-btn';
+  closeButton.textContent = '×';
+  dialog.appendChild(closeButton);
+
+  const dialogText = document.createElement('p');
+  dialogText.innerHTML = `Are you sure you want to delete <span>${projectName}</span>?<br><br>You cannot undo this operation.`;
+  dialogContent.appendChild(dialogText);
+
+  const buttonDiv = document.createElement('div');
+  const deleteButton = document.createElement('button');
+  deleteButton.style.width = '100%';
+  deleteButton.id = 'delete-cta';
+  deleteButton.textContent = 'Delete Project';
+  buttonDiv.appendChild(deleteButton);
+  dialogContent.appendChild(buttonDiv);
+
+  // Event listener to close the dialog when users click outside
+  dialog.addEventListener('click', (event) => {
+    const rect = dialog.getBoundingClientRect();
+    const isInDialog =
+      event.clientX >= rect.left &&
+      event.clientX <= rect.right &&
+      event.clientY >= rect.top &&
+      event.clientY <= rect.bottom;
+
+    if (!isInDialog) {
+      dialog.close();
+      dialog.remove();
+    }
+  });
+
+  // Add event listener for the close button to close the dialog
+  closeButton.addEventListener('click', () => {
+    dialog.close();
+    dialog.remove();
+  });
+
+  return dialog;
+}
+
 // Function to save projects to LocalStorage
-function saveProjectsToLocalStorage() {
+export function saveProjectsToLocalStorage() {
   const projectsData = currentLibrary.projects.map((project) => ({
     projectName: project.projectName,
     tasks: project.tasks.map((task) => ({

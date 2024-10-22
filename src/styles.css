@@ -432,3 +432,26 @@ select {
 select:focus {
   outline: none;
 }
+
+dialog h1 {
+  position: relative;
+  width: 100%;
+  text-align: center;
+  font-size: larger;
+  font-weight: 600;
+  padding-bottom: 2rem;
+  margin: 0 auto;
+  color: rgba(0, 0, 0, 0.7);
+}
+
+dialog p {
+  padding-bottom: 2rem;
+  font-size: large;
+  margin: 0 auto;
+  color: rgba(0, 0, 0, 0.7);
+}
+
+dialog p span {
+  font-weight: 600;
+  line-height: 1.5;
+}
