@@ -168,7 +168,7 @@ document.addEventListener('DOMContentLoaded', initializeApp);
 /////////////////////////////////////////////////////////
 
 // Save projects to LocalStorage
-function saveProjectsToLocalStorage() {
+export function saveProjectsToLocalStorage() {
   const projectsData = currentLibrary.projects.map((project) => ({
     projectName: project.projectName,
     tasks: project.tasks.map((task) => ({
