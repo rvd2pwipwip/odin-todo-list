@@ -168,10 +168,14 @@ export async function deleteProject(projectName) {
   const projectIndex = currentLibrary.projects.findIndex(
     (p) => p.projectName === projectName
   );
+  console.log('index:', projectIndex);
 
   if (projectIndex >= 0 && projectIndex < currentLibrary.projects.length) {
     // Find the tab element for the project being deleted
-    const userProjectTabs = document.querySelectorAll('#project-list button[role="tab"]');
+    const userProjectTabs = document.querySelectorAll(
+      '#project-list button[role="tab"]'
+    );
+    console.log('projects:', userProjectTabs);
     let projectTab = null;
 
     userProjectTabs.forEach((tab) => {
@@ -197,21 +201,9 @@ export async function deleteProject(projectName) {
 
     initializeApp();
 
-    // If the deleted project was the current project, select the previous project or "All Tasks"
+    // If the deleted project was the current project, select "All Tasks"
     if (isCurrentProject) {
-      if (projectIndex > 0 && userProjectTabs[projectIndex - 1]) {
-        // Select the previous project tab
-        // userProjectTabs[projectIndex - 1].click();
-        const event = new MouseEvent('click', {
-          view: window,
-          bubbles: true,
-          cancelable: true
-        });
-        userProjectTabs[projectIndex - 1].dispatchEvent(event);
-      } else {
-        // Select the "All Tasks" tab
-        document.getElementById('all-btn').click();
-      }
+      document.getElementById('all-btn').click();
     }
   }
 }

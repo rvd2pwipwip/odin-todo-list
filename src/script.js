@@ -80,7 +80,6 @@ function setupNavigation() {
       targetTab.setAttribute('aria-selected', 'true');
       console.log('Set the clicked tab as selected', targetTab);
       console.log('Updated tab:', targetTab.outerHTML);
-      targetTab.offsetHeight; // Accessing this property forces a reflow
 
       function getTabText(targetTab) {
         // Find the span with the class 'tab-text' within the button
