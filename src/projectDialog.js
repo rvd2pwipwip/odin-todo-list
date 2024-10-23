@@ -1,6 +1,6 @@
 import { Project } from './todoVoodoo.js';
 import { currentLibrary, updateHeader, setCurrentProject } from './script';
-import { createProjectTab } from './projectList.js';
+import { createProjectTab, deleteProject } from './projectList.js';
 import drawTasklist from './tasklist.js';
 
 export function addProjectDialog() {
@@ -149,7 +149,21 @@ export function deleteProjectDialog(projectName) {
   const deleteButton = document.createElement('button');
   deleteButton.style.width = '100%';
   deleteButton.id = 'delete-cta';
-  deleteButton.textContent = 'Delete Project';
+
+  // Create the icon element
+  const icon = document.createElement('span');
+  icon.className = 'material-icons-rounded';
+  icon.innerHTML = 'dangerous';
+  // Append the icon to the button first
+  deleteButton.appendChild(icon);
+  // Add the button text after the icon
+  deleteButton.innerHTML += 'Delete Project';
+  deleteButton.addEventListener('click', () => {
+    deleteProject(projectName);
+    dialog.close();
+    dialog.remove();
+  });
+
   buttonDiv.appendChild(deleteButton);
   dialogContent.appendChild(buttonDiv);
 

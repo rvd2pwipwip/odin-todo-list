@@ -1,20 +1,34 @@
-import { currentLibrary } from './script';
+import { currentLibrary, initializeApp, updateHeader } from './script';
 import {
   saveProjectsToLocalStorage,
   deleteProjectDialog,
 } from './projectDialog';
 
+const projectListContainer = document.createElement('div');
+projectListContainer.setAttribute('id', 'project-list');
+
+export function clearProjectList() {
+  projectListContainer.innerHTML = '';
+}
+
 export const drawProjectList = () => {
+  clearProjectList();
+  const userProjects = document.getElementById('user-projects');
+
+  // Append the container only if it's not already in the DOM
+  if (!userProjects.contains(projectListContainer)) {
+    userProjects.appendChild(projectListContainer);
+  }
+
   currentLibrary.projects
     .filter((p) => p.projectName !== 'Unassigned')
     .forEach((p) => {
-      createProjectTab(p.projectName);
+      const tab = createProjectTab(p.projectName);
+      projectListContainer.appendChild(tab);
     });
 };
 
 export const createProjectTab = (projectName) => {
-  const userProjects = document.getElementById('user-projects');
-
   const tabButton = document.createElement('button');
   tabButton.setAttribute('role', 'tab');
   tabButton.setAttribute('aria-selected', 'false');
@@ -56,18 +70,14 @@ export const createProjectTab = (projectName) => {
   deleteIcon.title = 'Delete Project';
   deleteIcon.addEventListener('click', (event) => {
     event.stopPropagation(); // Prevent the tab click event
-    // Logic to delete the project
-    console.log(`Delete project: ${projectName}`);
-
-    const deleteDialog = deleteProjectDialog(projectName);
+    const projectTab = event.target.closest('button[role="tab"]');
+    const projectNameSpan = projectTab.querySelector('.tab-text');
+    const deleteDialog = deleteProjectDialog(projectNameSpan.innerText);
     document.getElementById('dialog-placeholder').appendChild(deleteDialog);
     deleteDialog.showModal();
   });
   actionContainer.appendChild(deleteIcon);
-
   tabButton.appendChild(actionContainer);
-
-  userProjects.append(tabButton);
 
   return tabButton;
 };
@@ -111,15 +121,11 @@ function saveChanges(event) {
   const element = event.target;
   element.contentEditable = false;
   const newName = element.textContent.trim();
-  console.log(
-    `change name from ${
-      element.dataset.originalText
-    } to ${element.textContent.trim()}`
-  );
 
   if (newName !== element.dataset.originalText) {
     const projectTab = element.closest('button[role="tab"]');
     updateProjectName(projectTab, newName);
+    updateHeader(newName);
   }
 
   // Remove event listeners
@@ -155,5 +161,57 @@ function updateProjectName(projectTab, newName) {
 
     // Remove the data-original-text attribute
     spanElement.removeAttribute('data-original-text');
+  }
+}
+
+export async function deleteProject(projectName) {
+  const projectIndex = currentLibrary.projects.findIndex(
+    (p) => p.projectName === projectName
+  );
+
+  if (projectIndex >= 0 && projectIndex < currentLibrary.projects.length) {
+    // Find the tab element for the project being deleted
+    const userProjectTabs = document.querySelectorAll('#project-list button[role="tab"]');
+    let projectTab = null;
+
+    userProjectTabs.forEach((tab) => {
+      const textSpan = tab.querySelector('.tab-text');
+      if (textSpan && textSpan.textContent.trim() === projectName) {
+        projectTab = tab;
+      }
+    });
+
+    // Remove the project from the DOM
+    if (projectTab) {
+      projectTab.remove();
+    }
+
+    // Check if the project is currently selected
+    const isCurrentProject =
+      projectTab && projectTab.getAttribute('aria-selected') === 'true';
+
+    // Remove the project from the library
+    currentLibrary.projects.splice(projectIndex, 1);
+    saveProjectsToLocalStorage(currentLibrary);
+    // Remove the project from the DOM
+
+    initializeApp();
+
+    // If the deleted project was the current project, select the previous project or "All Tasks"
+    if (isCurrentProject) {
+      if (projectIndex > 0 && userProjectTabs[projectIndex - 1]) {
+        // Select the previous project tab
+        // userProjectTabs[projectIndex - 1].click();
+        const event = new MouseEvent('click', {
+          view: window,
+          bubbles: true,
+          cancelable: true
+        });
+        userProjectTabs[projectIndex - 1].dispatchEvent(event);
+      } else {
+        // Select the "All Tasks" tab
+        document.getElementById('all-btn').click();
+      }
+    }
   }
 }

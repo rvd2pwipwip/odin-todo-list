@@ -1,10 +1,13 @@
 import './styles.css';
 import { Task, Project, ProjectLibrary } from './todoVoodoo.js';
 import { addTaskDialog } from './taskDialog.js';
-import { addProjectDialog, saveProjectsToLocalStorage } from './projectDialog.js';
+import {
+  addProjectDialog,
+  saveProjectsToLocalStorage,
+} from './projectDialog.js';
 import { filterTodayTasks, filterWeekTasks } from './dateUtils.js';
 import drawTasklist from './tasklist.js';
-import { drawProjectList } from './projectList.js';
+import { drawProjectList, clearProjectList } from './projectList.js';
 
 let currentProject = null;
 export function setCurrentProject(project) {
@@ -12,6 +15,29 @@ export function setCurrentProject(project) {
 }
 
 export let currentLibrary = new ProjectLibrary();
+
+/////////////////////////////////////////////////////////
+// MutationObserver
+/////////////////////////////////////////////////////////
+
+// Function to observe changes in aria-selected attribute
+export function observeTabSelection() {
+  const observer = new MutationObserver((mutationsList) => {
+    for (const mutation of mutationsList) {
+      if (mutation.type === 'attributes' && mutation.attributeName === 'aria-selected') {
+        console.log('Mutation observed:', mutation.target.outerHTML);
+      }
+    }
+  });
+
+  // Observe all tab buttons within #project-list
+  const allTabs = document.querySelectorAll('#project-list button[role="tab"]');
+  allTabs.forEach((tab) => {
+    observer.observe(tab, { attributes: true });
+  });
+
+}
+
 
 /////////////////////////////////////////////////////////
 // App init
@@ -43,6 +69,7 @@ function setupNavigation() {
   // Add event listener to the nav element
   navElement.addEventListener('click', (event) => {
     const targetTab = event.target.closest('button[role="tab"]');
+    console.log('clicked on', targetTab);
     if (targetTab) {
       // Remove 'aria-selected' from all tabs
       navElement.querySelectorAll('button[role="tab"]').forEach((tab) => {
@@ -51,6 +78,9 @@ function setupNavigation() {
 
       // Set the clicked tab as selected
       targetTab.setAttribute('aria-selected', 'true');
+      console.log('Set the clicked tab as selected', targetTab);
+      console.log('Updated tab:', targetTab.outerHTML);
+      targetTab.offsetHeight; // Accessing this property forces a reflow
 
       function getTabText(targetTab) {
         // Find the span with the class 'tab-text' within the button
@@ -153,11 +183,13 @@ function setupButtons() {
   });
 }
 
-async function initializeApp() {
+export async function initializeApp() {
   await loadData();
+  clearProjectList();
   drawProjectList();
   drawTasklist(currentLibrary);
   setupNavigation();
+  observeTabSelection();
   setupButtons();
 }
 
@@ -178,6 +210,9 @@ function loadProjectsFromLocalStorage() {
 
 // Populate the project library
 function populateProjectLibrary(projectsData) {
+  // Clear the current projects in the library
+  currentLibrary.projects = [];
+
   projectsData.forEach((projectData) => {
     const project = new Project(projectData.projectName);
     projectData.tasks.forEach((taskData) => {

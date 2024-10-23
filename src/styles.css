@@ -455,3 +455,7 @@ dialog p span {
   font-weight: 600;
   line-height: 1.5;
 }
+
+dialog #delete-cta {
+  background: firebrick;
+}
