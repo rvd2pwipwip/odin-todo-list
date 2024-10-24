@@ -1,3 +1,26 @@
+import { Task } from './todoVoodoo.js';
+
+export function createTask(title, description, dueDate, priority, currentProject, currentLibrary) {
+  const today = getTodayDateFormatted();
+  priority = !priority ? 'Low' : priority;
+  dueDate = !dueDate ? today : dueDate;
+  const newTask = new Task(title, description, dueDate, priority);
+
+  // Add new task to current project or unassigned
+  if (currentProject) {
+    currentProject.tasks.push(newTask);
+  } else {
+    const unassignedProject = currentLibrary.projects.find(
+      (project) => project.projectName === 'Unassigned'
+    );
+    unassignedProject.tasks.push(newTask);
+  }
+
+  // Update localStorage
+  localStorage.setItem('projects', JSON.stringify(currentLibrary.projects));
+  return newTask;
+}
+
 const drawTasklist = (projectLibrary, project = null) => {
   const header = document.getElementById('main-header');
   const tasklist = document.getElementById('tasklist');

@@ -1,7 +1,5 @@
-import { Task } from './todoVoodoo.js';
 import { currentLibrary } from './script.js';
-import { getTodayDateFormatted } from './dateUtils.js';
-import drawTasklist from './taskManager.js';
+import { createTask } from './taskManager.js';
 
 export function addTaskDialog(currentProject) {
   // Remove existing dialog if it exists
@@ -144,50 +142,35 @@ export function addTaskDialog(currentProject) {
     }
   });
 
-  function addTask() {
-    let title = document.getElementById('title').value;
-    let description = document.getElementById('description').value;
-    let dueDate = document.getElementById('due-date').value;
-    let priority = document.getElementById('priority').value;
-
-    const today = getTodayDateFormatted();
+  function addTaskUI() {
+    const title = document.getElementById('title').value;
+    const description = document.getElementById('description').value;
+    const dueDate = document.getElementById('due-date').value;
+    const priority = document.getElementById('priority').value;
 
     // check for mandatory task parameters (title)
     if (title) {
-      priority = !priority ? 'Low' : priority;
-      console.log('Creating task with title:', title);
-      dueDate = !dueDate ? today : dueDate;
-      const newTask = new Task(title, description, dueDate, priority);
-
-      // Add the new task to the current project
-      if (currentProject) {
-        currentProject.tasks.push(newTask);
-      } else {
-        // Find the "Unassigned" project
-        let unassignedProject = currentLibrary.projects.find(
-          (project) => project.projectName === 'Unassigned'
-        );
-        unassignedProject.tasks.push(newTask);
-      }
+      createTask(
+        title,
+        description,
+        dueDate,
+        priority,
+        currentProject,
+        currentLibrary
+      );
 
       // Reset input fields
       document.getElementById('title').value = '';
       document.getElementById('description').value = '';
       document.getElementById('due-date').value = '';
       document.getElementById('priority').value = '';
-
-      // Update localStorage
-      localStorage.setItem('projects', JSON.stringify(currentLibrary.projects));
-
-      drawTasklist(currentLibrary, currentProject);
-      dialog.close();
     } else {
       console.error('Task title is required');
     }
   }
 
   // Add event listener for the add button to push the new todo
-  addButton.addEventListener('click', addTask);
+  addButton.addEventListener('click', addTaskUI);
 
   return dialog;
 }
