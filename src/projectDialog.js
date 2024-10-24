@@ -1,7 +1,7 @@
 import { Project } from './todoVoodoo.js';
 import { currentLibrary, updateHeader, setCurrentProject } from './script';
 import { createProjectTab, deleteProject } from './projectList.js';
-import drawTasklist from './tasklist.js';
+import drawTasklist from './taskManager.js';
 
 export function addProjectDialog() {
   const dialog = document.createElement('dialog');

@@ -6,7 +6,7 @@ import {
   saveProjectsToLocalStorage,
 } from './projectDialog.js';
 import { filterTodayTasks, filterWeekTasks } from './dateUtils.js';
-import drawTasklist from './tasklist.js';
+import drawTasklist from './taskManager.js';
 import { drawProjectList, clearProjectList } from './projectList.js';
 
 let currentProject = null;
@@ -24,7 +24,10 @@ export let currentLibrary = new ProjectLibrary();
 export function observeTabSelection() {
   const observer = new MutationObserver((mutationsList) => {
     for (const mutation of mutationsList) {
-      if (mutation.type === 'attributes' && mutation.attributeName === 'aria-selected') {
+      if (
+        mutation.type === 'attributes' &&
+        mutation.attributeName === 'aria-selected'
+      ) {
         console.log('Mutation observed:', mutation.target.outerHTML);
       }
     }
@@ -35,9 +38,7 @@ export function observeTabSelection() {
   allTabs.forEach((tab) => {
     observer.observe(tab, { attributes: true });
   });
-
 }
-
 
 /////////////////////////////////////////////////////////
 // App init
