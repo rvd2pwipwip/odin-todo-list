@@ -1,6 +1,7 @@
 import { Project } from './todoVoodoo.js';
 import { currentLibrary, updateHeader, setCurrentProject } from './script';
 import { createProjectTab, deleteProject } from './projectList.js';
+import { deleteProjectData } from './projectManager.js';
 import drawTasklist from './taskManager.js';
 
 export function addProjectDialog() {
@@ -127,7 +128,10 @@ export function addProjectDialog() {
   return dialog;
 }
 
-export function deleteProjectDialog(name) {
+export function deleteProjectDialog(projectId) {
+  const project = currentLibrary.projects.find((p) => p.id === projectId);
+  console.log(project.name);
+  const name = project ? project.name : null;
   const dialog = document.createElement('dialog');
   const dialogContent = document.createElement('div');
   dialogContent.style.padding = '1.5rem';
@@ -159,7 +163,7 @@ export function deleteProjectDialog(name) {
   // Add the button text after the icon
   deleteButton.innerHTML += 'Delete Project';
   deleteButton.addEventListener('click', () => {
-    deleteProject(name);
+    deleteProjectData(projectId, currentLibrary);
     dialog.close();
     dialog.remove();
   });

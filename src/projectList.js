@@ -72,7 +72,13 @@ export const createProjectTab = (name) => {
     event.stopPropagation(); // Prevent the tab click event
     const projectTab = event.target.closest('button[role="tab"]');
     const nameSpan = projectTab.querySelector('.tab-text');
-    const deleteDialog = deleteProjectDialog(nameSpan.innerText);
+    // console.log('namespan: ', nameSpan.innerText);
+    const projectIndex = currentLibrary.projects.findIndex(
+      (p) => p.name === nameSpan.innerText
+    );
+    // console.log(project);
+    const deleteDialog = deleteProjectDialog(currentLibrary.projects[projectIndex].id);
+    // console.log(currentLibrary.projects[projectIndex].id);
     document.getElementById('dialog-placeholder').appendChild(deleteDialog);
     deleteDialog.showModal();
   });
