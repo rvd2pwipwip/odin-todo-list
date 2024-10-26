@@ -11,7 +11,7 @@ export function createTask(title, description, dueDate, priority, currentProject
     currentProject.tasks.push(newTask);
   } else {
     const unassignedProject = currentLibrary.projects.find(
-      (project) => project.projectName === 'Unassigned'
+      (project) => project.name === 'Unassigned'
     );
     unassignedProject.tasks.push(newTask);
   }
@@ -29,9 +29,9 @@ const drawTasklist = (projectLibrary, project = null) => {
   if (project) {
     console.log(project);
     if (project.tasks.length === 0) {
-      drawEmptyProject(project.projectName);
+      drawEmptyProject(project.name);
     }
-    // header.innerText = project.projectName;
+    // header.innerText = project.name;
     project.tasks.forEach((task) => {
       createTaskCard(task, tasklist);
     });
@@ -66,9 +66,9 @@ const createTaskCard = (task, tasklist) => {
   tasklist.append(card);
 };
 
-const drawEmptyProject = (projectName) => {
+const drawEmptyProject = (name) => {
   const title = document.createElement('h1');
-  title.innerText = `${projectName} has no assigned tasks yet.`;
+  title.innerText = `${name} has no assigned tasks yet.`;
   tasklist.append(title);
 
   const emptyImage = document.createElement('img');

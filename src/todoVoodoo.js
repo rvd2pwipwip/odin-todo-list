@@ -1,3 +1,5 @@
+import { v4 as uuidv4 } from 'uuid';
+
 class Task {
   constructor(title, description, dueDate, priority = 'Low', done = false) {
     this.title = title;
@@ -15,10 +17,12 @@ class Task {
 }
 
 class Project {
-  constructor(projectName, tasks = []) {
-    this.projectName = projectName;
-    this.tasks = tasks;
+  constructor(name) {
+    this.id = uuidv4();
+    this.name = name;
+    this.tasks = [];
   }
+
   addTask(task) {
     this.tasks.push(task);
   }

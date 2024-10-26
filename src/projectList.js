@@ -21,14 +21,14 @@ export const drawProjectList = () => {
   }
 
   currentLibrary.projects
-    .filter((p) => p.projectName !== 'Unassigned')
+    .filter((p) => p.name !== 'Unassigned')
     .forEach((p) => {
-      const tab = createProjectTab(p.projectName);
+      const tab = createProjectTab(p.name);
       projectListContainer.appendChild(tab);
     });
 };
 
-export const createProjectTab = (projectName) => {
+export const createProjectTab = (name) => {
   const tabButton = document.createElement('button');
   tabButton.setAttribute('role', 'tab');
   tabButton.setAttribute('aria-selected', 'false');
@@ -44,7 +44,7 @@ export const createProjectTab = (projectName) => {
   const textSpan = document.createElement('span');
   textSpan.className = 'tab-text';
   textSpan.setAttribute('contenteditable', 'false');
-  textSpan.innerText = projectName;
+  textSpan.innerText = name;
   tabButton.appendChild(textSpan);
 
   const actionContainer = document.createElement('div');
@@ -58,8 +58,8 @@ export const createProjectTab = (projectName) => {
   editIcon.addEventListener('click', (event) => {
     event.stopPropagation(); // Prevent the button click event
     const projectTab = event.target.closest('button[role="tab"]');
-    const projectNameSpan = projectTab.querySelector('.tab-text');
-    makeEditable(projectNameSpan);
+    const nameSpan = projectTab.querySelector('.tab-text');
+    makeEditable(nameSpan);
   });
   actionContainer.appendChild(editIcon);
 
@@ -71,8 +71,8 @@ export const createProjectTab = (projectName) => {
   deleteIcon.addEventListener('click', (event) => {
     event.stopPropagation(); // Prevent the tab click event
     const projectTab = event.target.closest('button[role="tab"]');
-    const projectNameSpan = projectTab.querySelector('.tab-text');
-    const deleteDialog = deleteProjectDialog(projectNameSpan.innerText);
+    const nameSpan = projectTab.querySelector('.tab-text');
+    const deleteDialog = deleteProjectDialog(nameSpan.innerText);
     document.getElementById('dialog-placeholder').appendChild(deleteDialog);
     deleteDialog.showModal();
   });
@@ -124,7 +124,7 @@ function saveChanges(event) {
 
   if (newName !== element.dataset.originalText) {
     const projectTab = element.closest('button[role="tab"]');
-    updateProjectName(projectTab, newName);
+    updateName(projectTab, newName);
     updateHeader(newName);
   }
 
@@ -140,7 +140,7 @@ function revertChanges(element) {
   element.removeEventListener('blur', saveChanges);
 }
 
-function updateProjectName(projectTab, newName) {
+function updateName(projectTab, newName) {
   // Update tab button text
   projectTab.querySelector('.tab-text').textContent = newName;
 
@@ -149,12 +149,12 @@ function updateProjectName(projectTab, newName) {
   const originalText = spanElement.getAttribute('data-original-text');
 
   const projectIndex = currentLibrary.projects.findIndex(
-    (p) => p.projectName === originalText
+    (p) => p.name === originalText
   );
 
   if (projectIndex !== -1) {
     // Update the project name in the currentLibrary
-    currentLibrary.projects[projectIndex].projectName = newName;
+    currentLibrary.projects[projectIndex].name = newName;
 
     // Save the updated projects to localStorage
     saveProjectsToLocalStorage(currentLibrary);
@@ -164,9 +164,9 @@ function updateProjectName(projectTab, newName) {
   }
 }
 
-export async function deleteProject(projectName) {
+export async function deleteProject(name) {
   const projectIndex = currentLibrary.projects.findIndex(
-    (p) => p.projectName === projectName
+    (p) => p.name === name
   );
   console.log('index:', projectIndex);
 
@@ -180,7 +180,7 @@ export async function deleteProject(projectName) {
 
     userProjectTabs.forEach((tab) => {
       const textSpan = tab.querySelector('.tab-text');
-      if (textSpan && textSpan.textContent.trim() === projectName) {
+      if (textSpan && textSpan.textContent.trim() === name) {
         projectTab = tab;
       }
     });

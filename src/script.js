@@ -106,7 +106,7 @@ function setupNavigation() {
 
           const todayProjects = currentLibrary.projects
             .map((project) => ({
-              projectName: project.projectName,
+              name: project.name,
               tasks: project.tasks.filter((task) => todayTasks.includes(task)),
             }))
             .filter((project) => project.tasks.length > 0);
@@ -120,7 +120,7 @@ function setupNavigation() {
           const weekTasks = filterWeekTasks(currentLibrary);
           const weekProjects = currentLibrary.projects
             .map((project) => ({
-              projectName: project.projectName,
+              name: project.name,
               tasks: project.tasks.filter((task) => weekTasks.includes(task)),
             }))
             .filter((project) => project.tasks.length > 0);
@@ -134,7 +134,7 @@ function setupNavigation() {
           setAddTaskButtonState(true);
           // Handle user-created project tabs
           currentProject = currentLibrary.projects.find(
-            (project) => project.projectName === tabText
+            (project) => project.name === tabText
           );
           if (currentProject) {
             updateHeader(tabText);
@@ -173,7 +173,7 @@ function setupButtons() {
 
       // Add task to a general list or "unassigned" project
       const unassignedProject = currentLibrary.projects.find(
-        (project) => project.projectName === 'Unassigned'
+        (p) => p.name === 'Unassigned'
       );
     }
 
@@ -189,7 +189,7 @@ export async function initializeApp() {
   drawProjectList();
   drawTasklist(currentLibrary);
   setupNavigation();
-  observeTabSelection();
+  // observeTabSelection();
   setupButtons();
 }
 
@@ -214,7 +214,7 @@ function populateProjectLibrary(projectsData) {
   currentLibrary.projects = [];
 
   projectsData.forEach((projectData) => {
-    const project = new Project(projectData.projectName);
+    const project = new Project(projectData.name);
     projectData.tasks.forEach((taskData) => {
       const task = new Task(
         taskData.title,

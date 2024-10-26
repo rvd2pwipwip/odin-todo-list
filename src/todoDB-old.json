@@ -1,8 +1,7 @@
 {
   "projects": [
     {
-      "name": "Random tasks",
-      "id": "bea77576-e089-47e2-bc9f-64d72baa2f1b",
+      "projectName": "Random tasks",
       "tasks": [
         {
           "title": "Task 1",
@@ -28,8 +27,7 @@
       ]
     },
     {
-      "name": "Project 1",
-      "id": "1dfb7977-9a05-4a5f-b798-ef472beb390b",
+      "projectName": "Project 1",
       "tasks": [
         {
           "title": "project 1",
@@ -48,8 +46,7 @@
       ]
     },
     {
-      "name": "Project 2",
-      "id": "fd144547-969d-41ff-8e6a-7cbbd91ca111",
+      "projectName": "Project 2",
       "tasks": [
         {
           "title": "Project 2 task",
@@ -61,9 +58,8 @@
       ]
     },
     {
-      "name": "Unassigned",
-      "id": "ffef647e-0cfc-49aa-84c3-9483182b5dbc",
-      "tasks": [] 
+      "projectName": "Unassigned",
+      "tasks": []
     }
   ]
 }

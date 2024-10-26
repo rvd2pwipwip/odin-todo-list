@@ -71,11 +71,11 @@ export function addProjectDialog() {
   addButton.addEventListener('click', (event) => {
     event.preventDefault(); // Prevent the default form submission
 
-    const projectNameInput = form.querySelector('#name');
-    const projectName = projectNameInput.value.trim();
+    const nameInput = form.querySelector('#name');
+    const name = nameInput.value.trim();
 
-    if (projectName) {
-      const newProject = new Project(projectName);
+    if (name) {
+      const newProject = new Project(name);
       currentLibrary.projects.push(newProject);
 
       // Save the updated projects to localStorage
@@ -88,11 +88,11 @@ export function addProjectDialog() {
       });
 
       // Create and select the new tab
-      const newTab = createProjectTab(projectName);
+      const newTab = createProjectTab(name);
       newTab.setAttribute('aria-selected', 'true');
 
       // Update the header and draw the task list for the new project
-      updateHeader(projectName);
+      updateHeader(name);
       setCurrentProject(newProject);
       drawTasklist(currentLibrary, newProject);
 
@@ -127,7 +127,7 @@ export function addProjectDialog() {
   return dialog;
 }
 
-export function deleteProjectDialog(projectName) {
+export function deleteProjectDialog(name) {
   const dialog = document.createElement('dialog');
   const dialogContent = document.createElement('div');
   dialogContent.style.padding = '1.5rem';
@@ -142,7 +142,7 @@ export function deleteProjectDialog(projectName) {
   dialog.appendChild(closeButton);
 
   const dialogText = document.createElement('p');
-  dialogText.innerHTML = `Are you sure you want to delete <span>${projectName}</span>?<br><br>You cannot undo this operation.`;
+  dialogText.innerHTML = `Are you sure you want to delete <span>${name}</span>?<br><br>You cannot undo this operation.`;
   dialogContent.appendChild(dialogText);
 
   const buttonDiv = document.createElement('div');
@@ -159,7 +159,7 @@ export function deleteProjectDialog(projectName) {
   // Add the button text after the icon
   deleteButton.innerHTML += 'Delete Project';
   deleteButton.addEventListener('click', () => {
-    deleteProject(projectName);
+    deleteProject(name);
     dialog.close();
     dialog.remove();
   });
@@ -194,7 +194,7 @@ export function deleteProjectDialog(projectName) {
 // Function to save projects to LocalStorage
 export function saveProjectsToLocalStorage() {
   const projectsData = currentLibrary.projects.map((project) => ({
-    projectName: project.projectName,
+    name: project.name,
     tasks: project.tasks.map((task) => ({
       title: task.title,
       description: task.description,
