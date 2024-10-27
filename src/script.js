@@ -1,13 +1,11 @@
 import './styles.css';
 import { Task, Project, ProjectLibrary } from './todoVoodoo.js';
 import { addTaskDialog } from './taskDialog.js';
-import {
-  addProjectDialog,
-  saveProjectsToLocalStorage,
-} from './projectDialog.js';
+import { addProjectDialog } from './projectDialog.js';
 import { filterTodayTasks, filterWeekTasks } from './dateUtils.js';
 import drawTasklist from './taskManager.js';
-import { drawProjectList, clearProjectList } from './projectList.js';
+import { saveProjectsToLocalStorage } from './projectManager.js';
+import { drawProjectList, clearProjectList } from './projectUI.js';
 
 let currentProject = null;
 export function setCurrentProject(project) {
@@ -70,7 +68,6 @@ function setupNavigation() {
   // Add event listener to the nav element
   navElement.addEventListener('click', (event) => {
     const targetTab = event.target.closest('button[role="tab"]');
-    console.log('clicked on', targetTab);
     if (targetTab) {
       // Remove 'aria-selected' from all tabs
       navElement.querySelectorAll('button[role="tab"]').forEach((tab) => {
@@ -79,8 +76,6 @@ function setupNavigation() {
 
       // Set the clicked tab as selected
       targetTab.setAttribute('aria-selected', 'true');
-      console.log('Set the clicked tab as selected', targetTab);
-      console.log('Updated tab:', targetTab.outerHTML);
 
       function getTabText(targetTab) {
         // Find the span with the class 'tab-text' within the button
@@ -124,8 +119,6 @@ function setupNavigation() {
               tasks: project.tasks.filter((task) => weekTasks.includes(task)),
             }))
             .filter((project) => project.tasks.length > 0);
-
-          console.log(weekProjects); // Debugging: Check the content of weekProjects
 
           updateHeader(tabText);
           drawTasklist({ projects: weekProjects }, null, tabText);

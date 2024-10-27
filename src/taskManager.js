@@ -27,7 +27,6 @@ const drawTasklist = (projectLibrary, project = null) => {
   tasklist.innerHTML = '';
 
   if (project) {
-    console.log(project);
     if (project.tasks.length === 0) {
       drawEmptyProject(project.name);
     }

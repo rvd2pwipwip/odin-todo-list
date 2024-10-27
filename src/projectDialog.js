@@ -1,7 +1,10 @@
 import { Project } from './todoVoodoo.js';
 import { currentLibrary, updateHeader, setCurrentProject } from './script';
-import { createProjectTab, deleteProject } from './projectList.js';
-import { deleteProjectData } from './projectManager.js';
+import { createProjectTab, drawProjectList, removeProjectUI } from './projectUI.js';
+import {
+  saveProjectsToLocalStorage,
+  deleteProjectData,
+} from './projectManager.js';
 import drawTasklist from './taskManager.js';
 
 export function addProjectDialog() {
@@ -77,7 +80,7 @@ export function addProjectDialog() {
 
     if (name) {
       const newProject = new Project(name);
-      currentLibrary.projects.push(newProject);
+      currentLibrary.addProject(newProject);
 
       // Save the updated projects to localStorage
       saveProjectsToLocalStorage();
@@ -89,12 +92,14 @@ export function addProjectDialog() {
       });
 
       // Create and select the new tab
-      const newTab = createProjectTab(name);
+      const newTab = createProjectTab(newProject.id);
+      console.log('new tab for:', newTab);
       newTab.setAttribute('aria-selected', 'true');
 
       // Update the header and draw the task list for the new project
-      updateHeader(name);
       setCurrentProject(newProject);
+      drawProjectList();
+      updateHeader(name);
       drawTasklist(currentLibrary, newProject);
 
       dialog.close(); // Close the dialog after adding the project
@@ -164,6 +169,7 @@ export function deleteProjectDialog(projectId) {
   deleteButton.innerHTML += 'Delete Project';
   deleteButton.addEventListener('click', () => {
     deleteProjectData(projectId, currentLibrary);
+    removeProjectUI(projectId);
     dialog.close();
     dialog.remove();
   });
@@ -193,20 +199,4 @@ export function deleteProjectDialog(projectId) {
   });
 
   return dialog;
-}
-
-// Function to save projects to LocalStorage
-export function saveProjectsToLocalStorage() {
-  const projectsData = currentLibrary.projects.map((project) => ({
-    name: project.name,
-    tasks: project.tasks.map((task) => ({
-      title: task.title,
-      description: task.description,
-      dueDate: task.dueDate,
-      priority: task.priority,
-      done: task.done,
-    })),
-  }));
-
-  localStorage.setItem('projects', JSON.stringify(projectsData));
 }

@@ -1,4 +1,20 @@
+import { currentLibrary } from "./script";
 
+export function saveProjectsToLocalStorage() { // currentLibrary parameter or import?
+  const projectsData = currentLibrary.projects.map((project) => ({
+    name: project.name,
+    id: project.id,
+    tasks: project.tasks.map((task) => ({
+      title: task.title,
+      description: task.description,
+      dueDate: task.dueDate,
+      priority: task.priority,
+      done: task.done,
+    })),
+  }));
+
+  localStorage.setItem('projects', JSON.stringify(projectsData));
+}
 
 export function deleteProjectData(projectId, currentLibrary) {
   const projectIndex = currentLibrary.projects.findIndex(project => project.id === projectId);
@@ -8,4 +24,8 @@ export function deleteProjectData(projectId, currentLibrary) {
   } else {
     console.error('Project not found');
   }
+}
+
+export function updateProjectName(projectIndex, newName) {
+  currentLibrary.projects[projectIndex].name = newName;
 }

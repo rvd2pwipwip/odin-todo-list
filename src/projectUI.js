@@ -1,8 +1,10 @@
 import { currentLibrary, initializeApp, updateHeader } from './script';
+import { deleteProjectDialog } from './projectDialog';
 import {
   saveProjectsToLocalStorage,
-  deleteProjectDialog,
-} from './projectDialog';
+  updateProjectName,
+  deleteProjectData,
+} from './projectManager';
 
 const projectListContainer = document.createElement('div');
 projectListContainer.setAttribute('id', 'project-list');
@@ -23,12 +25,14 @@ export const drawProjectList = () => {
   currentLibrary.projects
     .filter((p) => p.name !== 'Unassigned')
     .forEach((p) => {
-      const tab = createProjectTab(p.name);
+      const tab = createProjectTab(p.id);
       projectListContainer.appendChild(tab);
     });
 };
 
-export const createProjectTab = (name) => {
+export const createProjectTab = (id) => {
+  const project = currentLibrary.projects.find((p) => p.id === id);
+  const name = project.name;
   const tabButton = document.createElement('button');
   tabButton.setAttribute('role', 'tab');
   tabButton.setAttribute('aria-selected', 'false');
@@ -72,13 +76,12 @@ export const createProjectTab = (name) => {
     event.stopPropagation(); // Prevent the tab click event
     const projectTab = event.target.closest('button[role="tab"]');
     const nameSpan = projectTab.querySelector('.tab-text');
-    // console.log('namespan: ', nameSpan.innerText);
     const projectIndex = currentLibrary.projects.findIndex(
       (p) => p.name === nameSpan.innerText
     );
-    // console.log(project);
-    const deleteDialog = deleteProjectDialog(currentLibrary.projects[projectIndex].id);
-    // console.log(currentLibrary.projects[projectIndex].id);
+    const deleteDialog = deleteProjectDialog(
+      currentLibrary.projects[projectIndex].id
+    );
     document.getElementById('dialog-placeholder').appendChild(deleteDialog);
     deleteDialog.showModal();
   });
@@ -110,7 +113,7 @@ function makeEditable(element) {
 
   // Add event listeners for saving changes
   element.addEventListener('keydown', handleKeyDown);
-  element.addEventListener('blur', saveChanges);
+  element.addEventListener('blur', updateUI);
 }
 
 function handleKeyDown(event) {
@@ -123,7 +126,7 @@ function handleKeyDown(event) {
   }
 }
 
-function saveChanges(event) {
+function updateUI(event) {
   const element = event.target;
   element.contentEditable = false;
   const newName = element.textContent.trim();
@@ -136,14 +139,14 @@ function saveChanges(event) {
 
   // Remove event listeners
   element.removeEventListener('keydown', handleKeyDown);
-  element.removeEventListener('blur', saveChanges);
+  element.removeEventListener('blur', updateUI);
 }
 
 function revertChanges(element) {
   element.textContent = element.dataset.originalText;
   element.contentEditable = false;
   element.removeEventListener('keydown', handleKeyDown);
-  element.removeEventListener('blur', saveChanges);
+  element.removeEventListener('blur', updateUI);
 }
 
 function updateName(projectTab, newName) {
@@ -160,7 +163,7 @@ function updateName(projectTab, newName) {
 
   if (projectIndex !== -1) {
     // Update the project name in the currentLibrary
-    currentLibrary.projects[projectIndex].name = newName;
+    updateProjectName(projectIndex, newName);
 
     // Save the updated projects to localStorage
     saveProjectsToLocalStorage(currentLibrary);
@@ -170,18 +173,14 @@ function updateName(projectTab, newName) {
   }
 }
 
-export async function deleteProject(name) {
-  const projectIndex = currentLibrary.projects.findIndex(
-    (p) => p.name === name
-  );
-  console.log('index:', projectIndex);
+export async function removeProjectUI(id) {
+  const projectIndex = currentLibrary.projects.findIndex((p) => (p.id = id));
 
   if (projectIndex >= 0 && projectIndex < currentLibrary.projects.length) {
     // Find the tab element for the project being deleted
     const userProjectTabs = document.querySelectorAll(
       '#project-list button[role="tab"]'
     );
-    console.log('projects:', userProjectTabs);
     let projectTab = null;
 
     userProjectTabs.forEach((tab) => {
@@ -201,9 +200,9 @@ export async function deleteProject(name) {
       projectTab && projectTab.getAttribute('aria-selected') === 'true';
 
     // Remove the project from the library
-    currentLibrary.projects.splice(projectIndex, 1);
+    // currentLibrary.projects.splice(projectIndex, 1);
+    deleteProjectData(projectIndex, currentLibrary);
     saveProjectsToLocalStorage(currentLibrary);
-    // Remove the project from the DOM
 
     initializeApp();
 
