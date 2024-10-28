@@ -1,8 +1,15 @@
 import { Task } from './todoVoodoo.js';
 import { getTodayDateFormatted } from './dateUtils.js';
-import { drawTaskCard } from './taskUi.js';
+import { drawTaskCard } from './taskUI.js';
 
-export function createTask(title, description, dueDate, priority, currentProject, currentLibrary) {
+export function createTask(
+  title,
+  description,
+  dueDate,
+  priority,
+  currentProject,
+  currentLibrary
+) {
   const today = getTodayDateFormatted();
   priority = !priority ? 'Low' : priority;
   dueDate = !dueDate ? today : dueDate;

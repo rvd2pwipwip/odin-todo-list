@@ -1,6 +1,6 @@
 import { currentLibrary } from './script.js';
 import { createTask } from './taskManager.js';
-import { drawTaskCard } from './taskUi.js';
+import { drawTaskCard } from './taskUI.js';
 
 export function addTaskDialog(currentProject) {
   // Remove existing dialog if it exists
@@ -160,9 +160,7 @@ export function addTaskDialog(currentProject) {
         currentLibrary
       );
 
-      
-
-      drawTaskCard();
+      // drawTaskCard();
 
       // Reset input fields
       document.getElementById('title').value = '';
