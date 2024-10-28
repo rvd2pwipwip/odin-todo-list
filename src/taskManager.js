@@ -1,4 +1,6 @@
 import { Task } from './todoVoodoo.js';
+import { getTodayDateFormatted } from './dateUtils.js';
+import { drawTaskCard } from './taskUi.js';
 
 export function createTask(title, description, dueDate, priority, currentProject, currentLibrary) {
   const today = getTodayDateFormatted();
@@ -8,12 +10,12 @@ export function createTask(title, description, dueDate, priority, currentProject
 
   // Add new task to current project or unassigned
   if (currentProject) {
-    currentProject.tasks.push(newTask);
+    currentProject.addTask(newTask);
   } else {
     const unassignedProject = currentLibrary.projects.find(
       (project) => project.name === 'Unassigned'
     );
-    unassignedProject.tasks.push(newTask);
+    unassignedProject.addTask(newTask);
   }
 
   // Update localStorage
@@ -30,39 +32,16 @@ const drawTasklist = (projectLibrary, project = null) => {
     if (project.tasks.length === 0) {
       drawEmptyProject(project.name);
     }
-    // header.innerText = project.name;
     project.tasks.forEach((task) => {
-      createTaskCard(task, tasklist);
+      drawTaskCard(task, tasklist);
     });
   } else {
-    // header.innerText = 'All tasks';
     projectLibrary.projects.forEach((project) => {
       project.tasks.forEach((task) => {
-        createTaskCard(task, tasklist);
+        drawTaskCard(task, tasklist);
       });
     });
   }
-};
-
-const createTaskCard = (task, tasklist) => {
-  const card = document.createElement('div');
-  card.className = 'card';
-
-  const title = document.createElement('h3');
-  title.className = 'title';
-  title.textContent = task.title;
-
-  const done = document.createElement('input');
-  done.setAttribute('type', 'checkbox');
-  done.className = 'done';
-  done.checked = task.done;
-
-  const dueDate = document.createElement('p');
-  dueDate.className = 'due-date';
-  dueDate.textContent = task.dueDate;
-
-  card.append(done, title, dueDate);
-  tasklist.append(card);
 };
 
 const drawEmptyProject = (name) => {

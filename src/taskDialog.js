@@ -1,5 +1,6 @@
 import { currentLibrary } from './script.js';
 import { createTask } from './taskManager.js';
+import { drawTaskCard } from './taskUi.js';
 
 export function addTaskDialog(currentProject) {
   // Remove existing dialog if it exists
@@ -142,7 +143,7 @@ export function addTaskDialog(currentProject) {
     }
   });
 
-  function addTaskUI() {
+  function addTask() {
     const title = document.getElementById('title').value;
     const description = document.getElementById('description').value;
     const dueDate = document.getElementById('due-date').value;
@@ -159,6 +160,10 @@ export function addTaskDialog(currentProject) {
         currentLibrary
       );
 
+      
+
+      drawTaskCard();
+
       // Reset input fields
       document.getElementById('title').value = '';
       document.getElementById('description').value = '';
@@ -170,7 +175,7 @@ export function addTaskDialog(currentProject) {
   }
 
   // Add event listener for the add button to push the new todo
-  addButton.addEventListener('click', addTaskUI);
+  addButton.addEventListener('click', addTask);
 
   return dialog;
 }
