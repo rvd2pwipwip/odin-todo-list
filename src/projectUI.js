@@ -5,6 +5,7 @@ import {
   updateProjectName,
   deleteProjectData,
 } from './projectManager';
+import { UIState } from './uiStateManager';
 
 const projectListContainer = document.createElement('div');
 projectListContainer.setAttribute('id', 'project-list');
@@ -25,17 +26,18 @@ export const drawProjectList = () => {
   currentLibrary.projects
     .filter((p) => p.name !== 'Unassigned')
     .forEach((p) => {
-      const tab = createProjectTab(p.id);
+      const tab = drawProjectTab(p.id);
       projectListContainer.appendChild(tab);
     });
 };
 
-export const createProjectTab = (id) => {
+export const drawProjectTab = (id) => {
   const project = currentLibrary.projects.find((p) => p.id === id);
   const name = project.name;
   const tabButton = document.createElement('button');
   tabButton.setAttribute('role', 'tab');
   tabButton.setAttribute('aria-selected', 'false');
+  tabButton.setAttribute('data-id', id);
 
   const icon = document.createElement('i');
   icon.className = 'material-icons-rounded';
@@ -134,7 +136,7 @@ function updateUI(event) {
   if (newName !== element.dataset.originalText) {
     const projectTab = element.closest('button[role="tab"]');
     updateName(projectTab, newName);
-    updateHeader(newName);
+    UIState.updateHeader(newName);
   }
 
   // Remove event listeners

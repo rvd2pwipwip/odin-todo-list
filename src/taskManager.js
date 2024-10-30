@@ -31,7 +31,6 @@ export function createTask(
 }
 
 const drawTasklist = (projectLibrary, project = null) => {
-  const header = document.getElementById('main-header');
   const tasklist = document.getElementById('tasklist');
   tasklist.innerHTML = '';
 

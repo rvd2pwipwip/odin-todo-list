@@ -6,6 +6,7 @@ import { filterTodayTasks, filterWeekTasks } from './dateUtils.js';
 import drawTasklist from './taskManager.js';
 import { saveProjectsToLocalStorage } from './projectManager.js';
 import { drawProjectList, clearProjectList } from './projectUI.js';
+import { UIState } from './uiStateManager.js';
 
 let currentProject = null;
 export function setCurrentProject(project) {
@@ -92,7 +93,7 @@ function setupNavigation() {
         case 'All tasks':
           setAddTaskButtonState(true);
           setCurrentProject(null);
-          updateHeader(tabText);
+          UIState.updateHeader(tabText);
           drawTasklist(currentLibrary, currentProject);
           break;
         case 'Today':
@@ -106,7 +107,7 @@ function setupNavigation() {
             }))
             .filter((project) => project.tasks.length > 0);
 
-          updateHeader(tabText);
+          UIState.updateHeader(tabText);
           drawTasklist({ projects: todayProjects }, null);
           break;
 
@@ -120,7 +121,7 @@ function setupNavigation() {
             }))
             .filter((project) => project.tasks.length > 0);
 
-          updateHeader(tabText);
+          UIState.updateHeader(tabText);
           drawTasklist({ projects: weekProjects }, null, tabText);
           break;
         default:
@@ -130,7 +131,7 @@ function setupNavigation() {
             (project) => project.name === tabText
           );
           if (currentProject) {
-            updateHeader(tabText);
+            UIState.updateHeader(tabText);
             drawTasklist(currentLibrary, currentProject);
           } else {
             console.log('Project not found:', tabText);
@@ -223,9 +224,9 @@ function populateProjectLibrary(projectsData) {
 }
 
 // Update the main header
-export const updateHeader = (headerText) => {
-  document.getElementById('main-header').innerText = headerText;
-};
+// export const updateHeader = (headerText) => {
+//   document.getElementById('main-header').innerText = headerText;
+// };
 
 // Manage add task button state
 function setAddTaskButtonState(enabled) {

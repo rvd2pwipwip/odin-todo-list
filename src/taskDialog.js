@@ -1,6 +1,7 @@
 import { currentLibrary } from './script.js';
 import { createTask } from './taskManager.js';
 import { drawTaskCard } from './taskUI.js';
+import { Task } from './todoVoodoo.js';
 
 export function addTaskDialog(currentProject) {
   // Remove existing dialog if it exists
@@ -151,7 +152,7 @@ export function addTaskDialog(currentProject) {
 
     // check for mandatory task parameters (title)
     if (title) {
-      createTask(
+      const newTask = createTask(
         title,
         description,
         dueDate,
@@ -160,7 +161,9 @@ export function addTaskDialog(currentProject) {
         currentLibrary
       );
 
-      // drawTaskCard();
+      // Draw the new task card
+      const taskList = document.getElementById('tasklist');
+      drawTaskCard(newTask, taskList);
 
       // Reset input fields
       document.getElementById('title').value = '';

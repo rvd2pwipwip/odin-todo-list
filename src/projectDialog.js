@@ -1,11 +1,16 @@
 import { Project } from './todoVoodoo.js';
-import { currentLibrary, updateHeader, setCurrentProject } from './script';
-import { createProjectTab, drawProjectList, removeProjectUI } from './projectUI.js';
+import { currentLibrary, updateHeader } from './script';
+import {
+  drawProjectTab,
+  drawProjectList,
+  removeProjectUI,
+} from './projectUI.js';
 import {
   saveProjectsToLocalStorage,
   deleteProjectData,
 } from './projectManager.js';
 import drawTasklist from './taskManager.js';
+import { UIState } from './uiStateManager.js';
 
 export function addProjectDialog() {
   const dialog = document.createElement('dialog');
@@ -85,22 +90,15 @@ export function addProjectDialog() {
       // Save the updated projects to localStorage
       saveProjectsToLocalStorage();
 
-      // Remove 'aria-selected' from all tabs
-      const allTabs = document.querySelectorAll('button[role="tab"]');
-      allTabs.forEach((tab) => {
-        tab.setAttribute('aria-selected', 'false');
-      });
+      // Create the new tab
+      drawProjectTab(newProject.id);
 
-      // Create and select the new tab
-      const newTab = createProjectTab(newProject.id);
-      console.log('new tab for:', newTab);
-      newTab.setAttribute('aria-selected', 'true');
-
-      // Update the header and draw the task list for the new project
-      setCurrentProject(newProject);
+      // Update the UI
       drawProjectList();
-      updateHeader(name);
+      UIState.updateHeader(name);
       drawTasklist(currentLibrary, newProject);
+      // After drawing the projects, update the UI state
+      UIState.setSelectedProject(newProject.id);
 
       dialog.close(); // Close the dialog after adding the project
       dialog.remove();
