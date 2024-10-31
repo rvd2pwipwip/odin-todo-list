@@ -12,5 +12,3 @@ data.projects = data.projects.map(project => ({
 
 // Write the updated data back to the JSON file
 fs.writeFileSync('todoDB.json', JSON.stringify(data, null, 2));
-
-console.log('Unique IDs added to each project.');

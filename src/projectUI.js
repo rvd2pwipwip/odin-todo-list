@@ -99,7 +99,6 @@ export const drawProjectTab = (id) => {
 
 // Edit button
 function makeEditable(element) {
-  console.log(`Editable: ${element.textContent}`);
   element.contentEditable = true;
   element.focus();
 

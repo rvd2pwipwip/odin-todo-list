@@ -129,12 +129,6 @@ function setupNavigation() {
           break;
         default:
           setAddTaskButtonState(true);
-          // Handle user-created project tabs
-          // const currentProject = currentLibrary.projects.find(
-          //   (project) => project.name === tabText
-          // );
-          // if (currentProject) {
-          console.log(currentId);
           if (currentId) {
             UIState.updateHeader(tabText);
             drawTasklist(currentLibrary, currentId);

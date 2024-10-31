@@ -44,7 +44,7 @@ export const drawTasklist = (projectLibrary, projectId = null) => {
 
   if (project) {
     if (project.tasks.length === 0) {
-      drawEmptyProject(projectId.name);
+      drawEmptyProject(project.name);
     }
     project.tasks.forEach((task) => {
       drawTaskCard(task, tasklist);

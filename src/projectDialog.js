@@ -133,7 +133,6 @@ export function addProjectDialog() {
 
 export function deleteProjectDialog(projectId) {
   const project = currentLibrary.projects.find((p) => p.id === projectId);
-  console.log(project.name);
   const name = project ? project.name : null;
   const dialog = document.createElement('dialog');
   const dialogContent = document.createElement('div');
