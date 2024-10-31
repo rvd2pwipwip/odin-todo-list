@@ -1,5 +1,5 @@
-import { Project } from './todoVoodoo.js';
-import { currentLibrary, updateHeader } from './script';
+import { Project } from '../todoVoodoo.js';
+import { currentLibrary, updateHeader } from '../script.js';
 import {
   drawProjectTab,
   drawProjectList,
@@ -8,9 +8,9 @@ import {
 import {
   saveProjectsToLocalStorage,
   deleteProjectData,
-} from './projectManager.js';
-import drawTasklist from './taskManager.js';
-import { UIState } from './uiStateManager.js';
+} from '../services/projectManager.js';
+import drawTasklist from '../services/taskManager.js';
+import { UIState } from '../utils/uiStateManager.js';
 
 export function addProjectDialog() {
   const dialog = document.createElement('dialog');

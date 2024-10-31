@@ -1,7 +1,7 @@
-import { Task } from './todoVoodoo.js';
-import { getTodayDateFormatted } from './dateUtils.js';
-import { drawTaskCard } from './taskUI.js';
-import { currentLibrary } from './script.js';
+import { Task } from '../todoVoodoo.js';
+import { getTodayDateFormatted } from '../utils/dateUtils.js';
+import { drawTaskCard } from '../components/taskUI.js';
+import { currentLibrary } from '../script.js';
 
 export function createTask(
   title,
@@ -38,9 +38,7 @@ export const drawTasklist = (projectLibrary, projectId = null) => {
   const tasklist = document.getElementById('tasklist');
   tasklist.innerHTML = '';
 
-  const project = currentLibrary.projects.find(
-    (proj) => proj.id === projectId
-  );
+  const project = currentLibrary.projects.find((proj) => proj.id === projectId);
 
   if (project) {
     if (project.tasks.length === 0) {

@@ -1,6 +1,7 @@
-import { currentLibrary } from "./script";
+import { currentLibrary } from '../script';
 
-export function saveProjectsToLocalStorage() { // currentLibrary parameter or import?
+export function saveProjectsToLocalStorage() {
+  // currentLibrary parameter or import?
   const projectsData = currentLibrary.projects.map((project) => ({
     name: project.name,
     id: project.id,
@@ -17,7 +18,9 @@ export function saveProjectsToLocalStorage() { // currentLibrary parameter or im
 }
 
 export function deleteProjectData(projectId, currentLibrary) {
-  const projectIndex = currentLibrary.projects.findIndex(project => project.id === projectId);
+  const projectIndex = currentLibrary.projects.findIndex(
+    (project) => project.id === projectId
+  );
   if (projectIndex !== -1) {
     currentLibrary.projects.splice(projectIndex, 1);
     localStorage.setItem('projects', JSON.stringify(currentLibrary.projects));

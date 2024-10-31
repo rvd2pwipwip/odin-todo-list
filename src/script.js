@@ -1,12 +1,12 @@
 import './styles.css';
 import { Task, Project, ProjectLibrary } from './todoVoodoo.js';
-import { addTaskDialog } from './taskDialog.js';
-import { addProjectDialog } from './projectDialog.js';
-import { filterTodayTasks, filterWeekTasks } from './dateUtils.js';
-import drawTasklist from './taskManager.js';
-import { saveProjectsToLocalStorage } from './projectManager.js';
-import { drawProjectList, clearProjectList } from './projectUI.js';
-import { UIState } from './uiStateManager.js';
+import { addTaskDialog } from './components/taskDialog.js';
+import { addProjectDialog } from './components/projectDialog.js';
+import { filterTodayTasks, filterWeekTasks } from './utils/dateUtils.js';
+import drawTasklist from './services/taskManager.js';
+import { saveProjectsToLocalStorage } from './services/projectManager.js';
+import { drawProjectList, clearProjectList } from './components/projectUI.js';
+import { UIState } from './utils/uiStateManager.js';
 
 export let currentLibrary = new ProjectLibrary();
 

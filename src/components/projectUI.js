@@ -1,11 +1,11 @@
-import { currentLibrary, initializeApp } from './script';
+import { currentLibrary, initializeApp } from '../script';
 import { deleteProjectDialog } from './projectDialog';
 import {
   saveProjectsToLocalStorage,
   updateProjectName,
   deleteProjectData,
-} from './projectManager';
-import { UIState } from './uiStateManager';
+} from '../services/projectManager';
+import { UIState } from '../utils/uiStateManager';
 
 const projectListContainer = document.createElement('div');
 projectListContainer.setAttribute('id', 'project-list');

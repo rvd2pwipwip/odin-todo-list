@@ -1,5 +1,5 @@
-import { currentLibrary } from './script.js';
-import { createTask, drawTasklist } from './taskManager.js';
+import { currentLibrary } from '../script.js';
+import { createTask, drawTasklist } from '../services/taskManager.js';
 
 export function addTaskDialog(currentProjectId) {
   // Remove existing dialog if it exists
