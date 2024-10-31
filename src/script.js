@@ -8,11 +8,6 @@ import { saveProjectsToLocalStorage } from './projectManager.js';
 import { drawProjectList, clearProjectList } from './projectUI.js';
 import { UIState } from './uiStateManager.js';
 
-let currentProject = null;
-export function setCurrentProject(project) {
-  currentProject = project;
-}
-
 export let currentLibrary = new ProjectLibrary();
 
 /////////////////////////////////////////////////////////
@@ -88,13 +83,21 @@ function setupNavigation() {
 
       const tabText = getTabText(targetTab);
 
+      function getProjectIdByName(projectName, currentLibrary) {
+        const project = currentLibrary.projects.find(
+          (proj) => proj.name === projectName
+        );
+        return project ? project.id : null;
+      }
+      const currentId = getProjectIdByName(tabText, currentLibrary);
+
       // Handle different tab types
       switch (tabText) {
         case 'All tasks':
           setAddTaskButtonState(true);
-          setCurrentProject(null);
+          UIState.setSelectedProject(null);
           UIState.updateHeader(tabText);
-          drawTasklist(currentLibrary, currentProject);
+          drawTasklist(currentLibrary, currentId);
           break;
         case 'Today':
           setAddTaskButtonState(false);
@@ -127,12 +130,14 @@ function setupNavigation() {
         default:
           setAddTaskButtonState(true);
           // Handle user-created project tabs
-          currentProject = currentLibrary.projects.find(
-            (project) => project.name === tabText
-          );
-          if (currentProject) {
+          // const currentProject = currentLibrary.projects.find(
+          //   (project) => project.name === tabText
+          // );
+          // if (currentProject) {
+          console.log(currentId);
+          if (currentId) {
             UIState.updateHeader(tabText);
-            drawTasklist(currentLibrary, currentProject);
+            drawTasklist(currentLibrary, currentId);
           } else {
             console.log('Project not found:', tabText);
           }
@@ -157,8 +162,8 @@ function setupButtons() {
   let taskDialog;
   addTaskButton.addEventListener('click', () => {
     // Check if a project is currently selected
-    if (currentProject) {
-      taskDialog = addTaskDialog(currentProject);
+    if (UIState.selectedProjectId) {
+      taskDialog = addTaskDialog(UIState.selectedProjectId);
       document.getElementById('dialog-placeholder').appendChild(taskDialog);
     } else {
       // Handle the case where no project is selected

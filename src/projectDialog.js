@@ -96,7 +96,7 @@ export function addProjectDialog() {
       // Update the UI
       drawProjectList();
       UIState.updateHeader(name);
-      drawTasklist(currentLibrary, newProject);
+      drawTasklist(currentLibrary, newProject.id);
       // After drawing the projects, update the UI state
       UIState.setSelectedProject(newProject.id);
 

@@ -1,9 +1,7 @@
 import { currentLibrary } from './script.js';
-import { createTask } from './taskManager.js';
-import { drawTaskCard } from './taskUI.js';
-import { Task } from './todoVoodoo.js';
+import { createTask, drawTasklist } from './taskManager.js';
 
-export function addTaskDialog(currentProject) {
+export function addTaskDialog(currentProjectId) {
   // Remove existing dialog if it exists
   const existingDialog = document.querySelector('dialog');
   if (existingDialog) {
@@ -32,7 +30,7 @@ export function addTaskDialog(currentProject) {
   fieldset.appendChild(legend);
 
   const formItems = [
-    { label: 'Title', id: 'title', type: 'text' },
+    { label: 'Title', id: 'title', type: 'text', required: true },
     {
       label: 'Description',
       id: 'description',
@@ -144,39 +142,28 @@ export function addTaskDialog(currentProject) {
     }
   });
 
-  function addTask() {
+  addButton.addEventListener('click', () => {
     const title = document.getElementById('title').value;
     const description = document.getElementById('description').value;
     const dueDate = document.getElementById('due-date').value;
     const priority = document.getElementById('priority').value;
 
-    // check for mandatory task parameters (title)
     if (title) {
-      const newTask = createTask(
+      createTask(
         title,
         description,
         dueDate,
         priority,
-        currentProject,
+        currentProjectId,
         currentLibrary
       );
 
-      // Draw the new task card
-      const taskList = document.getElementById('tasklist');
-      drawTaskCard(newTask, taskList);
-
-      // Reset input fields
-      document.getElementById('title').value = '';
-      document.getElementById('description').value = '';
-      document.getElementById('due-date').value = '';
-      document.getElementById('priority').value = '';
-    } else {
-      console.error('Task title is required');
+      drawTasklist(currentLibrary, currentProjectId);
     }
-  }
 
-  // Add event listener for the add button to push the new todo
-  addButton.addEventListener('click', addTask);
+    dialog.close();
+    dialog.remove();
+  });
 
   return dialog;
 }

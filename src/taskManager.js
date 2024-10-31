@@ -1,23 +1,27 @@
 import { Task } from './todoVoodoo.js';
 import { getTodayDateFormatted } from './dateUtils.js';
 import { drawTaskCard } from './taskUI.js';
+import { currentLibrary } from './script.js';
 
 export function createTask(
   title,
   description,
   dueDate,
   priority,
-  currentProject,
+  currentProjectId,
   currentLibrary
 ) {
+  const project = currentLibrary.projects.find(
+    (proj) => proj.id === currentProjectId
+  );
   const today = getTodayDateFormatted();
   priority = !priority ? 'Low' : priority;
   dueDate = !dueDate ? today : dueDate;
   const newTask = new Task(title, description, dueDate, priority);
 
   // Add new task to current project or unassigned
-  if (currentProject) {
-    currentProject.addTask(newTask);
+  if (currentProjectId) {
+    project.addTask(newTask);
   } else {
     const unassignedProject = currentLibrary.projects.find(
       (project) => project.name === 'Unassigned'
@@ -30,13 +34,17 @@ export function createTask(
   return newTask;
 }
 
-const drawTasklist = (projectLibrary, project = null) => {
+export const drawTasklist = (projectLibrary, projectId = null) => {
   const tasklist = document.getElementById('tasklist');
   tasklist.innerHTML = '';
 
+  const project = currentLibrary.projects.find(
+    (proj) => proj.id === projectId
+  );
+
   if (project) {
     if (project.tasks.length === 0) {
-      drawEmptyProject(project.name);
+      drawEmptyProject(projectId.name);
     }
     project.tasks.forEach((task) => {
       drawTaskCard(task, tasklist);

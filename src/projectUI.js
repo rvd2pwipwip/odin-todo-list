@@ -1,4 +1,4 @@
-import { currentLibrary, initializeApp, updateHeader } from './script';
+import { currentLibrary, initializeApp } from './script';
 import { deleteProjectDialog } from './projectDialog';
 import {
   saveProjectsToLocalStorage,
