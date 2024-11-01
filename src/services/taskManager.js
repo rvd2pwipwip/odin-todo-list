@@ -20,13 +20,12 @@ export function createTask(
   const newTask = new Task(title, description, dueDate, priority);
 
   // Add new task to current project or unassigned
-  if (currentProjectId) {
+  if (project) {
     project.addTask(newTask);
   } else {
-    const unassignedProject = currentLibrary.projects.find(
-      (project) => project.name === 'Unassigned'
-    );
-    unassignedProject.addTask(newTask);
+    currentLibrary.projects
+      .find((p) => p.name === 'Unassigned')
+      .addTask(newTask);
   }
 
   // Update localStorage
