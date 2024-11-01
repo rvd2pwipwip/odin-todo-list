@@ -64,56 +64,61 @@ function setupNavigation() {
   // Add event listener to the nav element
   navElement.addEventListener('click', (event) => {
     const targetTab = event.target.closest('button[role="tab"]');
-    const targetId = targetTab.getAttribute('data-id');
-    const targetName = targetTab.querySelector('.tab-text').textContent.trim();
+    // specifically target only elements with role="tab"
+    if (targetTab) {
+      const targetId = targetTab.getAttribute('data-id');
+      const targetName = targetTab
+        .querySelector('.tab-text')
+        .textContent.trim();
 
-    // Handle different tab types
-    switch (targetId) {
-      case 'all-tab':
-        UIState.setAddTaskButtonState(true);
-        UIState.setSelectedProject(targetId);
-        UIState.updateHeader(targetName);
-        drawTasklist(currentLibrary, targetId);
-        break;
-      case 'today-tab':
-        UIState.setAddTaskButtonState(false);
-        UIState.setSelectedProject(targetId);
-        const todayTasks = filterTodayTasks(currentLibrary);
-
-        const todayProjects = currentLibrary.projects
-          .map((project) => ({
-            name: project.name,
-            tasks: project.tasks.filter((task) => todayTasks.includes(task)),
-          }))
-          .filter((project) => project.tasks.length > 0);
-
-        UIState.updateHeader(targetName);
-        drawTasklist({ projects: todayProjects }, null);
-        break;
-
-      case 'week-tab':
-        UIState.setAddTaskButtonState(false);
-        UIState.setSelectedProject(targetId);
-        const weekTasks = filterWeekTasks(currentLibrary);
-        const weekProjects = currentLibrary.projects
-          .map((project) => ({
-            name: project.name,
-            tasks: project.tasks.filter((task) => weekTasks.includes(task)),
-          }))
-          .filter((project) => project.tasks.length > 0);
-
-        UIState.updateHeader(targetName);
-        drawTasklist({ projects: weekProjects }, null, targetName);
-        break;
-      default:
-        UIState.setAddTaskButtonState(true);
-        if (targetId) {
-          UIState.updateHeader(targetName);
+      // Handle different tab types
+      switch (targetId) {
+        case 'all-tab':
+          UIState.setAddTaskButtonState(true);
           UIState.setSelectedProject(targetId);
+          UIState.updateHeader(targetName);
           drawTasklist(currentLibrary, targetId);
-        } else {
-          console.log('Project not found:', targetName);
-        }
+          break;
+        case 'today-tab':
+          UIState.setAddTaskButtonState(false);
+          UIState.setSelectedProject(targetId);
+          const todayTasks = filterTodayTasks(currentLibrary);
+
+          const todayProjects = currentLibrary.projects
+            .map((project) => ({
+              name: project.name,
+              tasks: project.tasks.filter((task) => todayTasks.includes(task)),
+            }))
+            .filter((project) => project.tasks.length > 0);
+
+          UIState.updateHeader(targetName);
+          drawTasklist({ projects: todayProjects }, null);
+          break;
+
+        case 'week-tab':
+          UIState.setAddTaskButtonState(false);
+          UIState.setSelectedProject(targetId);
+          const weekTasks = filterWeekTasks(currentLibrary);
+          const weekProjects = currentLibrary.projects
+            .map((project) => ({
+              name: project.name,
+              tasks: project.tasks.filter((task) => weekTasks.includes(task)),
+            }))
+            .filter((project) => project.tasks.length > 0);
+
+          UIState.updateHeader(targetName);
+          drawTasklist({ projects: weekProjects }, null, targetName);
+          break;
+        default:
+          UIState.setAddTaskButtonState(true);
+          if (targetId) {
+            UIState.updateHeader(targetName);
+            UIState.setSelectedProject(targetId);
+            drawTasklist(currentLibrary, targetId);
+          } else {
+            console.log('Project not found:', targetName);
+          }
+      }
     }
   });
 }
