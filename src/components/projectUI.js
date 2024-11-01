@@ -1,9 +1,8 @@
-import { currentLibrary, initializeApp } from '../script';
+import { currentLibrary } from '../script';
 import { deleteProjectDialog } from './projectDialog';
 import {
   saveProjectsToLocalStorage,
   updateProjectName,
-  deleteProjectData,
 } from '../services/projectManager';
 import { UIState } from '../utils/uiStateManager';
 
@@ -175,10 +174,7 @@ function updateName(projectTab, newName) {
 }
 
 export async function removeProjectUI(id) {
-  const projectIndex = currentLibrary.projects.findIndex((p) => (p.id = id));
-
-  console.log('project index:', projectIndex);
-  console.log('projects length:', currentLibrary.projects.length);
+  const projectIndex = currentLibrary.projects.findIndex((p) => (p.id === id));
 
   if (projectIndex >= 0 && projectIndex < currentLibrary.projects.length) {
     // Find the tab element for the project being deleted
@@ -186,27 +182,13 @@ export async function removeProjectUI(id) {
       '#project-list button[role="tab"]'
     );
 
-    console.log('user tabs:', userProjectTabs);
-
     // Remove the deleted project UI from the DOM
     const tabToDelete = Array.from(userProjectTabs).find(
       (t) => t.getAttribute('data-id') === id
     );
 
-    console.log('tab to delete:', tabToDelete);
-
     if (tabToDelete) {
       tabToDelete.remove();
     }
-    document.querySelector('button[data-id="all-tab"]').click();
-
-    // // Check if the project is currently selected
-    // const isCurrentProject =
-    //   tabToDelete && tabToDelete.getAttribute('aria-selected') === 'true';
-
-    // // If the deleted project was the current project, select "All Tasks"
-    // if (isCurrentProject) {
-    //   document.querySelector('button[data-id="all-tab"]').click();
-    // }
   }
 }

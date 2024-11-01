@@ -11,30 +11,6 @@ import { UIState } from './utils/uiStateManager.js';
 export let currentLibrary = new ProjectLibrary();
 
 /////////////////////////////////////////////////////////
-// MutationObserver
-/////////////////////////////////////////////////////////
-
-// Function to observe changes in aria-selected attribute
-export function observeTabSelection() {
-  const observer = new MutationObserver((mutationsList) => {
-    for (const mutation of mutationsList) {
-      if (
-        mutation.type === 'attributes' &&
-        mutation.attributeName === 'aria-selected'
-      ) {
-        console.log('Mutation observed:', mutation.target.outerHTML);
-      }
-    }
-  });
-
-  // Observe all tab buttons within #project-list
-  const allTabs = document.querySelectorAll('#project-list button[role="tab"]');
-  allTabs.forEach((tab) => {
-    observer.observe(tab, { attributes: true });
-  });
-}
-
-/////////////////////////////////////////////////////////
 // App init
 /////////////////////////////////////////////////////////
 
@@ -165,7 +141,7 @@ export async function initializeApp() {
   drawProjectList();
   drawTasklist(currentLibrary);
   setupNavigation();
-  // observeTabSelection();
+  document.querySelector('button[data-id="all-tab"]').click();
   setupButtons();
 }
 
