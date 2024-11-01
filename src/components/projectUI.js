@@ -177,39 +177,36 @@ function updateName(projectTab, newName) {
 export async function removeProjectUI(id) {
   const projectIndex = currentLibrary.projects.findIndex((p) => (p.id = id));
 
+  console.log('project index:', projectIndex);
+  console.log('projects length:', currentLibrary.projects.length);
+
   if (projectIndex >= 0 && projectIndex < currentLibrary.projects.length) {
     // Find the tab element for the project being deleted
     const userProjectTabs = document.querySelectorAll(
       '#project-list button[role="tab"]'
     );
-    let projectTab = null;
 
-    userProjectTabs.forEach((tab) => {
-      const textSpan = tab.querySelector('.tab-text');
-      if (textSpan && textSpan.textContent.trim() === name) {
-        projectTab = tab;
-      }
-    });
+    console.log('user tabs:', userProjectTabs);
 
-    // Remove the project from the DOM
-    if (projectTab) {
-      projectTab.remove();
+    // Remove the deleted project UI from the DOM
+    const tabToDelete = Array.from(userProjectTabs).find(
+      (t) => t.getAttribute('data-id') === id
+    );
+
+    console.log('tab to delete:', tabToDelete);
+
+    if (tabToDelete) {
+      tabToDelete.remove();
     }
+    document.querySelector('button[data-id="all-tab"]').click();
 
-    // Check if the project is currently selected
-    const isCurrentProject =
-      projectTab && projectTab.getAttribute('aria-selected') === 'true';
+    // // Check if the project is currently selected
+    // const isCurrentProject =
+    //   tabToDelete && tabToDelete.getAttribute('aria-selected') === 'true';
 
-    // Remove the project from the library
-    // currentLibrary.projects.splice(projectIndex, 1);
-    deleteProjectData(projectIndex, currentLibrary);
-    saveProjectsToLocalStorage(currentLibrary);
-
-    initializeApp();
-
-    // If the deleted project was the current project, select "All Tasks"
-    if (isCurrentProject) {
-      document.getElementById('all-btn').click();
-    }
+    // // If the deleted project was the current project, select "All Tasks"
+    // if (isCurrentProject) {
+    //   document.querySelector('button[data-id="all-tab"]').click();
+    // }
   }
 }

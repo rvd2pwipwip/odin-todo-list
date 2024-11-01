@@ -1,5 +1,5 @@
 import { Project } from '../todoVoodoo.js';
-import { currentLibrary, updateHeader } from '../script.js';
+import { currentLibrary } from '../script.js';
 import {
   drawProjectTab,
   drawProjectList,
