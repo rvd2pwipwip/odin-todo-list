@@ -26,4 +26,11 @@ export const UIState = {
   updateHeader(headerText) {
     document.getElementById('main-header').innerText = headerText;
   },
+
+  // Manage add task button state
+  setAddTaskButtonState(enabled) {
+    const addTaskButton = document.getElementById('create-cta');
+    addTaskButton.disabled = !enabled;
+    addTaskButton.classList.toggle('disabled', !enabled);
+  },
 };

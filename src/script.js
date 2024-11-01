@@ -64,78 +64,56 @@ function setupNavigation() {
   // Add event listener to the nav element
   navElement.addEventListener('click', (event) => {
     const targetTab = event.target.closest('button[role="tab"]');
-    if (targetTab) {
-      // Remove 'aria-selected' from all tabs
-      navElement.querySelectorAll('button[role="tab"]').forEach((tab) => {
-        tab.setAttribute('aria-selected', 'false');
-      });
+    const targetId = targetTab.getAttribute('data-id');
+    const targetName = targetTab.querySelector('.tab-text').textContent.trim();
 
-      // Set the clicked tab as selected
-      targetTab.setAttribute('aria-selected', 'true');
+    // Handle different tab types
+    switch (targetId) {
+      case 'all-tab':
+        UIState.setAddTaskButtonState(true);
+        UIState.setSelectedProject(targetId);
+        UIState.updateHeader(targetName);
+        drawTasklist(currentLibrary, targetId);
+        break;
+      case 'today-tab':
+        UIState.setAddTaskButtonState(false);
+        UIState.setSelectedProject(targetId);
+        const todayTasks = filterTodayTasks(currentLibrary);
 
-      function getTabText(targetTab) {
-        // Find the span with the class 'tab-text' within the button
-        const textSpan = targetTab.querySelector('.tab-text');
+        const todayProjects = currentLibrary.projects
+          .map((project) => ({
+            name: project.name,
+            tasks: project.tasks.filter((task) => todayTasks.includes(task)),
+          }))
+          .filter((project) => project.tasks.length > 0);
 
-        // Return the text content of the span, or an empty string if not found
-        return textSpan ? textSpan.textContent.trim() : '';
-      }
+        UIState.updateHeader(targetName);
+        drawTasklist({ projects: todayProjects }, null);
+        break;
 
-      const tabText = getTabText(targetTab);
+      case 'week-tab':
+        UIState.setAddTaskButtonState(false);
+        UIState.setSelectedProject(targetId);
+        const weekTasks = filterWeekTasks(currentLibrary);
+        const weekProjects = currentLibrary.projects
+          .map((project) => ({
+            name: project.name,
+            tasks: project.tasks.filter((task) => weekTasks.includes(task)),
+          }))
+          .filter((project) => project.tasks.length > 0);
 
-      function getProjectIdByName(projectName, currentLibrary) {
-        const project = currentLibrary.projects.find(
-          (proj) => proj.name === projectName
-        );
-        return project ? project.id : null;
-      }
-      const currentId = getProjectIdByName(tabText, currentLibrary);
-
-      // Handle different tab types
-      switch (tabText) {
-        case 'All tasks':
-          setAddTaskButtonState(true);
-          UIState.setSelectedProject(null);
-          UIState.updateHeader(tabText);
-          drawTasklist(currentLibrary, currentId);
-          break;
-        case 'Today':
-          setAddTaskButtonState(false);
-          const todayTasks = filterTodayTasks(currentLibrary);
-
-          const todayProjects = currentLibrary.projects
-            .map((project) => ({
-              name: project.name,
-              tasks: project.tasks.filter((task) => todayTasks.includes(task)),
-            }))
-            .filter((project) => project.tasks.length > 0);
-
-          UIState.updateHeader(tabText);
-          drawTasklist({ projects: todayProjects }, null);
-          break;
-
-        case '7 days':
-          setAddTaskButtonState(false);
-          const weekTasks = filterWeekTasks(currentLibrary);
-          const weekProjects = currentLibrary.projects
-            .map((project) => ({
-              name: project.name,
-              tasks: project.tasks.filter((task) => weekTasks.includes(task)),
-            }))
-            .filter((project) => project.tasks.length > 0);
-
-          UIState.updateHeader(tabText);
-          drawTasklist({ projects: weekProjects }, null, tabText);
-          break;
-        default:
-          setAddTaskButtonState(true);
-          if (currentId) {
-            UIState.updateHeader(tabText);
-            drawTasklist(currentLibrary, currentId);
-          } else {
-            console.log('Project not found:', tabText);
-          }
-      }
+        UIState.updateHeader(targetName);
+        drawTasklist({ projects: weekProjects }, null, targetName);
+        break;
+      default:
+        UIState.setAddTaskButtonState(true);
+        if (targetId) {
+          UIState.updateHeader(targetName);
+          UIState.setSelectedProject(targetId);
+          drawTasklist(currentLibrary, targetId);
+        } else {
+          console.log('Project not found:', targetName);
+        }
     }
   });
 }
@@ -220,16 +198,4 @@ function populateProjectLibrary(projectsData) {
     });
     currentLibrary.projects.push(project);
   });
-}
-
-// Update the main header
-// export const updateHeader = (headerText) => {
-//   document.getElementById('main-header').innerText = headerText;
-// };
-
-// Manage add task button state
-function setAddTaskButtonState(enabled) {
-  const addTaskButton = document.getElementById('create-cta');
-  addTaskButton.disabled = !enabled;
-  addTaskButton.classList.toggle('disabled', !enabled);
 }
