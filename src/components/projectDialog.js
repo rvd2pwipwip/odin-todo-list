@@ -2,14 +2,14 @@ import { Project } from '../todoVoodoo.js';
 import { currentLibrary } from '../script.js';
 import {
   drawProjectTab,
-  drawProjectList,
+  drawProjectTabList,
   removeProjectUI,
 } from './projectUI.js';
 import {
   saveProjectsToLocalStorage,
   deleteProjectData,
 } from '../services/projectManager.js';
-import drawTasklist from '../services/taskManager.js';
+import { drawTasklist } from './taskUI.js';
 import { UIState } from '../utils/uiStateManager.js';
 
 export function addProjectDialog() {
@@ -94,7 +94,7 @@ export function addProjectDialog() {
       drawProjectTab(newProject.id);
 
       // Update the UI
-      drawProjectList();
+      drawProjectTabList();
       UIState.updateHeader(name);
       drawTasklist(currentLibrary, newProject.id);
       // After drawing the projects, update the UI state

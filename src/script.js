@@ -3,10 +3,13 @@ import { Task, Project, ProjectLibrary } from './todoVoodoo.js';
 import { addTaskDialog } from './components/taskDialog.js';
 import { addProjectDialog } from './components/projectDialog.js';
 import { filterTodayTasks, filterWeekTasks } from './utils/dateUtils.js';
-import drawTasklist from './services/taskManager.js';
 import { saveProjectsToLocalStorage } from './services/projectManager.js';
-import { drawProjectList, clearProjectList } from './components/projectUI.js';
+import {
+  drawProjectTabList,
+  clearProjectList,
+} from './components/projectUI.js';
 import { UIState } from './utils/uiStateManager.js';
+import { drawTasklist } from './components/taskUI.js';
 
 export let currentLibrary = new ProjectLibrary();
 
@@ -138,7 +141,7 @@ function setupButtons() {
 export async function initializeApp() {
   await loadData();
   clearProjectList();
-  drawProjectList();
+  drawProjectTabList();
   drawTasklist(currentLibrary);
   setupNavigation();
   document.querySelector('button[data-id="all-tab"]').click();

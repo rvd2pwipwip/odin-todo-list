@@ -13,23 +13,6 @@ export function clearProjectList() {
   projectListContainer.innerHTML = '';
 }
 
-export const drawProjectList = () => {
-  clearProjectList();
-  const userProjects = document.getElementById('user-projects');
-
-  // Append the container only if it's not already in the DOM
-  if (!userProjects.contains(projectListContainer)) {
-    userProjects.appendChild(projectListContainer);
-  }
-
-  currentLibrary.projects
-    .filter((p) => p.name !== 'Unassigned')
-    .forEach((p) => {
-      const tab = drawProjectTab(p.id);
-      projectListContainer.appendChild(tab);
-    });
-};
-
 export const drawProjectTab = (id) => {
   const project = currentLibrary.projects.find((p) => p.id === id);
   const name = project.name;
@@ -90,6 +73,23 @@ export const drawProjectTab = (id) => {
   tabButton.appendChild(actionContainer);
 
   return tabButton;
+};
+
+export const drawProjectTabList = () => {
+  clearProjectList();
+  const userProjects = document.getElementById('user-projects');
+
+  // Append the container only if it's not already in the DOM
+  if (!userProjects.contains(projectListContainer)) {
+    userProjects.appendChild(projectListContainer);
+  }
+
+  currentLibrary.projects
+    .filter((p) => p.name !== 'Unassigned')
+    .forEach((p) => {
+      const tab = drawProjectTab(p.id);
+      projectListContainer.appendChild(tab);
+    });
 };
 
 /////////////////////////////////////////////////////////
@@ -174,7 +174,7 @@ function updateName(projectTab, newName) {
 }
 
 export async function removeProjectUI(id) {
-  const projectIndex = currentLibrary.projects.findIndex((p) => (p.id === id));
+  const projectIndex = currentLibrary.projects.findIndex((p) => p.id === id);
 
   if (projectIndex >= 0 && projectIndex < currentLibrary.projects.length) {
     // Find the tab element for the project being deleted
