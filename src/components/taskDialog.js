@@ -11,9 +11,9 @@ export function addTaskDialog(currentProjectId) {
   const dialog = document.createElement('dialog');
 
   const form = document.createElement('form');
-  form.addEventListener('submit', (event) => {
-    event.preventDefault(); // Prevent default form submission
-  });
+  // form.addEventListener('submit', (event) => {
+  //   event.preventDefault(); // Prevent default form submission
+  // });
   form.setAttribute('method', 'dialog');
   form.id = 'form';
 
@@ -142,7 +142,8 @@ export function addTaskDialog(currentProjectId) {
     }
   });
 
-  addButton.addEventListener('click', () => {
+  addButton.addEventListener('click', (e) => {
+    e.preventDefault(); // Prevent the default form submission
     const title = document.getElementById('title').value;
     const description = document.getElementById('description').value;
     const dueDate = document.getElementById('due-date').value;
