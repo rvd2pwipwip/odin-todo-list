@@ -50,6 +50,7 @@ export function addProjectDialog() {
     input.id = item.id;
     input.name = item.id;
     input.required = true;
+    input.placeholder = 'New project';
 
     div.appendChild(label);
     div.appendChild(input);

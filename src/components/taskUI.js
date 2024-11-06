@@ -1,23 +1,27 @@
-import { currentLibrary } from "../script";
+import { currentLibrary } from '../script';
 
-export const drawTaskCard = (task, tasklist) => {
+export const drawTaskCard = (task, tasklist, projectId) => {
   const card = document.createElement('div');
   card.className = 'card';
-
-  const title = document.createElement('h3');
-  title.className = 'title';
-  title.textContent = task.title;
 
   const done = document.createElement('input');
   done.setAttribute('type', 'checkbox');
   done.className = 'done';
   done.checked = task.done;
 
+  const title = document.createElement('label');
+  title.className = 'title';
+  title.textContent = task.title;
+
+  const titleDone = document.createElement('div');
+  titleDone.className = 'title-done';
+  titleDone.append(done, title);
+
   const dueDate = document.createElement('p');
   dueDate.className = 'due-date';
   dueDate.textContent = task.dueDate;
 
-  card.append(done, title, dueDate);
+  card.append(titleDone, dueDate);
   tasklist.append(card);
 };
 
@@ -32,7 +36,7 @@ export const drawTasklist = (projectLibrary, projectId = null) => {
       drawEmptyProject(project.name);
     }
     project.tasks.forEach((task) => {
-      drawTaskCard(task, tasklist);
+      drawTaskCard(task, tasklist, projectId);
     });
   } else {
     projectLibrary.projects.forEach((project) => {

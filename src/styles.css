@@ -236,15 +236,12 @@ main {
 }
 
 #tasklist {
+  display: flex;
+  flex-direction: column;
   flex: 1;
   width: 100%;
+  gap: 1rem;
   
-}
-
-.card {
-  display: flex;
-  width: 100%;
-  padding: 1rem;
 }
 
 /*********************************************************/
@@ -268,6 +265,37 @@ button[id*="cta"] {
 #create-cta.disabled {
   pointer-events: none;
   opacity: 0.3;
+}
+
+/*********************************************************/
+/* Tasks */
+/*********************************************************/
+
+.card {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  padding: 1rem;
+  border-radius: 0.5rem;
+  border-left: 5px solid var(--accent-color);
+  background: rgba(0, 0, 0, 0.025);
+}
+
+.card .title {
+  /* color: red; */
+  font-weight: 500;
+  font-size: larger;
+}
+
+.title-done {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  gap: 0.5rem;
+}
+
+.card:hover {
+  background: rgba(0, 0, 0, 0.05);
 }
 
 /*********************************************************/
@@ -348,7 +376,7 @@ legend {
   width: 100%;
 }
 
-label {
+dialog label {
   padding-bottom: 4px;
   text-transform: uppercase;
   color: rgba(0, 0, 0, 0.7);
@@ -363,6 +391,10 @@ input, textarea {
   border-radius: 3px;
   padding: 7px;
   font-size: 14px;
+}
+
+#name::placeholder {
+  opacity: 0.5;
 }
 
 #description {
