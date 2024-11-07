@@ -1,8 +1,6 @@
-// import { currentLibrary } from '../script';
+import { currentLibrary } from '../script';
 
-// console.log('currentLibrary', currentLibrary);
-
-export function saveProjectsToLocalStorage(currentLibrary) {
+export function saveProjectsToLocalStorage() {
   // currentLibrary parameter or import?
   const projectsData = currentLibrary.projects.map((project) => ({
     name: project.name,

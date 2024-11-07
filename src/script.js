@@ -173,7 +173,7 @@ function populateProjectLibrary(projectsData) {
   console.log('populateProjectLibrary projectsData', projectsData);
 
   projectsData.forEach((projectData) => {
-    const project = new Project(projectData.name);
+    const project = new Project(projectData.name, projectData.id);
     console.log('project id', project.id);
     projectData.tasks.forEach((taskData) => {
       const task = new Task(
