@@ -176,9 +176,11 @@ function populateProjectLibrary(projectsData) {
         taskData.description,
         taskData.dueDate,
         taskData.priority,
-        taskData.done
+        taskData.done,
+        taskData.id
       );
       project.addTask(task);
+      console.log(task);
     });
     currentLibrary.projects.push(project);
   });

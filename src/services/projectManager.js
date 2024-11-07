@@ -11,6 +11,7 @@ export function saveProjectsToLocalStorage() {
       dueDate: task.dueDate,
       priority: task.priority,
       done: task.done,
+      id: task.id,
     })),
   }));
 

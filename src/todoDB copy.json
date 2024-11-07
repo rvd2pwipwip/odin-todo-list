@@ -9,24 +9,21 @@
           "description": "Description for Task 1",
           "dueDate": "2024-08-30",
           "priority": "Low",
-          "done": false,
-          "id": "a36d2e23-0cd3-4f1c-a236-9e54f6d816d2"
+          "done": false
         },
         {
           "title": "Task 2",
           "description": "Description for Task 2",
           "dueDate": "2024-08-30",
           "priority": "Low",
-          "done": false,
-          "id": "98b031a9-2720-4ae2-86c4-51809324ff99"
+          "done": false
         },
         {
           "title": "Task 3",
           "description": "Description for Task 3",
           "dueDate": "2024-08-30",
           "priority": "Low",
-          "done": false,
-          "id": "87029186-7302-4e12-918e-e51f5573b43e"
+          "done": false
         }
       ]
     },
@@ -39,16 +36,14 @@
           "description": "Description for Task 1",
           "dueDate": "2024-08-30",
           "priority": "Low",
-          "done": false,
-          "id": "f0743600-0a61-4c76-981a-a42486324a74"
+          "done": false
         },
         {
           "title": "Project 2",
           "description": "Description for Task 2",
           "dueDate": "2024-08-30",
           "priority": "Low",
-          "done": false,
-          "id": "6c0d8e1f-695b-4d01-849c-b2df3b7acabf"
+          "done": false
         }
       ]
     },
@@ -61,15 +56,14 @@
           "description": "Description for Task 1",
           "dueDate": "2024-08-30",
           "priority": "Low",
-          "done": false,
-          "id": "fa38ebf3-431c-49f6-84a6-5457931046ba"
+          "done": false
         }
       ]
     },
     {
       "name": "Unassigned",
       "id": "ffef647e-0cfc-49aa-84c3-9483182b5dbc",
-      "tasks": []
+      "tasks": [] 
     }
   ]
 }

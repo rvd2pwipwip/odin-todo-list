@@ -7,6 +7,7 @@ class Task {
     this.dueDate = dueDate;
     this.priority = priority;
     this.done = done;
+    this.id = uuidv4();
   }
   info() {
     return `${this.title} is due on ${this.dueDate}`;

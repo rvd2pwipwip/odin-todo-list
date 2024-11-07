@@ -1,7 +1,5 @@
 import { Task } from '../todoVoodoo.js';
 import { getTodayDateFormatted } from '../utils/dateUtils.js';
-import { drawTaskCard } from '../components/taskUI.js';
-import { currentLibrary } from '../script.js';
 
 export function createTask(
   title,
