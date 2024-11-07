@@ -1,13 +1,18 @@
 import { v4 as uuidv4 } from 'uuid';
 
+function generateUUID() {
+  return uuidv4();
+}
+
 class Task {
-  constructor(title, description, dueDate, priority = 'Low', done = false) {
+  constructor(title, description, dueDate, priority = 'Low', done = false, id = null) {
     this.title = title;
     this.description = description;
     this.dueDate = dueDate;
     this.priority = priority;
     this.done = done;
-    this.id = uuidv4();
+    // Only generate a new UUID if no ID is provided
+    this.id = id || generateUUID();
   }
   info() {
     return `${this.title} is due on ${this.dueDate}`;
@@ -18,8 +23,9 @@ class Task {
 }
 
 class Project {
-  constructor(name) {
-    this.id = uuidv4();
+  constructor(name, id = null) {
+    // Only generate a new UUID if no ID is provided
+    this.id = id || generateUUID();
     this.name = name;
     this.tasks = [];
   }
