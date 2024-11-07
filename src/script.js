@@ -29,8 +29,6 @@ async function loadData() {
       }
       const data = await response.json();
       populateProjectLibrary(data.projects);
-      console.log('loadData data.projects', data.projects);
-      console.log('loadData currentLibrary', currentLibrary);
       saveProjectsToLocalStorage(currentLibrary); // Save fetched data to LocalStorage
     }
   } catch (error) {
@@ -170,11 +168,8 @@ function populateProjectLibrary(projectsData) {
   // Clear the current projects in the library
   currentLibrary.projects = [];
 
-  console.log('populateProjectLibrary projectsData', projectsData);
-
   projectsData.forEach((projectData) => {
     const project = new Project(projectData.name, projectData.id);
-    console.log('project id', project.id);
     projectData.tasks.forEach((taskData) => {
       const task = new Task(
         taskData.title,
@@ -188,5 +183,4 @@ function populateProjectLibrary(projectsData) {
     });
     currentLibrary.projects.push(project);
   });
-  console.log(currentLibrary);
 }

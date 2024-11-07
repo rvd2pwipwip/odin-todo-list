@@ -15,9 +15,6 @@ export function saveProjectsToLocalStorage() {
     })),
   }));
 
-  console.log('currentLibrary', currentLibrary);
-  console.log('projectsData:', projectsData);
-
   localStorage.setItem('projects', JSON.stringify(projectsData));
 }
 
