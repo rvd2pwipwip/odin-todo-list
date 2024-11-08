@@ -115,7 +115,7 @@ function makeEditable(element, id) {
   // Add event listeners for saving changes
   element.addEventListener('keydown', handleKeyDown);
   // anonymous function to call updateUI with the project ID
-  element.addEventListener('blur', function() {
+  element.addEventListener('blur', function () {
     updateUI(element, id);
   });
 }
@@ -162,7 +162,7 @@ function updateName(projectTab, newName, id) {
   // Update currentLibrary and save to localStorage
   const spanElement = projectTab.querySelector('.tab-text');
 
-  const project = currentLibrary.projects.find(p => p.id === id);
+  const project = currentLibrary.projects.find((p) => p.id === id);
   if (project) {
     // Update the project name in the currentLibrary
     updateProjectName(project, newName);
@@ -176,9 +176,9 @@ function updateName(projectTab, newName, id) {
 }
 
 export async function removeProjectUI(id) {
-  const projectIndex = currentLibrary.projects.findIndex((p) => p.id === id);
+  const project = currentLibrary.projects.find((p) => p.id === id);
 
-  if (projectIndex >= 0 && projectIndex < currentLibrary.projects.length) {
+  if (project) {
     // Find the tab element for the project being deleted
     const userProjectTabs = document.querySelectorAll(
       '#project-list button[role="tab"]'
