@@ -47,7 +47,8 @@ export const drawProjectTab = (id) => {
     event.stopPropagation(); // Prevent the button click event
     const projectTab = event.target.closest('button[role="tab"]');
     const nameSpan = projectTab.querySelector('.tab-text');
-    makeEditable(nameSpan);
+    const id = projectTab.getAttribute('data-id');
+    makeEditable(nameSpan, id);
   });
   actionContainer.appendChild(editIcon);
 
@@ -97,7 +98,7 @@ export const drawProjectTabList = () => {
 /////////////////////////////////////////////////////////
 
 // Edit button
-function makeEditable(element) {
+function makeEditable(element, id) {
   element.contentEditable = true;
   element.focus();
 
@@ -113,7 +114,10 @@ function makeEditable(element) {
 
   // Add event listeners for saving changes
   element.addEventListener('keydown', handleKeyDown);
-  element.addEventListener('blur', updateUI);
+  // anonymous function to call updateUI with the project ID
+  element.addEventListener('blur', function() {
+    updateUI(element, id);
+  });
 }
 
 function handleKeyDown(event) {
@@ -126,16 +130,18 @@ function handleKeyDown(event) {
   }
 }
 
-function updateUI(event) {
-  const element = event.target;
+function updateUI(element, id) {
   element.contentEditable = false;
   const newName = element.textContent.trim();
 
   if (newName !== element.dataset.originalText) {
     const projectTab = element.closest('button[role="tab"]');
-    updateName(projectTab, newName);
+    updateName(projectTab, newName, id);
     UIState.updateHeader(newName);
   }
+
+  // Remove the data-original-text attribute
+  element.removeAttribute('data-original-text');
 
   // Remove event listeners
   element.removeEventListener('keydown', handleKeyDown);
@@ -149,21 +155,17 @@ function revertChanges(element) {
   element.removeEventListener('blur', updateUI);
 }
 
-function updateName(projectTab, newName) {
+function updateName(projectTab, newName, id) {
   // Update tab button text
   projectTab.querySelector('.tab-text').textContent = newName;
 
   // Update currentLibrary and save to localStorage
   const spanElement = projectTab.querySelector('.tab-text');
-  const originalText = spanElement.getAttribute('data-original-text');
 
-  const projectIndex = currentLibrary.projects.findIndex(
-    (p) => p.name === originalText
-  );
-
-  if (projectIndex !== -1) {
+  const project = currentLibrary.projects.find(p => p.id === id);
+  if (project) {
     // Update the project name in the currentLibrary
-    updateProjectName(projectIndex, newName);
+    updateProjectName(project, newName);
 
     // Save the updated projects to localStorage
     saveProjectsToLocalStorage(currentLibrary);

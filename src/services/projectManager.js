@@ -30,6 +30,6 @@ export function deleteProjectData(projectId, currentLibrary) {
   }
 }
 
-export function updateProjectName(projectIndex, newName) {
-  currentLibrary.projects[projectIndex].name = newName;
+export function updateProjectName(project, newName) {
+  project.name = newName;
 }
