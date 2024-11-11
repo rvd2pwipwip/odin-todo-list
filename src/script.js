@@ -144,7 +144,6 @@ export async function initializeApp() {
   drawProjectTabList();
   drawTasklist(currentLibrary);
   setupNavigation();
-  document.querySelector('button[data-id="all-tab"]').click();
   setupButtons();
 }
 

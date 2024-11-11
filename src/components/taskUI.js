@@ -1,8 +1,9 @@
 import { currentLibrary } from '../script';
 
-export const drawTaskCard = (task, tasklist, projectId) => {
+export const drawTaskCard = (task, tasklist) => {
   const card = document.createElement('div');
-  card.className = 'card';
+  card.className = `card priority-${task.priority.toLowerCase()}`;
+  card.id = task.id;
 
   const done = document.createElement('input');
   done.setAttribute('type', 'checkbox');
@@ -38,6 +39,7 @@ export const drawTasklist = (projectLibrary, projectId = null) => {
     project.tasks.forEach((task) => {
       drawTaskCard(task, tasklist, projectId);
     });
+    // draw all tasks when no project is selected
   } else {
     projectLibrary.projects.forEach((project) => {
       project.tasks.forEach((task) => {

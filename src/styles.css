@@ -61,6 +61,15 @@ html, body {
 
 :root {
   --accent-color: #0070E0;
+  --low-priority: #89BB40;
+  --medium-priority: #F1A74E;
+  --high-priority: #EC1A2B;
+  --low-priority-bg: #89BB4020;
+  --medium-priority-bg: #F1A74E20;
+  --high-priority-bg: #EC1A2B20;
+  --low-priority-hover: #89BB4033;
+  --medium-priority-hover: #F1A74E33;
+  --high-priority-hover: #EC1A2B33;
   --bckg: #fafafa;
   --bckg2: #e8e8e8;
   --onBckg: #191919;
@@ -281,8 +290,34 @@ button[id*="cta"] {
   background: rgba(0, 0, 0, 0.025);
 }
 
+.priority-high {
+  border-left-color: var(--high-priority);
+  background: var(--high-priority-bg);
+}
+
+.priority-high:hover {
+  background: var(--high-priority-hover);
+}
+
+.priority-medium {
+  border-left-color: var(--medium-priority);
+  background: var(--medium-priority-bg);
+}
+
+.priority-medium:hover {
+  background: var(--medium-priority-hover);
+}
+
+.priority-low {
+  border-left-color: var(--low-priority);
+  background: var(--low-priority-bg);
+}
+
+.priority-low:hover {
+  background: var(--low-priority-hover);
+}
+
 .card .title {
-  /* color: red; */
   font-weight: 500;
   font-size: larger;
 }
@@ -292,10 +327,6 @@ button[id*="cta"] {
   align-items: center;
   width: 100%;
   gap: 0.5rem;
-}
-
-.card:hover {
-  background: rgba(0, 0, 0, 0.05);
 }
 
 /*********************************************************/

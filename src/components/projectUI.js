@@ -9,7 +9,7 @@ import { UIState } from '../utils/uiStateManager';
 const projectListContainer = document.createElement('div');
 projectListContainer.setAttribute('id', 'project-list');
 
-export function clearProjectList() {
+export const clearProjectList = () => {
   projectListContainer.innerHTML = '';
 }
 

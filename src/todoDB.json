@@ -16,7 +16,7 @@
           "title": "Task 2",
           "description": "Description for Task 2",
           "dueDate": "2024-08-30",
-          "priority": "Low",
+          "priority": "Medium",
           "done": false,
           "id": "98b031a9-2720-4ae2-86c4-51809324ff99"
         },
@@ -24,7 +24,7 @@
           "title": "Task 3",
           "description": "Description for Task 3",
           "dueDate": "2024-08-30",
-          "priority": "Low",
+          "priority": "High",
           "done": false,
           "id": "87029186-7302-4e12-918e-e51f5573b43e"
         }
