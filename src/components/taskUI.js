@@ -7,12 +7,22 @@ export const drawTaskCard = (task, tasklist) => {
 
   const done = document.createElement('input');
   done.setAttribute('type', 'checkbox');
+  done.id = task.title;
   done.className = 'done';
   done.checked = task.done;
 
+  // custom checkbox with material icons
+  const customCheckbox = document.createElement('span');
+  customCheckbox.className = 'material-icons-rounded';
+  customCheckbox.textContent = 'radio_button_unchecked';
+
   const title = document.createElement('label');
+  title.setAttribute('for', task.title); //same as checkbox id to enable label click
   title.className = 'title';
-  title.textContent = task.title;
+  title.appendChild(customCheckbox);
+
+  // Set the label's text content
+  title.appendChild(document.createTextNode(task.title));
 
   const titleDone = document.createElement('div');
   titleDone.className = 'title-done';

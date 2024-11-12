@@ -318,8 +318,12 @@ button[id*="cta"] {
 }
 
 .card .title {
+  display: flex;
+  align-items: center;
   font-weight: 500;
   font-size: larger;
+  cursor: pointer;
+  gap: 0.5rem;
 }
 
 .title-done {
@@ -328,6 +332,19 @@ button[id*="cta"] {
   width: 100%;
   gap: 0.5rem;
 }
+
+.title-done span {
+  display: inline-block;
+  font-size: 2rem;
+}
+
+/* Hide the default checkbox - still tabbable */
+/* [type='checkbox'] {
+  position: absolute;
+  opacity: 0;
+} */
+
+
 
 /*********************************************************/
 /* Dialog Form */
