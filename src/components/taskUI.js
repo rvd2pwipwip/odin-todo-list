@@ -7,12 +7,6 @@ export const drawTaskCard = (task, tasklist) => {
   card.className = `card priority-${task.priority.toLowerCase()}`;
   card.id = task.id;
 
-  card.addEventListener('click', (e) => {
-    const taskId = e.target.id;
-    console.log('Clicked element ID:', taskId);
-    console.log(e.target);
-  });
-
   const done = document.createElement('input');
   done.setAttribute('type', 'checkbox');
   done.id = task.title; //same as title's 'for' value to enable label click
@@ -20,7 +14,8 @@ export const drawTaskCard = (task, tasklist) => {
   done.checked = task.done;
 
   // Add event listener to toggle icon and done status
-  done.addEventListener('change', () => {
+  done.addEventListener('change', (e) => {
+    e.stopPropagation();
     customCheckbox.textContent = done.checked
       ? 'check_circle'
       : 'radio_button_unchecked';
@@ -57,6 +52,12 @@ export const drawTaskCard = (task, tasklist) => {
   card.append(titleDone, dueDate);
   tasklist.append(card);
 };
+
+tasklist.addEventListener('click', (e) => {
+  console.log('tasklist:', tasklist);
+  const card = e.target.closest('.card');
+  console.log('Card clicked:', card.id);
+});
 
 export const drawTasklist = (projectLibrary, projectId = null) => {
   const tasklist = document.getElementById('tasklist');

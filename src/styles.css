@@ -317,7 +317,7 @@ button[id*="cta"] {
   background: var(--low-priority-hover);
 }
 
-.card .title {
+.card label {
   display: flex;
   align-items: center;
   font-weight: 500;
@@ -331,9 +331,10 @@ button[id*="cta"] {
   align-items: center;
   width: 100%;
   gap: 0.5rem;
+  /* background-color: red; */
 }
 
-.title-done span {
+label span {
   display: inline-block;
   font-size: 2rem;
   color: rgba(0, 0, 0, 0.5);
