@@ -14,8 +14,9 @@ export const drawTaskCard = (task, tasklist) => {
   done.checked = task.done;
 
   // Add event listener to toggle icon and done status
-  done.addEventListener('change', (e) => {
+  done.addEventListener('click', (e) => {
     e.stopPropagation();
+    console.log('input target:', e.target);
     customCheckbox.textContent = done.checked
       ? 'check_circle'
       : 'radio_button_unchecked';
@@ -54,9 +55,16 @@ export const drawTaskCard = (task, tasklist) => {
 };
 
 tasklist.addEventListener('click', (e) => {
-  console.log('tasklist:', tasklist);
-  const card = e.target.closest('.card');
-  console.log('Card clicked:', card.id);
+  if (e.target.matches('.done')) {
+    console.log('matched');
+    return;
+  } else {
+    const card = e.target.closest('.card');
+    if (card) {
+      console.log('tasklist:', tasklist);
+      console.log('Card clicked:', card.id);
+    }
+  }
 });
 
 export const drawTasklist = (projectLibrary, projectId = null) => {
