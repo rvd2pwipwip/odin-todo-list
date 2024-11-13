@@ -1,78 +1,47 @@
 import { currentLibrary } from '../script.js';
-import { createTask } from '../services/taskManager.js';
-import { drawTasklist } from './taskUI.js';
 
-export function addTaskDialog(currentProjectId) {
+export function taskInfo(taskId) {
   // Remove existing dialog if it exists
   const existingDialog = document.querySelector('dialog');
   if (existingDialog) {
     existingDialog.remove();
   }
 
+  // Find the project containing the task
+  const project = currentLibrary.projects.find(proj => 
+    proj.tasks.some(task => task.id === taskId)
+  );
+
+  if (!project) {
+    console.error('Task not found');
+    return null;
+  }
+
+  // Find the task within the project
+  const task = project.tasks.find(task => task.id === taskId);
+
+  if (!task) {
+    console.error('Task not found');
+    return null;
+  }
+
+  // Display task attributes in a dialog
+  console.log(`Task Title: ${task.title}`);
+  console.log(`Description: ${task.description}`);
+  console.log(`Due Date: ${task.dueDate}`);
+  console.log(`Priority: ${task.priority}`);
+
   const dialog = document.createElement('dialog');
 
-  const form = document.createElement('form');
-  // form.addEventListener('submit', (event) => {
-  //   event.preventDefault(); // Prevent default form submission
-  // });
-  form.setAttribute('method', 'dialog');
-  form.id = 'form';
-
-  const fieldset = document.createElement('fieldset');
-
-  const legend = document.createElement('legend');
-  legend.textContent = 'New Task';
+  const dialogTitle = document.createElement('header');
+  dialogTitle.textContent = task.name;
 
   const closeButton = document.createElement('button');
   closeButton.id = 'close-btn';
   closeButton.textContent = '×';
-  form.appendChild(closeButton);
+  dialog.appendChild(closeButton);
 
-  fieldset.appendChild(legend);
-
-  const formItems = [
-    { label: 'Title', id: 'title', type: 'text', required: true },
-    {
-      label: 'Description',
-      id: 'description',
-      type: 'textarea',
-      // required: true
-    },
-    {
-      label: 'Due Date',
-      id: 'due-date',
-      type: 'date',
-      // required: true,
-    },
-  ];
-
-  formItems.forEach((item) => {
-    const div = document.createElement('div');
-    div.className = 'form-item';
-
-    const label = document.createElement('label');
-    label.setAttribute('for', item.id);
-    label.textContent = item.label;
-
-    let input;
-    if (item.type === 'textarea') {
-      input = document.createElement('textarea');
-      input.rows = 4;
-    } else {
-      input = document.createElement('input');
-      input.type = item.type;
-    }
-
-    input.id = item.id;
-    input.name = item.id;
-
-    if (item.required) input.required = true;
-    if (item.min) input.min = item.min;
-
-    div.appendChild(label);
-    div.appendChild(input);
-    fieldset.appendChild(div);
-  });
+  
 
   const selectDiv = document.createElement('div');
   selectDiv.className = 'custom-select';
@@ -99,7 +68,7 @@ export function addTaskDialog(currentProjectId) {
   selectDiv.appendChild(select);
   selectDiv.appendChild(document.createElement('span')).className =
     'custom-arrow';
-  fieldset.appendChild(selectDiv);
+  dialog.appendChild(selectDiv);
 
   const buttonDiv = document.createElement('div');
   const addButton = document.createElement('button');

@@ -15,6 +15,21 @@ export function parseDate(dateString) {
   return new Date(year, month - 1, day);
 }
 
+// Function to format a date as Mth DDth
+export function formatTaskDate(dateString) {
+  const date = new Date(dateString);
+  const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+  const day = date.getDate();
+  const month = monthNames[date.getMonth()];
+
+  // Determine the correct suffix for the day
+  const suffix = (day % 10 === 1 && day !== 11) ? 'st' :
+                 (day % 10 === 2 && day !== 12) ? 'nd' :
+                 (day % 10 === 3 && day !== 13) ? 'rd' : 'th';
+
+  return `${month} ${day}${suffix}`;
+}
+
 // Filter today's tasks
 export function filterTodayTasks(library) {
   const today = getTodayDateFormatted();

@@ -11,20 +11,17 @@ class Task {
     this.dueDate = dueDate;
     this.priority = priority;
     this.done = done;
-    // Only generate a new UUID if no ID is provided
+    // Only generate a new task UUID if no ID is provided
     this.id = id || generateUUID();
   }
   info() {
     return `${this.title} is due on ${this.dueDate}`;
   }
-  toggleStatus() {
-    this.done = !this.done;
-  }
 }
 
 class Project {
   constructor(name, id = null) {
-    // Only generate a new UUID if no ID is provided
+    // Only generate a new project UUID if no ID is provided
     this.id = id || generateUUID();
     this.name = name;
     this.tasks = [];

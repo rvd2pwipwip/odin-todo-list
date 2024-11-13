@@ -1,10 +1,17 @@
 import { currentLibrary } from '../script';
 import { updateTask } from '../services/taskManager';
+import { formatTaskDate } from '../utils/dateUtils';
 
 export const drawTaskCard = (task, tasklist) => {
   const card = document.createElement('div');
   card.className = `card priority-${task.priority.toLowerCase()}`;
   card.id = task.id;
+
+  card.addEventListener('click', (e) => {
+    const taskId = e.target.id;
+    console.log('Clicked element ID:', taskId);
+    console.log(e.target);
+  });
 
   const done = document.createElement('input');
   done.setAttribute('type', 'checkbox');
@@ -45,7 +52,7 @@ export const drawTaskCard = (task, tasklist) => {
 
   const dueDate = document.createElement('p');
   dueDate.className = 'due-date';
-  dueDate.textContent = task.dueDate;
+  dueDate.textContent = formatTaskDate(task.dueDate);
 
   card.append(titleDone, dueDate);
   tasklist.append(card);
