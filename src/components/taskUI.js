@@ -1,4 +1,5 @@
 import { currentLibrary } from '../script';
+import { updateTask } from '../services/taskManager';
 
 export const drawTaskCard = (task, tasklist) => {
   const card = document.createElement('div');
@@ -11,15 +12,22 @@ export const drawTaskCard = (task, tasklist) => {
   done.className = 'done';
   done.checked = task.done;
 
-  // Add event listener to toggle icon
+  // Add event listener to toggle icon and done status
   done.addEventListener('change', () => {
-    customCheckbox.textContent = done.checked ? 'check_circle' : 'radio_button_unchecked';
+    customCheckbox.textContent = done.checked
+      ? 'check_circle'
+      : 'radio_button_unchecked';
+    task.done = done.checked ? true : false;
+    const updatedDone = done.checked ? { done: true } : { done: false };
+    updateTask(task.id, updatedDone);
   });
 
   // custom checkbox with material icons
   const customCheckbox = document.createElement('span');
   customCheckbox.className = 'material-icons-rounded';
-  customCheckbox.textContent = done.checked ? 'check_circle' : 'radio_button_unchecked'; // Initial state
+  customCheckbox.textContent = done.checked
+    ? 'check_circle'
+    : 'radio_button_unchecked'; // Initial state
 
   const title = document.createElement('label');
   title.setAttribute('for', task.title); // same as checkbox id to enable label click

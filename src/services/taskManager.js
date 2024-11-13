@@ -1,3 +1,4 @@
+import { currentLibrary } from '../script';
 import { Task } from '../todoVoodoo.js';
 import { getTodayDateFormatted } from '../utils/dateUtils.js';
 
@@ -29,4 +30,36 @@ export function createTask(
   // Update localStorage
   localStorage.setItem('projects', JSON.stringify(currentLibrary.projects));
   return newTask;
+}
+
+export function updateTask(taskId, updatedAttributes, projectId = null) {
+  // Find the project containing the task
+  const project = projectId 
+    ? currentLibrary.projects.find(proj => proj.id === projectId)
+    : currentLibrary.projects.find(proj => proj.tasks.some(task => task.id === taskId));
+
+  if (!project) {
+    console.error('Project not found');
+    return null;
+  }
+
+  // Find the task within the project
+  const task = project.tasks.find(task => task.id === taskId);
+
+  if (!task) {
+    console.error('Task not found');
+    return null;
+  }
+
+  // Update task attributes
+  Object.keys(updatedAttributes).forEach(key => {
+    if (task.hasOwnProperty(key)) {
+      task[key] = updatedAttributes[key];
+    }
+  });
+
+  // Update localStorage
+  localStorage.setItem('projects', JSON.stringify(currentLibrary.projects));
+
+  return task;
 }
