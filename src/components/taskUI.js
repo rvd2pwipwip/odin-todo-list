@@ -7,22 +7,27 @@ export const drawTaskCard = (task, tasklist) => {
 
   const done = document.createElement('input');
   done.setAttribute('type', 'checkbox');
-  done.id = task.title;
+  done.id = task.title; //same as title's 'for' value to enable label click
   done.className = 'done';
   done.checked = task.done;
+
+  // Add event listener to toggle icon
+  done.addEventListener('change', () => {
+    customCheckbox.textContent = done.checked ? 'check_circle' : 'radio_button_unchecked';
+  });
 
   // custom checkbox with material icons
   const customCheckbox = document.createElement('span');
   customCheckbox.className = 'material-icons-rounded';
-  customCheckbox.textContent = 'radio_button_unchecked';
+  customCheckbox.textContent = done.checked ? 'check_circle' : 'radio_button_unchecked'; // Initial state
 
   const title = document.createElement('label');
   title.setAttribute('for', task.title); //same as checkbox id to enable label click
   title.className = 'title';
-  title.appendChild(customCheckbox);
+  title.append(customCheckbox);
 
-  // Set the label's text content
-  title.appendChild(document.createTextNode(task.title));
+  // append the label's text content after the custom checkbox
+  title.append(document.createTextNode(task.title));
 
   const titleDone = document.createElement('div');
   titleDone.className = 'title-done';
