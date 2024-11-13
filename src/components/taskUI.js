@@ -22,7 +22,9 @@ export const drawTaskCard = (task, tasklist) => {
   customCheckbox.textContent = done.checked ? 'check_circle' : 'radio_button_unchecked'; // Initial state
 
   const title = document.createElement('label');
-  title.setAttribute('for', task.title); //same as checkbox id to enable label click
+  title.setAttribute('for', task.title); // same as checkbox id to enable label click
+  // to style pseudo-element text content (no line-through on span text material icon)
+  title.setAttribute('data-text', task.title);
   title.className = 'title';
   title.append(customCheckbox);
 
