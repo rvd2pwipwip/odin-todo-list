@@ -7,44 +7,47 @@ export const drawTaskCard = (task, tasklist) => {
   card.className = `card priority-${task.priority.toLowerCase()}`;
   card.id = task.id;
 
-  const done = document.createElement('input');
-  done.setAttribute('type', 'checkbox');
-  done.id = task.title; //same as title's 'for' value to enable label click
-  done.className = 'done';
-  done.checked = task.done;
+  const checkboxInput = document.createElement('input');
+  checkboxInput.setAttribute('type', 'checkbox');
+  checkboxInput.id = task.title; //same as title's 'for' value to enable label click
+  checkboxInput.className = 'done';
+  checkboxInput.checked = task.done;
 
-  // Add event listener to toggle icon and done status
-  done.addEventListener('click', (e) => {
-    e.stopPropagation();
-    console.log('input target:', e.target);
-    customCheckbox.textContent = done.checked
-      ? 'check_circle'
-      : 'radio_button_unchecked';
-    task.done = done.checked ? true : false;
-    const updatedDone = done.checked ? { done: true } : { done: false };
-    updateTask(task.id, updatedDone);
-  });
+  
 
   // custom checkbox with material icons
   const customCheckbox = document.createElement('span');
   customCheckbox.className = 'material-icons-rounded';
-  customCheckbox.textContent = done.checked
+  customCheckbox.textContent = checkboxInput.checked
     ? 'check_circle'
     : 'radio_button_unchecked'; // Initial state
 
-  const title = document.createElement('label');
-  title.setAttribute('for', task.title); // same as checkbox id to enable label click
+  const label = document.createElement('label');
+  label.setAttribute('for', task.title); // same as checkbox id to enable label click
   // to style pseudo-element text content (no line-through on span text material icon)
-  title.setAttribute('data-text', task.title);
-  title.className = 'title';
-  title.append(customCheckbox);
+  label.setAttribute('data-text', task.title);
+  label.className = 'title';
+  label.append(checkboxInput, customCheckbox);
 
   // append the label's text content after the custom checkbox
-  title.append(document.createTextNode(task.title));
+  label.append(document.createTextNode(task.title));
+
+  // Add event listener to toggle icon and done status
+  label.addEventListener('click', (e) => {
+    e.stopPropagation();
+    console.log('input target:', e.target);
+    customCheckbox.textContent = checkboxInput.checked
+      ? 'check_circle'
+      : 'radio_button_unchecked';
+    task.done = checkboxInput.checked ? true : false;
+    const updatedDone = checkboxInput.checked ? { done: true } : { done: false };
+    updateTask(task.id, updatedDone);
+  });
 
   const titleDone = document.createElement('div');
   titleDone.className = 'title-done';
-  titleDone.append(done, title);
+  // titleDone.append(checkboxInput, label);
+  titleDone.append(label);
 
   const dueDate = document.createElement('p');
   dueDate.className = 'due-date';

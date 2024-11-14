@@ -334,6 +334,7 @@ button[id*="cta"] {
   /* background-color: red; */
 }
 
+/* the custom checkbox check_circle material icon */
 label span {
   display: inline-block;
   font-size: 2rem;
@@ -342,24 +343,26 @@ label span {
   transition: transform 200ms ease-in-out;
 }
 
-.title-done:hover span,
-/* label that is next to focused checkbox */
-[type='checkbox']:focus + label span { 
+.card:hover span,
+/* span that is next to focused checkbox */
+[type='checkbox']:focus + span { 
   transform: scale(1.2);
   color: black;
 }
 /* Task card styling when checkbox is checked */
-[type='checkbox']:checked + label span { 
+[type='checkbox']:checked + span { 
   transform: scale(1);
   color: black;
 }
 
-.title-done input.done:checked + label {
+label:has(input.done:checked) {
   position: relative;
   opacity: 0.33;
 }
 /* pseudo element to only style label's text content */
-.title-done input.done:checked + label::after {
+/* .title-done input.done:checked + label::after { */
+/* label input.done:checked::after { */
+label:has(input.done:checked)::after {
   content: attr(data-text);
   text-decoration: line-through;
   position: absolute;
