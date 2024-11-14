@@ -343,8 +343,9 @@ label span {
   transition: transform 200ms ease-in-out;
 }
 
+/*  select the span (custom checkbox) when the card is hovered */
 .card:hover span,
-/* span that is next to focused checkbox */
+/* span that is next to focused checkbox for keyboard support*/
 [type='checkbox']:focus + span { 
   transform: scale(1.2);
   color: black;
@@ -355,13 +356,15 @@ label span {
   color: black;
 }
 
+/* select label with a checked input */
+/* set position relative to set ::after position*/
 label:has(input.done:checked) {
   position: relative;
   opacity: 0.33;
 }
-/* pseudo element to only style label's text content */
-/* .title-done input.done:checked + label::after { */
-/* label input.done:checked::after { */
+/* select label with a checked input */
+/* pseudo used to only line through label's text content (not material text icon) */
+/* ::after is placed right under label*/
 label:has(input.done:checked)::after {
   content: attr(data-text);
   text-decoration: line-through;

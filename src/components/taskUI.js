@@ -1,6 +1,6 @@
 import { currentLibrary } from '../script';
 import { updateTask } from '../services/taskManager';
-import { formatTaskDate } from '../utils/dateUtils';
+import { formatTaskDate, getTodayDateFormatted } from '../utils/dateUtils';
 
 export const drawTaskCard = (task, tasklist) => {
   const card = document.createElement('div');
@@ -12,8 +12,6 @@ export const drawTaskCard = (task, tasklist) => {
   checkboxInput.id = task.title; //same as title's 'for' value to enable label click
   checkboxInput.className = 'done';
   checkboxInput.checked = task.done;
-
-  
 
   // custom checkbox with material icons
   const customCheckbox = document.createElement('span');
@@ -35,7 +33,6 @@ export const drawTaskCard = (task, tasklist) => {
   // Add event listener to toggle icon and done status
   label.addEventListener('click', (e) => {
     e.stopPropagation();
-    console.log('input target:', e.target);
     customCheckbox.textContent = checkboxInput.checked
       ? 'check_circle'
       : 'radio_button_unchecked';
@@ -59,13 +56,12 @@ export const drawTaskCard = (task, tasklist) => {
 
 tasklist.addEventListener('click', (e) => {
   if (e.target.matches('.done')) {
-    console.log('matched');
     return;
   } else {
     const card = e.target.closest('.card');
     if (card) {
-      console.log('tasklist:', tasklist);
-      console.log('Card clicked:', card.id);
+      // todo: task info
+      console.log('Task Info for:', card.id);
     }
   }
 });
