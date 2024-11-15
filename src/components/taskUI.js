@@ -1,6 +1,7 @@
 import { currentLibrary } from '../script';
 import { updateTask } from '../services/taskManager';
 import { formatTaskDate, getTodayDateFormatted } from '../utils/dateUtils';
+import { taskInfoDialog } from './taskInfoDialog';
 
 export const drawTaskCard = (task, tasklist) => {
   const card = document.createElement('div');
@@ -30,14 +31,16 @@ export const drawTaskCard = (task, tasklist) => {
   // append the label's text content after the custom checkbox
   label.append(document.createTextNode(task.title));
 
-  // Add event listener to toggle icon and done status
+  // toggle icon and done status
   label.addEventListener('click', (e) => {
-    e.stopPropagation();
+    e.stopPropagation(); // don't bubble up to card click event
     customCheckbox.textContent = checkboxInput.checked
       ? 'check_circle'
       : 'radio_button_unchecked';
     task.done = checkboxInput.checked ? true : false;
-    const updatedDone = checkboxInput.checked ? { done: true } : { done: false };
+    const updatedDone = checkboxInput.checked
+      ? { done: true }
+      : { done: false };
     updateTask(task.id, updatedDone);
   });
 
@@ -54,16 +57,12 @@ export const drawTaskCard = (task, tasklist) => {
   tasklist.append(card);
 };
 
+// set click event on container of tasks for event delegation
 tasklist.addEventListener('click', (e) => {
-  if (e.target.matches('.done')) {
-    return;
-  } else {
-    const card = e.target.closest('.card');
-    if (card) {
-      // todo: task info
-      console.log('Task Info for:', card.id);
-    }
-  }
+  const card = e.target.closest('.card'); // delegate to specific task card
+  const taskInfo = taskInfoDialog(card.id);
+  document.getElementById('dialog-placeholder').appendChild(taskInfo);
+  taskInfo.showModal();
 });
 
 export const drawTasklist = (projectLibrary, projectId = null) => {

@@ -1,7 +1,7 @@
 import './styles.css';
 import { Task, Project, ProjectLibrary } from './todoVoodoo.js';
-import { addTaskDialog } from './components/taskDialog.js';
-import { addProjectDialog } from './components/projectDialog.js';
+import { addTaskDialog } from './components/addTaskDialog.js';
+import { addProjectDialog } from './components/addProjectDialog.js';
 import { filterTodayTasks, filterWeekTasks } from './utils/dateUtils.js';
 import { saveProjectsToLocalStorage } from './services/projectManager.js';
 import {

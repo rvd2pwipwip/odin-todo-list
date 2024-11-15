@@ -1,5 +1,5 @@
 import { currentLibrary } from '../script';
-import { deleteProjectDialog } from './projectDialog';
+import { deleteProjectDialog } from './addProjectDialog';
 import {
   saveProjectsToLocalStorage,
   updateProjectName,
@@ -11,7 +11,7 @@ projectListContainer.setAttribute('id', 'project-list');
 
 export const clearProjectList = () => {
   projectListContainer.innerHTML = '';
-}
+};
 
 export const drawProjectTab = (id) => {
   const project = currentLibrary.projects.find((p) => p.id === id);

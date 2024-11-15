@@ -1,6 +1,6 @@
 import { currentLibrary } from '../script.js';
 
-export function taskInfo(taskId) {
+export function taskInfoDialog(taskId) {
   // Remove existing dialog if it exists
   const existingDialog = document.querySelector('dialog');
   if (existingDialog) {
@@ -8,8 +8,8 @@ export function taskInfo(taskId) {
   }
 
   // Find the project containing the task
-  const project = currentLibrary.projects.find(proj => 
-    proj.tasks.some(task => task.id === taskId)
+  const project = currentLibrary.projects.find((proj) =>
+    proj.tasks.some((task) => task.id === taskId)
   );
 
   if (!project) {
@@ -18,7 +18,7 @@ export function taskInfo(taskId) {
   }
 
   // Find the task within the project
-  const task = project.tasks.find(task => task.id === taskId);
+  const task = project.tasks.find((task) => task.id === taskId);
 
   if (!task) {
     console.error('Task not found');
@@ -34,14 +34,13 @@ export function taskInfo(taskId) {
   const dialog = document.createElement('dialog');
 
   const dialogTitle = document.createElement('header');
-  dialogTitle.textContent = task.name;
+  dialogTitle.innerText = task.title;
+  dialog.append(dialogTitle);
 
   const closeButton = document.createElement('button');
   closeButton.id = 'close-btn';
   closeButton.textContent = '×';
   dialog.appendChild(closeButton);
-
-  
 
   const selectDiv = document.createElement('div');
   selectDiv.className = 'custom-select';
@@ -86,10 +85,6 @@ export function taskInfo(taskId) {
   addButton.innerHTML += 'Add Task';
 
   buttonDiv.appendChild(addButton);
-  fieldset.appendChild(buttonDiv);
-
-  form.appendChild(fieldset);
-  dialog.appendChild(form);
 
   // Add event listener for the close button to close the dialog
   closeButton.addEventListener('click', () => {
