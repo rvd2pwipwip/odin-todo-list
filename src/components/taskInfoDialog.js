@@ -25,22 +25,36 @@ export function taskInfoDialog(taskId) {
     return null;
   }
 
-  // Display task attributes in a dialog
-  console.log(`Task Title: ${task.title}`);
-  console.log(`Description: ${task.description}`);
-  console.log(`Due Date: ${task.dueDate}`);
-  console.log(`Priority: ${task.priority}`);
-
   const dialog = document.createElement('dialog');
-
-  const dialogTitle = document.createElement('header');
-  dialogTitle.innerText = task.title;
-  dialog.append(dialogTitle);
+  dialog.className = 'task-info';
 
   const closeButton = document.createElement('button');
   closeButton.id = 'close-btn';
   closeButton.textContent = '×';
   dialog.appendChild(closeButton);
+
+  const infoHeader = document.createElement('header');
+  infoHeader.id = 'info-header';
+  infoHeader.setAttribute('priority', task.priority.toLowerCase());
+  dialog.append(infoHeader);
+
+  const dialogTitle = document.createElement('h1');
+  dialogTitle.innerHTML += task.title;
+  infoHeader.append(dialogTitle);
+
+  const taskInfoContent = document.createElement('div');
+  taskInfoContent.id = 'task-info-content';
+
+  const taskDescription = document.createElement('div');
+  if (task.description) {
+    const text = document.createElement('p');
+    text.textContent = task.description;
+    taskDescription.append(text);
+  } else {
+    const addDescriptionBtn = document.createElement('button');
+    addDescriptionBtn.textContent = 'Add Description';
+    taskDescription.append(addDescriptionBtn);
+  }
 
   const selectDiv = document.createElement('div');
   selectDiv.className = 'custom-select';
@@ -51,7 +65,6 @@ export function taskInfoDialog(taskId) {
   // select.required = true;
 
   const options = [
-    { value: '', text: 'Priority…' },
     { value: 'Low', text: 'Low' },
     { value: 'Medium', text: 'Medium' },
     { value: 'High', text: 'High' },
@@ -63,6 +76,8 @@ export function taskInfoDialog(taskId) {
     option.textContent = optionData.text;
     select.appendChild(option);
   });
+
+  select.value = task.priority;
 
   selectDiv.appendChild(select);
   selectDiv.appendChild(document.createElement('span')).className =
@@ -85,6 +100,10 @@ export function taskInfoDialog(taskId) {
   addButton.innerHTML += 'Add Task';
 
   buttonDiv.appendChild(addButton);
+
+  taskInfoContent.append(taskDescription, selectDiv, buttonDiv);
+
+  dialog.append(taskInfoContent);
 
   // Add event listener for the close button to close the dialog
   closeButton.addEventListener('click', () => {

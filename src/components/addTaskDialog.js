@@ -31,11 +31,18 @@ export function addTaskDialog(currentProjectId) {
   fieldset.appendChild(legend);
 
   const formItems = [
-    { label: 'Title', id: 'title', type: 'text', required: true },
+    {
+      label: 'Title',
+      id: 'title',
+      type: 'text',
+      required: true,
+      maxlength: '60',
+    },
     {
       label: 'Description',
       id: 'description',
       type: 'textarea',
+      maxlength: '200',
       // required: true
     },
     {
@@ -66,8 +73,10 @@ export function addTaskDialog(currentProjectId) {
     input.id = item.id;
     input.name = item.id;
 
+    if (item.maxlength) input.maxLength = item.maxlength;
+
     if (item.required) input.required = true;
-    if (item.min) input.min = item.min;
+    // if (item.min) input.min = item.min;
 
     div.appendChild(label);
     div.appendChild(input);

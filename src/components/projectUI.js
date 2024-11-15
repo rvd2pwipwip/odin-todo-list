@@ -40,9 +40,9 @@ export const drawProjectTab = (id) => {
 
   // Create and append the edit icon
   const editIcon = document.createElement('i');
-  editIcon.className = 'material-icons-rounded edit-icon';
+  editIcon.className = 'material-icons-rounded';
   editIcon.innerText = 'edit';
-  editIcon.title = 'Edit Project';
+  editIcon.title = 'Edit Project Name';
   editIcon.addEventListener('click', (event) => {
     event.stopPropagation(); // Prevent the button click event
     const projectTab = event.target.closest('button[role="tab"]');
@@ -54,7 +54,7 @@ export const drawProjectTab = (id) => {
 
   // Create and append the delete icon
   const deleteIcon = document.createElement('i');
-  deleteIcon.className = 'material-icons-rounded delete-icon';
+  deleteIcon.className = 'material-icons-rounded';
   deleteIcon.innerText = 'delete';
   deleteIcon.title = 'Delete Project';
   deleteIcon.addEventListener('click', (event) => {

@@ -46,14 +46,29 @@ export const drawTaskCard = (task, tasklist) => {
 
   const titleDone = document.createElement('div');
   titleDone.className = 'title-done';
-  // titleDone.append(checkboxInput, label);
   titleDone.append(label);
+  
+  const taskInfoBtn = document.createElement('p');
+  const infoBtnSpan = document.createElement('span');
+  infoBtnSpan.className = 'material-icons-rounded';
+  infoBtnSpan.innerText = 'info_outline';
+  taskInfoBtn.id = task.id;
+  
+  taskInfoBtn.append(infoBtnSpan);
 
   const dueDate = document.createElement('p');
   dueDate.className = 'due-date';
   dueDate.textContent = formatTaskDate(task.dueDate);
 
-  card.append(titleDone, dueDate);
+  const taskDeleteBtn = document.createElement('p');
+  const deleteBtnSpan = document.createElement('span');
+  deleteBtnSpan.className = 'material-icons-rounded';
+  deleteBtnSpan.innerText = 'delete_outline';
+  taskDeleteBtn.id = task.id;
+  
+  taskDeleteBtn.append(deleteBtnSpan);
+
+  card.append(titleDone, taskInfoBtn, dueDate, taskDeleteBtn);
   tasklist.append(card);
 };
 
