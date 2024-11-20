@@ -276,6 +276,20 @@ button[id*="cta"] {
   opacity: 0.3;
 }
 
+dialog button:not([id*="cta"]) {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: white;
+  /* color: white; */
+  padding: 1rem 2rem 1rem 1.5rem;
+  border: 3px solid rgba(0, 0, 0, 0.3);
+  border-radius: 50px;
+  font-size: 1rem;
+  font-weight: 500;
+  gap: 0.625rem;
+}
+
 /*********************************************************/
 /* Tasks */
 /*********************************************************/
@@ -325,6 +339,7 @@ button[id*="cta"] {
   font-size: larger;
   cursor: pointer;
   gap: 0.5rem;
+  position: relative /* to position the label relatively */
 }
 
 .title-done {
@@ -372,7 +387,6 @@ label:has(input.done:checked)::after {
   position: absolute;
   left: 40px;
   top: 0;
-  width: 100%;
   height: 100%;
   display: flex;
   align-items: center;
@@ -616,9 +630,29 @@ dialog #delete-cta {
   border-top: 6px solid var(--high-priority);
 }
 
+#info-button-div {
+  display: flex;
+  flex-direction: column;
+  padding: 1.5rem;
+  gap: 2rem;
+}
+
 #task-info-content {
   display: flex;
   flex-direction: column;
   gap: 1rem;
-  padding: 1.5rem;
+}
+
+.task-content-item {
+  display: flex;
+  flex-direction: column;
+  gap: 0.125rem;
+}
+
+.task-content-item p {
+  margin: 0;
+}
+
+.task-content-item label {
+  color: rgba(0, 0, 0, 0.3);
 }

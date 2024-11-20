@@ -32,11 +32,24 @@ export function createTask(
   return newTask;
 }
 
+export function getTaskById(taskId) {
+  for (const project of currentLibrary.projects) {
+    for (const task of project.tasks) {
+      if (task.id === taskId) {
+        return task;
+      }
+    }
+  }
+  return null; // Return null if the task is not found
+}
+
 export function updateTask(taskId, updatedAttributes, projectId = null) {
   // Find the project containing the task
-  const project = projectId 
-    ? currentLibrary.projects.find(proj => proj.id === projectId)
-    : currentLibrary.projects.find(proj => proj.tasks.some(task => task.id === taskId));
+  const project = projectId
+    ? currentLibrary.projects.find((proj) => proj.id === projectId)
+    : currentLibrary.projects.find((proj) =>
+        proj.tasks.some((task) => task.id === taskId)
+      );
 
   if (!project) {
     console.error('Project not found');
@@ -44,7 +57,7 @@ export function updateTask(taskId, updatedAttributes, projectId = null) {
   }
 
   // Find the task within the project
-  const task = project.tasks.find(task => task.id === taskId);
+  const task = project.tasks.find((task) => task.id === taskId);
 
   if (!task) {
     console.error('Task not found');
@@ -52,7 +65,7 @@ export function updateTask(taskId, updatedAttributes, projectId = null) {
   }
 
   // Update task attributes
-  Object.keys(updatedAttributes).forEach(key => {
+  Object.keys(updatedAttributes).forEach((key) => {
     if (task.hasOwnProperty(key)) {
       task[key] = updatedAttributes[key];
     }

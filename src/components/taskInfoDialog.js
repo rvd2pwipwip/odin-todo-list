@@ -1,4 +1,7 @@
 import { currentLibrary } from '../script.js';
+import { formatTaskDate } from '../utils/dateUtils.js';
+import { editTaskDialog } from './editTaskDialog.js';
+import { UIState } from '../utils/uiStateManager.js';
 
 export function taskInfoDialog(taskId) {
   // Remove existing dialog if it exists
@@ -46,64 +49,68 @@ export function taskInfoDialog(taskId) {
   taskInfoContent.id = 'task-info-content';
 
   const taskDescription = document.createElement('div');
+  taskDescription.className = 'task-content-item';
   if (task.description) {
+    const descriptionLabel = document.createElement('label');
+    descriptionLabel.textContent = 'Description';
     const text = document.createElement('p');
     text.textContent = task.description;
-    taskDescription.append(text);
+    taskDescription.append(descriptionLabel, text);
   } else {
     const addDescriptionBtn = document.createElement('button');
     addDescriptionBtn.textContent = 'Add Description';
     taskDescription.append(addDescriptionBtn);
   }
 
-  const selectDiv = document.createElement('div');
-  selectDiv.className = 'custom-select';
+  const priorityDisplay = document.createElement('div');
+  priorityDisplay.className = 'task-content-item';
+  const priorityLabel = document.createElement('label');
+  priorityLabel.textContent = 'Priority';
+  const priority = document.createElement('p');
+  priority.textContent = task.priority;
+  priorityDisplay.append(priorityLabel, priority);
 
-  const select = document.createElement('select');
-  select.id = 'priority';
-  select.name = 'priority';
-  // select.required = true;
-
-  const options = [
-    { value: 'Low', text: 'Low' },
-    { value: 'Medium', text: 'Medium' },
-    { value: 'High', text: 'High' },
-  ];
-
-  options.forEach((optionData) => {
-    const option = document.createElement('option');
-    option.value = optionData.value;
-    option.textContent = optionData.text;
-    select.appendChild(option);
-  });
-
-  select.value = task.priority;
-
-  selectDiv.appendChild(select);
-  selectDiv.appendChild(document.createElement('span')).className =
-    'custom-arrow';
-  dialog.appendChild(selectDiv);
+  const dueDateDisplay = document.createElement('div');
+  dueDateDisplay.className = 'task-content-item';
+  const dueDateLabel = document.createElement('label');
+  dueDateLabel.textContent = 'Due Date';
+  const dueDate = document.createElement('p');
+  dueDate.className = 'due-date';
+  dueDate.textContent = formatTaskDate(task.dueDate);
+  dueDateDisplay.append(dueDateLabel, dueDate);
 
   const buttonDiv = document.createElement('div');
-  const addButton = document.createElement('button');
-  addButton.type = 'button'; // Ensure addButton is of type button
-  addButton.style.width = '100%';
-  addButton.id = 'add-submit-cta';
+  const editTaskButton = document.createElement('button');
+  editTaskButton.type = 'button'; // Ensure addButton is of type button
+  editTaskButton.style.width = '100%';
+  editTaskButton.id = 'edit-task-button';
 
   // Create the icon element
   const icon = document.createElement('span');
   icon.className = 'material-icons-rounded';
-  icon.innerHTML = 'add';
+  icon.innerHTML = 'edit';
   // Append the icon to the button first
-  addButton.appendChild(icon);
+  editTaskButton.appendChild(icon);
   // Add the button text after the icon
-  addButton.innerHTML += 'Add Task';
+  editTaskButton.innerHTML += 'Edit Task';
 
-  buttonDiv.appendChild(addButton);
+  // edit task
+  editTaskButton.addEventListener('click', () => {
+    const editTask = editTaskDialog(taskId);
+    document.getElementById('dialog-placeholder').appendChild(editTask);
+    editTask.showModal();
+  });
 
-  taskInfoContent.append(taskDescription, selectDiv, buttonDiv);
+  buttonDiv.appendChild(editTaskButton);
 
-  dialog.append(taskInfoContent);
+  dueDateDisplay.append(dueDateLabel, dueDate);
+  taskInfoContent.append(priorityDisplay, taskDescription, dueDateDisplay);
+
+  const infoDetailsButtonDiv = document.createElement('div');
+  infoDetailsButtonDiv.id = 'info-button-div';
+  infoDetailsButtonDiv.append(taskInfoContent, buttonDiv);
+
+  dialog.append(infoDetailsButtonDiv);
 
   // Add event listener for the close button to close the dialog
   closeButton.addEventListener('click', () => {
@@ -124,30 +131,6 @@ export function taskInfoDialog(taskId) {
       dialog.close();
       dialog.remove();
     }
-  });
-
-  addButton.addEventListener('click', (e) => {
-    e.preventDefault(); // Prevent the default form submission
-    const title = document.getElementById('title').value;
-    const description = document.getElementById('description').value;
-    const dueDate = document.getElementById('due-date').value;
-    const priority = document.getElementById('priority').value;
-
-    if (title) {
-      createTask(
-        title,
-        description,
-        dueDate,
-        priority,
-        currentProjectId,
-        currentLibrary
-      );
-
-      drawTasklist(currentLibrary, currentProjectId);
-    }
-
-    dialog.close();
-    dialog.remove();
   });
 
   return dialog;
