@@ -76,3 +76,7 @@ export function updateTask(taskId, updatedAttributes, projectId = null) {
 
   return task;
 }
+
+export function deleteTaskData(taskId) {
+  
+}

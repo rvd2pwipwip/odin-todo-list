@@ -1,6 +1,6 @@
 import { currentLibrary } from '../script';
 import { updateTask } from '../services/taskManager';
-import { formatTaskDate, getTodayDateFormatted } from '../utils/dateUtils';
+import { formatTaskDate } from '../utils/dateUtils';
 import { taskInfoDialog } from './taskInfoDialog';
 
 export const drawTaskCard = (task, tasklist) => {
@@ -47,13 +47,13 @@ export const drawTaskCard = (task, tasklist) => {
   const titleDone = document.createElement('div');
   titleDone.className = 'title-done';
   titleDone.append(label);
-  
+
   const taskInfoBtn = document.createElement('p');
   const infoBtnSpan = document.createElement('span');
   infoBtnSpan.className = 'material-icons-rounded';
   infoBtnSpan.innerText = 'info_outline';
   taskInfoBtn.id = task.id;
-  
+
   taskInfoBtn.append(infoBtnSpan);
 
   const dueDate = document.createElement('p');
@@ -65,7 +65,19 @@ export const drawTaskCard = (task, tasklist) => {
   deleteBtnSpan.className = 'material-icons-rounded';
   deleteBtnSpan.innerText = 'delete_outline';
   taskDeleteBtn.id = task.id;
-  
+
+  taskDeleteBtn.addEventListener('click', (e) => {
+    e.stopPropagation(); // don't bubble up to card click event
+
+    // null if All Tasks to redraw all tasks instead of tasks's project
+    const projectId =
+      document.getElementById('main-header').innerText === 'All Tasks'
+        ? null
+        : project.id;
+
+    drawTasklist(currentLibrary, projectId);
+  });
+
   taskDeleteBtn.append(deleteBtnSpan);
 
   card.append(titleDone, taskInfoBtn, dueDate, taskDeleteBtn);

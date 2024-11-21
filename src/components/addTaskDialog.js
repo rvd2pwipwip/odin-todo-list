@@ -12,9 +12,6 @@ export function addTaskDialog(currentProjectId) {
   const dialog = document.createElement('dialog');
 
   const form = document.createElement('form');
-  // form.addEventListener('submit', (event) => {
-  //   event.preventDefault(); // Prevent default form submission
-  // });
   form.setAttribute('method', 'dialog');
   form.id = 'form';
 
@@ -76,7 +73,6 @@ export function addTaskDialog(currentProjectId) {
     if (item.maxlength) input.maxLength = item.maxlength;
 
     if (item.required) input.required = true;
-    // if (item.min) input.min = item.min;
 
     div.appendChild(label);
     div.appendChild(input);
@@ -89,7 +85,6 @@ export function addTaskDialog(currentProjectId) {
   const select = document.createElement('select');
   select.id = 'priority';
   select.name = 'priority';
-  // select.required = true;
 
   const options = [
     { value: '', text: 'Priority…' },

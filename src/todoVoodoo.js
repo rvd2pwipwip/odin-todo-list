@@ -14,9 +14,6 @@ class Task {
     // Only generate a new task UUID if no ID is provided
     this.id = id || generateUUID();
   }
-  info() {
-    return `${this.title} is due on ${this.dueDate}`;
-  }
 }
 
 class Project {
@@ -29,6 +26,10 @@ class Project {
 
   addTask(task) {
     this.tasks.push(task);
+  }
+
+  deleteTask(task) {
+    this.tasks = this.tasks.filter(t => t !== task);
   }
 }
 

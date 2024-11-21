@@ -1,5 +1,5 @@
 import { currentLibrary } from '../script';
-import { deleteProjectDialog } from './addProjectDialog';
+import { deleteProjectDialog } from './projectDialog';
 import {
   saveProjectsToLocalStorage,
   updateProjectName,
