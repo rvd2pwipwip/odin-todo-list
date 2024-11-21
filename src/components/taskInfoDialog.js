@@ -50,17 +50,11 @@ export function taskInfoDialog(taskId) {
 
   const taskDescription = document.createElement('div');
   taskDescription.className = 'task-content-item';
-  if (task.description) {
-    const descriptionLabel = document.createElement('label');
-    descriptionLabel.textContent = 'Description';
-    const text = document.createElement('p');
-    text.textContent = task.description;
-    taskDescription.append(descriptionLabel, text);
-  } else {
-    const addDescriptionBtn = document.createElement('button');
-    addDescriptionBtn.textContent = 'Add Description';
-    taskDescription.append(addDescriptionBtn);
-  }
+  const descriptionLabel = document.createElement('label');
+  descriptionLabel.textContent = 'Description';
+  const text = document.createElement('p');
+  text.textContent = task.description;
+  taskDescription.append(descriptionLabel, text);
 
   const priorityDisplay = document.createElement('div');
   priorityDisplay.className = 'task-content-item';
@@ -96,7 +90,7 @@ export function taskInfoDialog(taskId) {
 
   // edit task
   editTaskButton.addEventListener('click', () => {
-    const editTask = editTaskDialog(taskId);
+    const editTask = editTaskDialog(taskId, project.id);
     document.getElementById('dialog-placeholder').appendChild(editTask);
     editTask.showModal();
   });
@@ -104,7 +98,10 @@ export function taskInfoDialog(taskId) {
   buttonDiv.appendChild(editTaskButton);
 
   dueDateDisplay.append(dueDateLabel, dueDate);
-  taskInfoContent.append(priorityDisplay, taskDescription, dueDateDisplay);
+  // don't display description item if empty
+  task.description
+    ? taskInfoContent.append(taskDescription, priorityDisplay, dueDateDisplay)
+    : taskInfoContent.append(priorityDisplay, dueDateDisplay);
 
   const infoDetailsButtonDiv = document.createElement('div');
   infoDetailsButtonDiv.id = 'info-button-div';

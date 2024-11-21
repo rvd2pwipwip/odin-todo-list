@@ -656,3 +656,8 @@ dialog #delete-cta {
 .task-content-item label {
   color: rgba(0, 0, 0, 0.3);
 }
+
+#update-task-cta[disabled] {
+  pointer-events: none;
+  opacity: 0.3;
+}

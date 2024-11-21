@@ -1,8 +1,8 @@
 import { currentLibrary } from '../script.js';
-import { getTaskById } from '../services/taskManager.js';
+import { getTaskById, updateTask } from '../services/taskManager.js';
 import { drawTasklist } from './taskUI.js';
 
-export function editTaskDialog(taskId) {
+export function editTaskDialog(taskId, projectId) {
   const task = getTaskById(taskId);
   // Remove existing dialog if it exists
   const existingDialog = document.querySelector('dialog');
@@ -55,6 +55,8 @@ export function editTaskDialog(taskId) {
     },
   ];
 
+  let formInputs = []; //form inputs will be pushed here so we can check if there values are changed later
+
   formItems.forEach((item) => {
     const div = document.createElement('div');
     div.className = 'form-item';
@@ -81,6 +83,8 @@ export function editTaskDialog(taskId) {
     if (item.required) input.required = true;
     if (item.min) input.min = item.min;
 
+    formInputs.push(input);
+
     div.appendChild(label);
     div.appendChild(input);
     fieldset.appendChild(div);
@@ -101,7 +105,6 @@ export function editTaskDialog(taskId) {
   priorityLabel.textContent = select.id;
 
   const options = [
-    { value: '', text: 'Priority…' },
     { value: 'Low', text: 'Low' },
     { value: 'Medium', text: 'Medium' },
     { value: 'High', text: 'High' },
@@ -114,6 +117,9 @@ export function editTaskDialog(taskId) {
     select.appendChild(option);
   });
 
+  select.value = task.priority;
+  formInputs.push(select);
+
   selectDiv.appendChild(select);
   selectDiv.appendChild(document.createElement('span')).className =
     'custom-arrow';
@@ -125,6 +131,7 @@ export function editTaskDialog(taskId) {
   updateTaskButton.type = 'button'; // Ensure updateButton is of type button
   updateTaskButton.style.width = '100%';
   updateTaskButton.id = 'update-task-cta';
+  updateTaskButton.disabled = true;
 
   // Create the icon element
   const icon = document.createElement('span');
@@ -162,29 +169,36 @@ export function editTaskDialog(taskId) {
     }
   });
 
-  // addButton.addEventListener('click', (e) => {
-  //   e.preventDefault(); // Prevent the default form submission
-  //   const title = document.getElementById('title').value;
-  //   const description = document.getElementById('description').value;
-  //   const dueDate = document.getElementById('due-date').value;
-  //   const priority = document.getElementById('priority').value;
+  // enable updateTaskButton only when an input value is modified
+  // Function to enable the button
+  function enableUpdateButton() {
+    updateTaskButton.disabled = false;
+  }
+  // Add event listeners to each input element
+  formInputs.forEach((input) => {
+    input.addEventListener('input', enableUpdateButton);
+  });
 
-  //   if (title) {
-  //     createTask(
-  //       title,
-  //       description,
-  //       dueDate,
-  //       priority,
-  //       currentProjectId,
-  //       currentLibrary
-  //     );
+  updateTaskButton.addEventListener('click', (e) => {
+    e.preventDefault(); // Prevent the default form submission
 
-  //     drawTasklist(currentLibrary, currentProjectId);
-  //   }
+    const updatedAttributes = {
+      title: document.getElementById('title').value,
+      description: document.getElementById('description').value,
+      dueDate: document.getElementById('due-date').value,
+      priority: document.getElementById('priority').value,
+    };
 
-  //   dialog.close();
-  //   dialog.remove();
-  // });
+    updateTask(task.id, updatedAttributes);
+
+    // null if All Tasks to redraw all tasks instead of tasks's project
+    projectId = document.getElementById('main-header').innerText === 'All Tasks' ? null : projectId;
+
+    drawTasklist(currentLibrary, projectId);
+
+    dialog.close();
+    dialog.remove();
+  });
 
   return dialog;
 }
