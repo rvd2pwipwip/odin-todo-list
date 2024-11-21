@@ -73,7 +73,7 @@ export const drawTaskCard = (task, tasklist) => {
       p.tasks.some((t) => t.id === task.id)
     );
 
-    deleteTaskData(task.id);
+    deleteTaskData(task);
     // null if All Tasks to redraw all tasks instead of project tasks
     const projectId =
       document.getElementById('main-header').innerText === 'All Tasks'
