@@ -78,5 +78,21 @@ export function updateTask(taskId, updatedAttributes, projectId = null) {
 }
 
 export function deleteTaskData(taskId) {
-  
+  // Iterate over each project in the current library
+  for (const project of currentLibrary.projects) {
+    // Find the index of the task with the specified ID
+    const taskIndex = project.tasks.findIndex(task => task.id === taskId);
+
+    // If the task is found, remove it
+    if (taskIndex !== -1) {
+      project.tasks.splice(taskIndex, 1);
+      
+      // Update localStorage with the modified projects array
+      localStorage.setItem('projects', JSON.stringify(currentLibrary.projects));
+      
+      return; // Exit the function once the task is deleted
+    }
+  }
+
+  console.error('Task not found');
 }

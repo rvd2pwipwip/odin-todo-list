@@ -1,5 +1,5 @@
 import { currentLibrary } from '../script';
-import { updateTask } from '../services/taskManager';
+import { updateTask, deleteTaskData } from '../services/taskManager';
 import { formatTaskDate } from '../utils/dateUtils';
 import { taskInfoDialog } from './taskInfoDialog';
 
@@ -69,7 +69,12 @@ export const drawTaskCard = (task, tasklist) => {
   taskDeleteBtn.addEventListener('click', (e) => {
     e.stopPropagation(); // don't bubble up to card click event
 
-    // null if All Tasks to redraw all tasks instead of tasks's project
+    const project = currentLibrary.projects.find((p) =>
+      p.tasks.some((t) => t.id === task.id)
+    );
+
+    deleteTaskData(task.id);
+    // null if All Tasks to redraw all tasks instead of project tasks
     const projectId =
       document.getElementById('main-header').innerText === 'All Tasks'
         ? null
