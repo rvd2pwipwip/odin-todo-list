@@ -105,6 +105,10 @@ function setupNavigation() {
 function setupButtons() {
   // Add Project Button
   const addProject = document.getElementById('add-project');
+  const addProjectTooltip = document.createElement('span');
+  addProjectTooltip.className = 'tooltip-text';
+  addProjectTooltip.innerText = 'New Project';
+  addProject.append(addProjectTooltip);
   addProject.addEventListener('click', () => {
     const projectDialog = addProjectDialog();
     document.getElementById('dialog-placeholder').appendChild(projectDialog);

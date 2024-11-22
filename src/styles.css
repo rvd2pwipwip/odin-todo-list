@@ -138,7 +138,7 @@ html, body {
   display: flex;
   flex: 1 1 auto; /* Content takes the remaining space */
   box-sizing: border-box;
-  overflow: hidden;
+  overflow: hidden; /* Make sure .content doesn't scroll for #tasklist overflow */
 }
 
 /*********************************************************/
@@ -151,8 +151,8 @@ nav {
   flex-direction: column;
   position: relative;
   width: var(--side-nav-width);
-  /* height: 100%; */
   padding: 1rem;
+  z-index: 10;
 }
 
 nav button {
@@ -235,7 +235,53 @@ nav button[aria-selected="true"] {
   width: auto;
   padding: 0;
   font-weight: 900;
-  color: rgba(0, 0, 0, 0.3)
+  color: rgba(0, 0, 0, 0.3);
+  transition: transform 200ms ease-in-out;
+  position: relative; /* Position relative to contain the tooltip */
+  display: inline-block; /* Inline-block to wrap around the text */
+  cursor: pointer; /* Change cursor to pointer on hover */
+}
+
+#add-project:hover {
+  width: auto;
+  padding: 0;
+  font-weight: 900;
+  color: rgba(0, 0, 0, 0.3);
+  transition: transform 200ms ease-in-out;
+  transform: scale(1.2);
+  color: var(--accent-color);
+}
+
+.tooltip-container {
+  position: relative; /* Position relative to contain the tooltip */
+  display: inline-block; /* Inline-block to wrap around the text */
+  cursor: pointer; /* Change cursor to pointer on hover */
+}
+
+.tooltip-text {
+  visibility: hidden; /* Hide the tooltip by default */
+  font-size: small;
+  font-weight: 300;
+  word-wrap: normal;
+  white-space: nowrap;
+  width: auto; /* Set a width for the tooltip */
+  background-color: var(--bckg); /* Background color */
+  color: var(--accent-color); /* Text color */
+  text-align: center; /* Center the text */
+  border-radius: 5px; /* Rounded corners */
+  padding: 0.5rem; /* Padding for the tooltip */
+  position: absolute; /* Position absolute for placement */
+  z-index: 10; /* Ensure it appears above other elements */
+  bottom: -110%; /* Position above the element */
+  left: 50%; /* Center the tooltip */
+  transform: translateX(-50%); /* Adjust position to center based on width */
+  opacity: 0; /* Start with opacity 0 for transition */
+  transition: opacity 0.3s; /* Smooth transition for visibility */
+}
+
+#add-project:hover .tooltip-text {
+  visibility: visible; /* Show the tooltip on hover */
+  opacity: 1; /* Fully opaque on hover */
 }
 
 /*********************************************************/
@@ -533,7 +579,7 @@ legend {
   justify-content: center;
   padding: 0; /* Remove padding */
   line-height: 1; /* Ensure text is centered vertically */
-  z-index: 1000; /* Ensure the button is on top */
+  z-index: 1; /* Ensure the button is on top */
 }
 
 .form-item {
@@ -715,6 +761,7 @@ padding: 0;
 
 .task-content-item p {
   margin: 0;
+  line-height: 1.25;
 }
 
 .task-content-item label {

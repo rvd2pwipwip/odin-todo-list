@@ -36,7 +36,7 @@
       "tasks": [
         {
           "title": "Webpack",
-          "description": "Go back to webpack tutorial to implement in this project",
+          "description": "Go back to webpack tutorial to implement it in this project",
           "dueDate": "2024-08-30",
           "priority": "Low",
           "done": false,
