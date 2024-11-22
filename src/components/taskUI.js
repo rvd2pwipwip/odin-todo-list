@@ -92,6 +92,10 @@ export const drawTaskCard = (task, tasklist) => {
 // set click event on container of tasks for event delegation
 tasklist.addEventListener('click', (e) => {
   const card = e.target.closest('.card'); // delegate to specific task card
+  if (!card) {
+    // If no card is found, exit the function
+    return;
+  }
   const taskInfo = taskInfoDialog(card.id);
   document.getElementById('dialog-placeholder').appendChild(taskInfo);
   taskInfo.showModal();
@@ -121,16 +125,23 @@ export const drawTasklist = (projectLibrary, projectId = null) => {
 };
 
 const drawEmptyProject = (name) => {
-  const title = document.createElement('h1');
-  title.innerText = `${name} has no assigned tasks yet.`;
-  tasklist.append(title);
+  const emptyProject = document.createElement('div');
+  emptyProject.id = 'empty-project';
+  const projectName = document.createElement('h1');
+  projectName.id = 'project-name';
+  projectName.innerText = name;
+  const title = document.createElement('h2');
+  title.innerText = 'has no assigned tasks yet.';
+  const header = document.createElement('header');
+  header.id = 'empty-project-header';
+  header.append(projectName, title);
 
   const emptyImage = document.createElement('img');
   emptyImage.setAttribute('src', './img/empty.png');
   emptyImage.setAttribute('alt', 'empty list');
-  tasklist.append(emptyImage);
 
-  const subtitle = document.createElement('h1');
+  const subtitle = document.createElement('h2');
   subtitle.innerText = 'Tasks added to this project will appear here.';
-  tasklist.append(subtitle);
+  emptyProject.append(header, emptyImage, subtitle);
+  tasklist.append(emptyProject);
 };

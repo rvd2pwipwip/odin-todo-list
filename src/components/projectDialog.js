@@ -137,7 +137,7 @@ export function deleteProjectDialog(projectId) {
   const name = project ? project.name : null;
   const dialog = document.createElement('dialog');
   const dialogContent = document.createElement('div');
-  dialogContent.style.padding = '1.5rem';
+  dialogContent.id = 'dialog-content';
   dialog.appendChild(dialogContent);
   const title = document.createElement('h1');
   title.innerText = 'Delete Project';
@@ -153,16 +153,33 @@ export function deleteProjectDialog(projectId) {
   dialogContent.appendChild(dialogText);
 
   const buttonDiv = document.createElement('div');
-  const deleteButton = document.createElement('button');
-  deleteButton.style.width = '100%';
-  deleteButton.id = 'delete-cta';
+  buttonDiv.id = 'button-div';
 
+  // Cancel button
+  const cancelButton = document.createElement('button');
   // Create the icon element
-  const icon = document.createElement('span');
-  icon.className = 'material-icons-rounded';
-  icon.innerHTML = 'dangerous';
+  const cancelIcon = document.createElement('span');
+  cancelIcon.className = 'material-icons-rounded';
+  cancelIcon.innerHTML = 'close';
   // Append the icon to the button first
-  deleteButton.appendChild(icon);
+  cancelButton.appendChild(cancelIcon);
+  // Add the button text after the icon
+  cancelButton.innerHTML += 'Cancel';
+
+  cancelButton.addEventListener('click', () => {
+    dialog.close();
+    dialog.remove();
+  });
+
+  // Delete button
+  const deleteButton = document.createElement('button');
+  deleteButton.id = 'delete-cta';
+  // Create the icon element
+  const dangerousIcon = document.createElement('span');
+  dangerousIcon.className = 'material-icons-rounded';
+  dangerousIcon.innerHTML = 'dangerous';
+  // Append the icon to the button first
+  deleteButton.appendChild(dangerousIcon);
   // Add the button text after the icon
   deleteButton.innerHTML += 'Delete Project';
   deleteButton.addEventListener('click', () => {
@@ -189,7 +206,7 @@ export function deleteProjectDialog(projectId) {
     dialog.remove();
   });
 
-  buttonDiv.appendChild(deleteButton);
+  buttonDiv.append(deleteButton, cancelButton);
   dialogContent.appendChild(buttonDiv);
 
   // Event listener to close the dialog when users click outside

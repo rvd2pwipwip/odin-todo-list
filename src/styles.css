@@ -54,6 +54,7 @@ table {
 
 html, body {
   height: 100%;
+  display: flex;
   flex-direction: column;
   background: var(--bckg);
   color: var(--onBckg);
@@ -118,6 +119,14 @@ html, body {
   font-family: Georgia;
   font-size: 2rem;
   font-weight: 700;
+  gap: 1rem;
+}
+
+#app-header i {
+  font-weight: 100;
+  font-size: 3rem;
+  opacity: 0.6;
+  /* color: var(--low-priority); */
 }
 
 /*********************************************************/
@@ -126,7 +135,7 @@ html, body {
 
 .content {
   display: flex;
-  height: 100%;
+  box-sizing: border-box;
 }
 
 /*********************************************************/
@@ -139,7 +148,7 @@ nav {
   flex-direction: column;
   position: relative;
   width: var(--side-nav-width);
-  height: 100%;
+  /* height: 100%; */
   padding: 1rem;
 }
 
@@ -241,16 +250,17 @@ main {
 }
 
 #main-header {
-  font-size: 2rem;;
+  font-size: 2rem;
+  font-weight: 700;
 }
 
 #tasklist {
   display: flex;
   flex-direction: column;
-  flex: 1;
+  flex: 1 1 auto;
   width: 100%;
   gap: 1rem;
-  
+  overflow-y: auto;
 }
 
 /*********************************************************/
@@ -269,6 +279,7 @@ button[id*="cta"] {
   font-size: 1.25rem;
   font-weight: 500;
   gap: 0.625rem;
+  cursor: pointer;
 }
 
 #create-cta.disabled {
@@ -276,18 +287,24 @@ button[id*="cta"] {
   opacity: 0.3;
 }
 
+/*********************************************************/
+/* Standard Button */
+/*********************************************************/
+
 dialog button:not([id*="cta"]) {
   display: flex;
   justify-content: center;
   align-items: center;
   background: white;
-  /* color: white; */
   padding: 1rem 2rem 1rem 1.5rem;
-  border: 3px solid rgba(0, 0, 0, 0.3);
+  border: none;
+  outline: 3px solid rgba(0, 0, 0, 0.3);
+  outline-offset: -3px; /* Negative offset to move the outline inside */
   border-radius: 50px;
-  font-size: 1rem;
+  font-size: 1.25rem;
   font-weight: 500;
   gap: 0.625rem;
+  cursor: pointer;
 }
 
 /*********************************************************/
@@ -347,11 +364,10 @@ dialog button:not([id*="cta"]) {
   align-items: center;
   width: 100%;
   gap: 0.5rem;
-  /* background-color: red; */
 }
 
 /* the custom checkbox check_circle material icon */
-label span {
+.card span {
   display: inline-block;
   font-size: 2rem;
   color: rgba(0, 0, 0, 0.5);
@@ -359,10 +375,11 @@ label span {
   transition: transform 200ms ease-in-out;
 }
 
-/*  select the span (custom checkbox) when the card is hovered */
+/*  select the spans (custom checkbox, info, trash) when the card is hovered */
 .card:hover span,
 /* span that is next to focused checkbox for keyboard support*/
-[type='checkbox']:focus + span { 
+[type='checkbox']:focus + span,
+[type='checkbox']:checked:focus + span { 
   transform: scale(1.2);
   color: black;
 }
@@ -370,6 +387,11 @@ label span {
 [type='checkbox']:checked + span { 
   transform: scale(1);
   color: black;
+}
+
+.card:hover [type='checkbox']:checked + span { 
+  transform: scale(1.2);
+  /* color: black; */
 }
 
 /* select label with a checked input */
@@ -400,6 +422,39 @@ label:has(input.done:checked)::after {
 
 .due-date {
   white-space: nowrap;
+  cursor: default;
+}
+
+.card span {
+  cursor: pointer;
+}
+
+/*********************************************************/
+/* Empty Project */
+/*********************************************************/
+
+#empty-project {
+  display: flex;
+  flex-direction: column;
+  gap: 3rem;
+  align-items: center;
+  padding: 3rem;
+}
+
+#empty-project-header {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+#empty-project h1 {
+  font-size: xx-large;
+  font-weight: 700;
+}
+
+#empty-project h2 {
+  font-size: larger;
 }
 
 
@@ -412,6 +467,7 @@ dialog {
   display: flex;
   flex-direction: column;
   margin: auto;
+  padding: 1.5rem;
   box-shadow: 0px 10px 10px rgba(0, 0, 0, 0.2);
   border-radius: 1rem;
   width: 30ch;
@@ -438,7 +494,6 @@ dialog::backdrop {
 form {
   box-sizing: border-box;
   background: white;
-  padding: 1.5rem;
 }
 
 fieldset {
@@ -456,6 +511,7 @@ legend {
   padding-bottom: 2rem;
   margin: 0 auto;
   color: rgba(0, 0, 0, 0.7);
+  cursor: default;
 }
 
 #close-btn {
@@ -595,6 +651,8 @@ dialog p span {
 }
 
 dialog #delete-cta {
+  margin: auto;
+  width: 100%;
   background: firebrick;
 }
 
@@ -637,6 +695,10 @@ dialog #delete-cta {
   gap: 2rem;
 }
 
+.task-info {
+padding: 0;
+}
+
 #task-info-content {
   display: flex;
   flex-direction: column;
@@ -660,4 +722,19 @@ dialog #delete-cta {
 #update-task-cta[disabled] {
   pointer-events: none;
   opacity: 0.3;
+}
+
+#dialog-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+}
+
+#button-div {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  margin: auto;
+  gap: 20px;
 }

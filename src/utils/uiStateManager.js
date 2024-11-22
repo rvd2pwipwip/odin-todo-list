@@ -25,6 +25,9 @@ export const UIState = {
 
   updateHeader(headerText) {
     document.getElementById('main-header').innerText = headerText;
+    if (document.getElementById('project-name')) {
+      document.getElementById('project-name').innerText = headerText;
+    }
   },
 
   // Manage add task button state
