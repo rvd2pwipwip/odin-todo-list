@@ -175,24 +175,16 @@ export function deleteProjectDialog(projectId) {
     // Check if the project is currently selected
     const isCurrentProject =
       tabToDelete && tabToDelete.getAttribute('aria-selected') === 'true';
-    removeProjectUI(projectId);
-    deleteProjectData(projectId, currentLibrary);
 
     // If deleted project is active, select "All Tasks"
     if (isCurrentProject) {
       document.querySelector('button[data-id="all-tab"]').click();
-    } else {
-      const selectedProjectId = UIState.selectedProjectId;
-      const activeTab = document.querySelector(
-        `button[data-id="${selectedProjectId}"]`
-      );
-
-      if (activeTab) {
-        activeTab.click();
-      } else {
-        console.error('Project tab not found for ID:', selectedProjectId);
-      }
     }
+
+    removeProjectUI(projectId);
+    deleteProjectData(projectId);
+    drawTasklist(currentLibrary, UIState.selectedProjectId);
+
     dialog.close();
     dialog.remove();
   });

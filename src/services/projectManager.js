@@ -18,16 +18,10 @@ export function saveProjectsToLocalStorage() {
   localStorage.setItem('projects', JSON.stringify(projectsData));
 }
 
-export function deleteProjectData(projectId, currentLibrary) {
-  const projectIndex = currentLibrary.projects.findIndex(
-    (project) => project.id === projectId
-  );
-  if (projectIndex !== -1) {
-    currentLibrary.projects.splice(projectIndex, 1);
-    localStorage.setItem('projects', JSON.stringify(currentLibrary.projects));
-  } else {
-    console.error('Project not found');
-  }
+export function deleteProjectData(projectId) {
+  currentLibrary.deleteProject(projectId);
+  // Update localStorage with the modified projects array
+  localStorage.setItem('projects', JSON.stringify(currentLibrary.projects));
 }
 
 export function updateProjectName(project, newName) {

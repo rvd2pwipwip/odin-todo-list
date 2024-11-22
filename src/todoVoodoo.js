@@ -5,7 +5,14 @@ function generateUUID() {
 }
 
 class Task {
-  constructor(title, description, dueDate, priority = 'Low', done = false, id = null) {
+  constructor(
+    title,
+    description,
+    dueDate,
+    priority = 'Low',
+    done = false,
+    id = null
+  ) {
     this.title = title;
     this.description = description;
     this.dueDate = dueDate;
@@ -27,9 +34,8 @@ class Project {
   addTask(task) {
     this.tasks.push(task);
   }
-
   deleteTask(task) {
-    this.tasks = this.tasks.filter(t => t !== task);
+    this.tasks = this.tasks.filter((t) => t !== task);
   }
 }
 
@@ -37,8 +43,12 @@ class ProjectLibrary {
   constructor(projects = []) {
     this.projects = projects;
   }
+
   addProject(project) {
     this.projects.push(project);
+  }
+  deleteProject(projectId) {
+    this.projects = this.projects.filter((p) => p.id !== projectId);
   }
 }
 export { Task, Project, ProjectLibrary };
