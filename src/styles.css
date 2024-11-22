@@ -138,6 +138,7 @@ html, body {
   display: flex;
   flex: 1 1 auto; /* Content takes the remaining space */
   box-sizing: border-box;
+  overflow: hidden;
 }
 
 /*********************************************************/
