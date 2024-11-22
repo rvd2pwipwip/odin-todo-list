@@ -295,6 +295,7 @@ main {
   align-items: center;
   padding: 1rem;
   gap: 1rem;
+  /* background: linear-gradient(to bottom, var(--bckg), var(--bckg2)); */
 }
 
 #main-header {
