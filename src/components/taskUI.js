@@ -1,7 +1,9 @@
 import { currentLibrary } from '../script';
 import { updateTask, deleteTaskData } from '../services/taskManager';
 import { formatTaskDate } from '../utils/dateUtils';
+import { UIState } from '../utils/uiStateManager';
 import { taskInfoDialog } from './taskInfoDialog';
+import { filterTodayTasks, filterWeekTasks } from '../utils/dateUtils';
 
 export const drawTaskCard = (task, tasklist) => {
   const card = document.createElement('div');
@@ -74,12 +76,41 @@ export const drawTaskCard = (task, tasklist) => {
     );
 
     deleteTaskData(task);
-    // null if All Tasks to redraw all tasks instead of project tasks
-    const projectId =
-      document.getElementById('main-header').innerText === 'All Tasks'
-        ? null
-        : project.id;
 
+    let projectId;
+
+    if (UIState.selectedProjectId) {
+      if ((UIState.selectedProjectId === 'today-tab')) {
+        console.log('today!');
+        const todayTasks = filterTodayTasks(currentLibrary);
+
+        const todayProjects = currentLibrary.projects
+          .map((project) => ({
+            name: project.name,
+            tasks: project.tasks.filter((task) => todayTasks.includes(task)),
+          }))
+          .filter((project) => project.tasks.length > 0);
+        drawTasklist({ projects: todayProjects }, null);
+        return;
+      }
+      if ((UIState.selectedProjectId === 'week-tab')) {
+        console.log('week!');
+        const weekTasks = filterWeekTasks(currentLibrary);
+        const weekProjects = currentLibrary.projects
+          .map((project) => ({
+            name: project.name,
+            tasks: project.tasks.filter((task) => weekTasks.includes(task)),
+          }))
+          .filter((project) => project.tasks.length > 0);
+        drawTasklist({ projects: weekProjects }, null);
+        return;
+      }
+      projectId = project.id;
+    } else {
+      projectId = null;
+    }
+
+    console.log('will draw task list with project id:', projectId);
     drawTasklist(currentLibrary, projectId);
   });
 

@@ -498,7 +498,7 @@ label:has(input.done:checked)::after {
 }
 
 #empty-project h1 {
-  font-size: xx-large;
+  font-size: x-large;
   font-weight: 700;
 }
 
