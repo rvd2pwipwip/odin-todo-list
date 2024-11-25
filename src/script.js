@@ -55,7 +55,6 @@ function setupNavigation() {
         case 'all-tab':
           UIState.setAddTaskButtonState(true);
           UIState.setSelectedProject(null);
-          console.log('clicked all-tab');
           UIState.updateHeader(targetName);
           drawTasklist(currentLibrary, targetId);
           break;
@@ -94,7 +93,6 @@ function setupNavigation() {
           if (targetId) {
             UIState.updateHeader(targetName);
             UIState.setSelectedProject(targetId);
-            console.log('clicked:', targetId);
             drawTasklist(currentLibrary, targetId);
           } else {
             console.log('Project not found:', targetName);

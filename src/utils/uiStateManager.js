@@ -3,7 +3,6 @@ export const UIState = {
 
   setSelectedProject(projectId) {
     this.selectedProjectId = projectId;
-    console.log('selected project:', projectId);
     this.updateProjectTabs();
   },
 

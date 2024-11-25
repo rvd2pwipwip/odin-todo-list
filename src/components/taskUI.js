@@ -81,7 +81,6 @@ export const drawTaskCard = (task, tasklist) => {
 
     if (UIState.selectedProjectId) {
       if ((UIState.selectedProjectId === 'today-tab')) {
-        console.log('today!');
         const todayTasks = filterTodayTasks(currentLibrary);
 
         const todayProjects = currentLibrary.projects
@@ -94,7 +93,6 @@ export const drawTaskCard = (task, tasklist) => {
         return;
       }
       if ((UIState.selectedProjectId === 'week-tab')) {
-        console.log('week!');
         const weekTasks = filterWeekTasks(currentLibrary);
         const weekProjects = currentLibrary.projects
           .map((project) => ({
@@ -110,7 +108,6 @@ export const drawTaskCard = (task, tasklist) => {
       projectId = null;
     }
 
-    console.log('will draw task list with project id:', projectId);
     drawTasklist(currentLibrary, projectId);
   });
 
