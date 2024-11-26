@@ -24,7 +24,7 @@ module.exports = {
     }),
     new CopyWebpackPlugin({
       patterns: [
-        { from: '.src/public', to: '.src/public' }
+        { from: 'src/todoDB.json', to: 'todoDB.json' }
       ],
     }),
   ],

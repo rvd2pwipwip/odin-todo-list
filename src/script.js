@@ -1,5 +1,5 @@
 import './styles.css';
-import todoData from './public/todoDB.json';
+// import todoData from './public/todoDB.json';
 import { Task, Project, ProjectLibrary } from './todoVoodoo.js';
 import { addTaskDialog } from './components/addTaskDialog.js';
 import { addProjectDialog } from './components/projectDialog.js';
@@ -24,12 +24,12 @@ async function loadData() {
     if (storedProjects) {
       populateProjectLibrary(storedProjects);
     } else {
-      // const response = await fetch('todoDB.json');
-      // if (!response.ok) {
-      //   throw new Error('Network response was not ok ' + response.statusText);
-      // }
-      // const data = await response.json();
-      populateProjectLibrary(todoData.projects);
+      const response = await fetch('todoDB.json');
+      if (!response.ok) {
+        throw new Error('Network response was not ok ' + response.statusText);
+      }
+      const data = await response.json();
+      populateProjectLibrary(data.projects);
       saveProjectsToLocalStorage(currentLibrary); // Save fetched data to LocalStorage
     }
   } catch (error) {
