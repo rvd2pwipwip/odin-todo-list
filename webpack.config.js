@@ -27,6 +27,11 @@ module.exports = {
         { from: 'src/todoDB.json', to: 'todoDB.json' }
       ],
     }),
+    new CopyWebpackPlugin({
+      patterns: [
+        { from: 'src/img/empty.png', to: 'img/empty.png' }
+      ],
+    }),
   ],
   module: {
     rules: [
