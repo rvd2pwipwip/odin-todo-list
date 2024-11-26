@@ -1,0 +1,75 @@
+{
+  "projects": [
+    {
+      "name": "Odin Todo List",
+      "id": "bea77576-e089-47e2-bc9f-64d72baa2f1b",
+      "tasks": [
+        {
+          "title": "Class generators",
+          "description": "The ‘todos’ are going to be objects that will be dynamically created.",
+          "dueDate": "2024-09-26",
+          "priority": "High",
+          "done": true,
+          "id": "a36d2e23-0cd3-4f1c-a236-9e54f6d816d2"
+        },
+        {
+          "title": "Task properties",
+          "description": "At a minimum tasks should have a title, description, dueDate and priority",
+          "dueDate": "2024-08-30",
+          "priority": "Medium",
+          "done": true,
+          "id": "98b031a9-2720-4ae2-86c4-51809324ff99"
+        },
+        {
+          "title": "Projects",
+          "description": "The todo list should have projects or separate lists of todos. When a user first opens the app, there should be some sort of ‘default’ project to which all of their todos are put. Users should be able to create new projects and choose which project their todos go into.",
+          "dueDate": "2024-09-29",
+          "priority": "High",
+          "done": true,
+          "id": "87029186-7302-4e12-918e-e51f5573b43e"
+        }
+      ]
+    },
+    {
+      "name": "Front-End",
+      "id": "1dfb7977-9a05-4a5f-b798-ef472beb390b",
+      "tasks": [
+        {
+          "title": "Webpack",
+          "description": "Go back to webpack tutorial to implement it in this project",
+          "dueDate": "2024-08-30",
+          "priority": "Low",
+          "done": false,
+          "id": "f0743600-0a61-4c76-981a-a42486324a74"
+        },
+        {
+          "title": "Local Storage",
+          "description": "Set up a function that saves the projects (and todos) to localStorage every time a new project (or todo) is created, and another function that looks for that data in localStorage when your app is first loaded.",
+          "dueDate": "2024-08-30",
+          "priority": "Medium",
+          "done": false,
+          "id": "6c0d8e1f-695b-4d01-849c-b2df3b7acabf"
+        }
+      ]
+    },
+    {
+      "name": "Mental Health",
+      "id": "fd144547-969d-41ff-8e6a-7cbbd91ca111",
+      "tasks": [
+        {
+          "title": "Keep Calm",
+          "description": "Keep calm and learn front-end development",
+          "dueDate": "2024-08-30",
+          "priority": "High",
+          "done": false,
+          "id": "fa38ebf3-431c-49f6-84a6-5457931046ba"
+        }
+      ]
+    },
+    {
+      "name": "Unassigned",
+      "id": "ffef647e-0cfc-49aa-84c3-9483182b5dbc",
+      "tasks": []
+    }
+  ]
+}
