@@ -24,7 +24,7 @@ module.exports = {
     }),
     new CopyWebpackPlugin({
       patterns: [
-        { from: './src/public', to: '' }
+        { from: 'public', to: 'public' }
       ],
     }),
   ],
