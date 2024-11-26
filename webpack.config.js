@@ -21,6 +21,11 @@ module.exports = {
     new HtmlWebpackPlugin({
       template: "./src/index.html",
     }),
+    new CopyWebpackPlugin({
+      patterns: [
+        { from: 'public', to: '' }
+      ],
+    }),
   ],
   module: {
     rules: [
